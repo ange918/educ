@@ -1,0 +1,31 @@
+
+> edusecure@1.0.0 dev
+> next dev -p 5000
+
+[1G[0K  [1m[38;2;173;127;168m▲ Next.js 14.2.5[39m[22m
+  - Local:        http://localhost:5000
+
+ [32m[1m✓[22m[39m Starting...
+[35m[1mAttention[22m[39m: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+[36mhttps://nextjs.org/telemetry[39m
+
+ [32m[1m✓[22m[39m Ready in 2.5s
+ [37m[1m○[22m[39m Compiling / ...
+ [32m[1m✓[22m[39m Compiled / in 3.6s (525 modules)
+ GET / [32m200[39m in 3855ms
+ [32m[1m✓[22m[39m Compiled in 315ms (262 modules)
+ GET / [32m200[39m in 24ms
+ [32m[1m✓[22m[39m Compiled /auth/login in 332ms (505 modules)
+ GET /auth/login [32m200[39m in 479ms
+ GET / [32m200[39m in 43ms
+ GET /auth/login?role=parent [32m200[39m in 20ms
+ GET / [32m200[39m in 15ms
+ GET / [32m200[39m in 28ms
+ [37m[1m○[22m[39m Compiling /auth/register ...
+ [32m[1m✓[22m[39m Compiled /auth/register in 828ms (511 modules)
+ [32m[1m✓[22m[39m Compiled /parent/dashboard in 389ms (534 modules)
+ [32m[1m✓[22m[39m Compiled in 291ms (279 modules)
+ [32m[1m✓[22m[39m Compiled /parent/children in 427ms (554 modules)
+ [32m[1m✓[22m[39m Compiled /parent/profile in 233ms (546 modules)
