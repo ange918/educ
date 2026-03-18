@@ -1,0 +1,604 @@
+Create a new Next.js 14 project called "edusecure" and implement the following specifications exactly. Build a complete Next.js 14 (App Router) frontend application called **ÉduSecure** — a school management system with QR-based access control. This is frontend-only, no backend. All API calls must be stubbed with mock data / placeholder functions clearly marked with `// TODO: replace with real API call`.
+
+---
+
+## TECH STACK
+
+- Next.js 14 with App Router
+- TypeScript
+- Tailwind CSS
+- Boxicons (via CDN in layout: `<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>`)
+- next/font for Google Fonts: Syne (display) + DM Sans (body)
+- No backend, no database, no auth library — use React state + localStorage for session simulation
+
+---
+
+## COLOR PALETTE
+
+```css
+:root {
+  --midnight: #0A1628;
+  --midnight-mid: #112240;
+  --midnight-light: #1B3358;
+  --accent: #2563EB;
+  --accent-light: #3B82F6;
+  --accent-pale: #EFF6FF;
+  --white: #FFFFFF;
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-400: #94A3B8;
+  --gray-600: #475569;
+  --gray-800: #1E293B;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+}
+```
+
+---
+
+## GLOBAL LAYOUT & FONTS
+
+In `app/layout.tsx`:
+- Import Syne (weights 400,600,700,800) and DM Sans (weights 300,400,500) from next/font/google
+- Apply DM Sans as default body font
+- Apply Syne as `font-display` CSS variable
+- Include Boxicons CDN link in `<head>`
+- Background: `var(--midnight)` on the root, white on content pages
+
+---
+
+## PAGES & ROUTING STRUCTURE
+
+```
+app/
+├── page.tsx                    → Welcome / Role selection page
+├── auth/
+│   ├── login/page.tsx          → Login (parent or admin)
+│   └── register/page.tsx       → Parent registration
+├── parent/
+│   ├── layout.tsx              → Parent sidebar layout
+│   ├── dashboard/page.tsx      → Parent dashboard
+│   ├── children/page.tsx       → Manage children list
+│   ├── children/add/page.tsx   → Add child form
+│   ├── payments/page.tsx       → Payment history & pay tranches
+│   └── profile/page.tsx        → Parent profile
+├── admin/
+│   ├── layout.tsx              → Admin sidebar layout
+│   ├── dashboard/page.tsx      → Admin overview
+│   └── students/page.tsx       → Students by class
+```
+
+---
+
+## PAGE 1: Welcome Page (`app/page.tsx`)
+
+Design like a premium app splash screen, NOT a landing page.
+
+Layout:
+- Full screen, background: midnight blue (#0A1628)
+- Centered vertically and horizontally
+- Top: ÉduSecure logo — large stylized text with a QR-code-inspired icon SVG (draw a simple inline SVG: 3 corner squares pattern like a QR code, 48x48px, white), app name in Syne font, bold, white, 40px
+- Subtitle: "Gestion scolaire intelligente" — gray-400, 16px, DM Sans light
+- Below: two large cards side by side (or stacked on mobile), each card:
+  - Midnight-mid background (#112240)
+  - 1px border with 20% white opacity
+  - 20px border-radius
+  - 280px wide, padding 40px
+  - Icon (Boxicons): `bx-user` for Parent, `bx-shield` for Admin — 40px, accent blue
+  - Role title in Syne bold 22px white
+  - Short description in DM Sans 14px gray-400
+  - "Continuer →" button at bottom: accent blue background, white text, full width, 12px border-radius
+  - Hover: card lifts with box-shadow, slight scale(1.02) transition
+- Clicking Parent → goes to `/auth/login?role=parent`
+- Clicking Admin → goes to `/auth/login?role=admin`
+- Bottom: small version number "v1.0.0" in gray-600
+
+---
+
+## PAGE 2: Login (`app/auth/login/page.tsx`)
+
+Layout:
+- Left half: midnight blue background with ÉduSecure branding, tagline, and a decorative SVG pattern (grid of small dots or QR-like pattern), logo centered
+- Right half: white background, login form centered
+- Mobile: only show right half (form)
+
+Form fields:
+- Email input with `bx-envelope` icon inside input
+- Password input with `bx-lock-alt` icon + toggle visibility button (`bx-show` / `bx-hide`)
+- "Se souvenir de moi" checkbox
+- Primary button: "Se connecter" full width, accent blue
+- Link: "Pas encore de compte ? Créer un compte" → `/auth/register`
+- Link: "← Retour" → `/`
+
+Logic (mock):
+- If email contains "admin" → redirect to `/admin/dashboard`, set localStorage `role=admin`
+- Else → redirect to `/parent/dashboard`, set localStorage `role=parent`
+- Show loading spinner on button click (500ms delay to simulate API)
+- Mark with: `// TODO: replace with real POST /api/auth/login`
+
+---
+
+## PAGE 3: Register (`app/auth/register/page.tsx`)
+
+Same split layout as login.
+
+Multi-step form (3 steps with progress indicator at top):
+
+**Step 1 — Informations personnelles:**
+- Prénom (text) with `bx-user` icon
+- Nom (text)
+- Email (email) with `bx-envelope` icon
+- Téléphone (tel) with `bx-phone` icon
+
+**Step 2 — Sécurité:**
+- Mot de passe (password) with strength indicator bar below (weak/medium/strong in red/orange/green)
+- Confirmer le mot de passe
+- Show password toggle
+
+**Step 3 — Confirmation:**
+- Summary card showing all entered data (read-only)
+- Checkbox: "J'accepte les conditions d'utilisation"
+- "Créer mon compte" button
+
+Progress bar at top: 3 dots connected by line, active dot = accent blue filled, done = checkmark icon.
+
+On submit: `// TODO: POST /api/auth/register` → redirect to `/parent/dashboard`
+
+---
+
+## PARENT LAYOUT (`app/parent/layout.tsx`)
+
+Left sidebar (240px wide, midnight-mid background):
+- Top: ÉduSecure logo (small version, white)
+- User avatar circle (initials, accent blue background) + name + "Parent" badge
+- Nav links with Boxicons:
+  - `bx-home` Tableau de bord → `/parent/dashboard`
+  - `bx-group` Mes enfants → `/parent/children`
+  - `bx-credit-card` Paiements → `/parent/payments`
+  - `bx-user-circle` Mon profil → `/parent/profile`
+- Bottom: `bx-log-out` Déconnexion → `/`
+- Active link: accent blue background, white text, 8px border-radius
+
+Main content area: white background, padding 32px
+
+Mobile: sidebar becomes a bottom tab bar
+
+---
+
+## PAGE 4: Parent Dashboard (`app/parent/dashboard/page.tsx`)
+
+Mock data (clearly labeled `// MOCK DATA — replace with API`):
+
+```typescript
+const mockParent = { name: "Akua Osei", email: "akua@email.com" }
+const mockChildren = [
+  {
+    id: 1,
+    name: "Kwame Osei",
+    classe: "Terminale S",
+    numero: "N°2041",
+    totalFees: 225000,
+    paid: 150000,
+    tranches: [
+      { n: 1, amount: 75000, paid: true, date: "10 jan" },
+      { n: 2, amount: 75000, paid: true, date: "12 fev" },
+      { n: 3, amount: 75000, paid: false, date: null }
+    ],
+    accessStatus: "active"
+  },
+  {
+    id: 2,
+    name: "Ama Osei",
+    classe: "3ème B",
+    numero: "N°1887",
+    totalFees: 180000,
+    paid: 60000,
+    tranches: [
+      { n: 1, amount: 60000, paid: true, date: "10 jan" },
+      { n: 2, amount: 60000, paid: false, date: null },
+      { n: 3, amount: 60000, paid: false, date: null }
+    ],
+    accessStatus: "suspended"
+  }
+]
+```
+
+Layout:
+- Top greeting: "Bonjour, Akua 👋" in Syne 28px bold
+- Date below in gray-400
+- Summary row (3 stat cards):
+  - Card 1: total children count, icon `bx-group`, midnight-mid bg, white text
+  - Card 2: total paid (sum in XOF), icon `bx-check-circle`, success green accent
+  - Card 3: total remaining, icon `bx-time`, warning orange accent
+- Section: "Mes enfants" with "+ Ajouter un enfant" button (accent blue, `bx-plus` icon) → `/parent/children/add`
+- For each child: a card (white, 1px border, 16px radius, padding 24px) showing:
+  - Left: colored circle with initials + name (Syne bold) + class badge
+  - Right: access status badge — "Actif" (green) / "Suspendu" (red)
+  - Payment progress bar: paid / total in XOF, percentage fill, accent blue
+  - Tranches row: 3 pill badges — paid = solid accent blue with checkmark, unpaid = gray outline with amount
+  - If a tranche is unpaid → show "Payer" button (small, accent blue) on that pill
+  - "Voir détails" link at bottom right
+
+---
+
+## PAGE 5: Manage Children (`app/parent/children/page.tsx`)
+
+- List of all children as cards (same as dashboard but bigger)
+- Top bar: title "Mes enfants" + "+ Ajouter" button
+- Each card also shows: date d'inscription, numéro élève
+- Delete button (icon `bx-trash`, gray, confirm dialog before delete)
+- Edit button (icon `bx-edit`, gray)
+- `// TODO: GET /api/parent/children`
+
+---
+
+## PAGE 6: Add Child Form (`app/parent/children/add/page.tsx`)
+
+White card centered, max-width 600px, multi-section form:
+
+**Section 1 — Identité de l'élève:**
+- Prénom + Nom (side by side)
+- Date de naissance (date picker)
+- Sexe (select: Masculin / Féminin)
+- Photo (file upload with drag-and-drop zone, preview)
+
+**Section 2 — Informations scolaires:**
+- Classe (select): 6ème, 5ème, 4ème, 3ème, 2nde, 1ère, Terminale + lettre suffix (A, B, C, S...)
+- Numéro matricule (auto-generated placeholder, editable)
+- Année scolaire (auto-filled: "2025-2026")
+
+**Section 3 — Frais de scolarité:**
+- Montant total (number input, XOF suffix)
+- Nombre de tranches (select: 1, 2, ou 3)
+- On selecting number of tranches → dynamically show N input fields for tranche amounts with dates d'échéance
+
+**Submit button:** "Inscrire l'élève & Générer la carte QR" — full width, accent blue, `bx-qr` icon
+
+On submit: `// TODO: POST /api/parent/children` → show success modal with mock QR code (use a placeholder QR SVG pattern).
+
+Success modal: show child name, class, QR code (placeholder SVG), "Télécharger la carte" button.
+
+---
+
+## PAGE 7: Payments (`app/parent/payments/page.tsx`)
+
+Mock data labeled `// MOCK DATA`:
+
+```typescript
+const mockPayments = [
+  { id: 1, childName: "Kwame Osei", tranche: "Tranche 2/3", amount: 75000, date: "12 fév 2026", method: "Mobile Money", status: "success" },
+  { id: 2, childName: "Kwame Osei", tranche: "Tranche 1/3", amount: 75000, date: "10 jan 2026", method: "Mobile Money", status: "success" },
+  { id: 3, childName: "Ama Osei", tranche: "Tranche 1/3", amount: 60000, date: "10 jan 2026", method: "Carte bancaire", status: "success" },
+]
+```
+
+Layout:
+- Top: total paid stat card (large, midnight bg, white, Syne 36px number in XOF)
+- "Paiements en attente" section: list of unpaid tranches across all children with "Payer maintenant" button each
+- "Historique" section: table with columns: Date, Enfant, Tranche, Montant, Méthode, Statut badge
+
+Payment modal (triggered by "Payer maintenant"):
+- Shows: child name, tranche, amount
+- Payment method tabs: "Mobile Money" | "Carte bancaire"
+- Mobile Money: phone number input
+- Card: card number, expiry, CVV (cosmetic only)
+- "Confirmer le paiement — X XOF" button
+- `// TODO: POST /api/payments`
+- On confirm: show success animation (checkmark + "Paiement confirmé !") then close modal
+
+---
+
+## ADMIN LAYOUT (`app/admin/layout.tsx`)
+
+Same structure as parent layout but:
+- Sidebar background: midnight (#0A1628)
+- Nav links:
+  - `bx-tachometer` Tableau de bord → `/admin/dashboard`
+  - `bx-graduation` Élèves → `/admin/students`
+  - `bx-bell` Notifications (with badge count)
+  - `bx-cog` Paramètres
+- Role badge shows "Administrateur" in amber/gold color
+
+---
+
+## PAGE 8: Admin Dashboard (`app/admin/dashboard/page.tsx`)
+
+Mock data:
+
+```typescript
+const mockStats = {
+  totalStudents: 847,
+  presentToday: 791,
+  totalCollected: 45750000,
+  pendingAmount: 12300000,
+  activeCards: 791,
+  suspendedCards: 56,
+}
+```
+
+Layout:
+- **Top banner (full width):** midnight-mid background, large display of "45 750 000 XOF" collected in Syne 48px white bold, subtitle "Total encaissé · Année 2025–2026", with a hardcoded SVG sparkline (green polyline trending upward)
+- **Stats grid (4 cards):**
+  - Élèves inscrits (`bx-group`)
+  - Présents aujourd'hui (`bx-check-circle`)
+  - Cartes actives (`bx-qr`, green)
+  - Cartes suspendues (`bx-block`, red)
+- **Recent access log:** last 5 entries table — Élève, Classe, Statut (green dot = Autorisé / red dot = Refusé), Heure
+- **Quick action buttons:** "Générer rapport PDF" | "Voir impayés" | "Gérer exceptions"
+
+---
+
+## PAGE 9: Students by Class (`app/admin/students/page.tsx`)
+
+**This is the most important admin page.**
+
+Mock data — generate at least 8 students per major class level:
+
+```typescript
+type Student = {
+  id: number
+  firstName: string
+  lastName: string
+  classe: string        // "6ème A", "5ème B", etc.
+  numero: string
+  totalFees: number     // XOF
+  paid: number          // XOF
+  remaining: number     // computed: totalFees - paid
+  accessStatus: "active" | "suspended" | "refused"
+  lastPaymentDate: string | null
+}
+```
+
+Populate mockStudents with realistic Beninese/West African names, spread across: 6ème A, 6ème B, 5ème A, 5ème B, 4ème A, 3ème A, 3ème B, 2nde A, 2nde C, 1ère A, 1ère S, Terminale A, Terminale S — at least 6 students per class. Mix of active, suspended, and refused statuses.
+
+Layout:
+- Top: search bar (`bx-search` icon) + filter by class dropdown + "Exporter" button
+- **Class tabs:** horizontal scrollable tab bar — "Toutes" | "6ème" | "5ème" | "4ème" | "3ème" | "2nde" | "1ère" | "Terminale" — clicking filters the table below
+- **When "Toutes" is selected:** show a section header per class group in Syne bold with student count badge, then the table for that class
+- **Table per class** with columns:
+  1. # (row number)
+  2. Nom complet (last name bold + first name, with colored initials circle avatar)
+  3. Classe
+  4. N° Matricule (gray monospace font)
+  5. Montant payé (green text if fully paid, orange if partial) formatted as XOF
+  6. Reste à payer (red text if > 0, gray "—" if 0) formatted as XOF
+  7. Statut badge:
+     - "ACTIVÉ" → green filled pill with `bx-check-circle` icon
+     - "SUSPENDU" → orange filled pill with `bx-time-five` icon
+     - "REFUSÉ" → red filled pill with `bx-x-circle` icon
+  8. Actions: `bx-eye` view icon button, `bx-edit` edit icon button
+- Row hover: very light blue background (#EFF6FF)
+- Clicking a row or the eye icon → opens a side drawer sliding in from the right (400px wide), showing:
+  - Student full name (Syne bold, large)
+  - Avatar circle (large, 80px, colored initials)
+  - Class, numero, year
+  - Full payment breakdown: total fees, paid, remaining, each tranche with paid/unpaid status
+  - QR code placeholder (use the QRPlaceholder component)
+  - Access status badge (large)
+  - Action buttons: "Modifier le statut", "Régénérer QR"
+  - Close button (×) top right
+- `// TODO: GET /api/admin/students`
+
+---
+
+## SHARED COMPONENTS (create in `components/`)
+
+**`Logo.tsx`:**
+- Accepts `size` prop: "sm" | "md" | "lg"
+- Renders an inline SVG QR icon (3 corner squares, like a real QR code corner pattern) + "ÉduSecure" text in Syne bold
+- Color variant: "light" (white) | "dark" (midnight)
+
+**`StatCard.tsx`:**
+- Props: icon (boxicon class string), label, value, trend (optional), color variant
+- Renders a metric card with icon circle, label, large value, optional trend indicator
+
+**`StatusBadge.tsx`:**
+- Props: status: "active" | "suspended" | "refused"
+- "ACTIVÉ" → green pill with `bx-check-circle`
+- "SUSPENDU" → orange pill with `bx-time-five`, add a CSS pulse animation on the dot
+- "REFUSÉ" → red pill with `bx-x-circle`
+
+**`PaymentModal.tsx`:**
+- Props: isOpen, onClose, childName, trancheLabel, amount
+- Full payment flow with method selection tabs
+- Animated success state on confirm
+
+**`ChildCard.tsx`:**
+- Props: child object, onPay callback
+- Renders full child card with progress bar and tranche pills
+
+**`Sidebar.tsx`:**
+- Props: role: "parent" | "admin", activePath
+- Renders correct nav items per role
+- Highlights active route
+
+**`QRPlaceholder.tsx`:**
+- Renders a decorative SVG QR code pattern (3 large corner squares + grid of small random squares in the middle)
+- Props: size (number), studentName (used to slightly vary the pattern)
+
+---
+
+## MOCK DATA FILE (`lib/mockData.ts`)
+
+Export all mock data from a single file. Every export must start with the comment `// MOCK DATA — replace with real API response`. Include:
+- mockParent
+- mockChildren (array, at least 2 children with full tranche data)
+- mockStudents (array, at least 60 students across all class levels with varied statuses)
+- mockPayments (array, at least 6 payment history entries)
+- mockAccessLog (array, last 10 access events with timestamps)
+- mockStats (admin overview numbers)
+
+---
+
+## API STUBS FILE (`lib/api.ts`)
+
+```typescript
+// All functions in this file are stubs.
+// Replace each function body with a real fetch() call to your backend API.
+
+import { mockChildren, mockStudents, mockPayments, mockStats, mockAccessLog } from './mockData'
+
+export async function loginUser(email: string, password: string) {
+  // TODO: replace with real POST /api/auth/login
+  await new Promise(r => setTimeout(r, 500))
+  return {
+    role: email.toLowerCase().includes('admin') ? 'admin' : 'parent',
+    token: 'mock-jwt-token',
+    user: { name: 'Akua Osei', email }
+  }
+}
+
+export async function registerUser(data: RegisterData) {
+  // TODO: replace with real POST /api/auth/register
+  await new Promise(r => setTimeout(r, 500))
+  return { success: true }
+}
+
+export async function getChildren() {
+  // TODO: replace with real GET /api/parent/children
+  return mockChildren
+}
+
+export async function addChild(data: ChildFormData) {
+  // TODO: replace with real POST /api/parent/children
+  await new Promise(r => setTimeout(r, 500))
+  return {
+    success: true,
+    child: { ...data, id: Date.now(), numero: `N°${Math.floor(1000 + Math.random() * 9000)}` }
+  }
+}
+
+export async function payTranche(childId: number, trancheN: number, method: string) {
+  // TODO: replace with real POST /api/payments
+  await new Promise(r => setTimeout(r, 800))
+  return { success: true, transactionId: `TXN-${Date.now()}` }
+}
+
+export async function getAdminStudents(classe?: string) {
+  // TODO: replace with real GET /api/admin/students?classe={classe}
+  if (classe && classe !== 'Toutes') {
+    return mockStudents.filter(s => s.classe.startsWith(classe))
+  }
+  return mockStudents
+}
+
+export async function getAdminStats() {
+  // TODO: replace with real GET /api/admin/stats
+  return mockStats
+}
+
+export async function getAccessLog() {
+  // TODO: replace with real GET /api/admin/access-log
+  return mockAccessLog
+}
+```
+
+---
+
+## TAILWIND CONFIG (`tailwind.config.ts`)
+
+Extend the theme with:
+
+```typescript
+theme: {
+  extend: {
+    colors: {
+      midnight: '#0A1628',
+      'midnight-mid': '#112240',
+      'midnight-light': '#1B3358',
+      accent: '#2563EB',
+      'accent-light': '#3B82F6',
+      'accent-pale': '#EFF6FF',
+    },
+    fontFamily: {
+      display: ['Syne', 'sans-serif'],
+      body: ['DM Sans', 'sans-serif'],
+    },
+    keyframes: {
+      fadeIn: { '0%': { opacity: '0', transform: 'translateY(8px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+      slideInRight: { '0%': { transform: 'translateX(100%)' }, '100%': { transform: 'translateX(0)' } },
+      pulse: { '0%, 100%': { opacity: '1' }, '50%': { opacity: '0.5' } },
+      countUp: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+    },
+    animation: {
+      'fade-in': 'fadeIn 0.3s ease-out',
+      'slide-in-right': 'slideInRight 0.3s ease-out',
+      'pulse-slow': 'pulse 2s ease-in-out infinite',
+    },
+  },
+}
+```
+
+---
+
+## ANIMATIONS & MICRO-INTERACTIONS
+
+- Every page: wrap main content in a div with `className="animate-fade-in"`
+- Sidebar links: `transition-all duration-200` on hover
+- Stat cards: use a `useEffect` counter animation — numbers count up from 0 to their value over 1 second on mount
+- Buttons: `active:scale-95 transition-transform duration-100`
+- StatusBadge "SUSPENDU": add `animate-pulse-slow` to its dot indicator
+- Payment success: CSS-only circular checkmark animation using SVG stroke-dashoffset
+- Side drawer: `animate-slide-in-right`, overlay backdrop with `bg-midnight/50`
+- Modal: `scale-95 opacity-0` → `scale-100 opacity-100` transition on open
+
+---
+
+## CURRENCY & DATE FORMATTING
+
+Create `lib/utils.ts`:
+
+```typescript
+export function formatXOF(amount: number): string {
+  return new Intl.NumberFormat('fr-FR').format(amount) + ' XOF'
+}
+
+export function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('fr-FR', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  })
+}
+
+export function getInitials(name: string): string {
+  return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+}
+
+export function getAvatarColor(name: string): string {
+  const colors = ['#2563EB', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4']
+  const index = name.charCodeAt(0) % colors.length
+  return colors[index]
+}
+```
+
+---
+
+## RESPONSIVE RULES
+
+- Mobile breakpoint: below `md` (768px)
+- Sidebar: hidden on mobile, replaced by fixed bottom tab bar (icons only, 60px height, midnight-mid bg)
+- Tables: wrap in `overflow-x-auto` div on mobile
+- Cards: `grid-cols-1` on mobile, `grid-cols-2` on tablet, `grid-cols-3` on desktop
+- Hero cards on welcome page: `flex-col` on mobile, `flex-row` on desktop
+- Side drawer: full screen (100vw) on mobile, 400px on desktop
+
+---
+
+## IMPORTANT IMPLEMENTATION RULES
+
+1. Every API call must be routed through `lib/api.ts` — never call fetch directly in a component
+2. All mock data lives exclusively in `lib/mockData.ts`
+3. Use `localStorage` to simulate session: on login store `JSON.stringify({ role, name, email, token })` under key `edusecure_session`, read it in layout files to get user info
+4. Each layout (`parent/layout.tsx`, `admin/layout.tsx`) must read localStorage on mount and redirect to `/` if session is missing or role doesn't match
+5. The app must be 100% navigable with mock data — no empty states, no broken pages on first load
+6. Currency: always use `formatXOF()` from `lib/utils.ts`
+7. Dates: always use `formatDate()` from `lib/utils.ts` or French locale formatting
+8. All form inputs must have proper `<label>` elements and French placeholder text
+9. No external UI component library — only Tailwind CSS + Boxicons + custom components
+10. TypeScript strict mode — all component props must be fully typed with interfaces
+11. Use `'use client'` directive only in components that use hooks, event handlers, or browser APIs
+12. All server components (pages that only display data) should remain server components
+13. The student table on `/admin/students` must render all students grouped by class when "Toutes" tab is active, and filter to one class when a specific tab is clicked — this filtering must be done in client-side state, not by re-fetching
+14. Format all numbers with thousand separators (45 750 000, not 45750000)
+15. The welcome page (`/`) must never show the sidebar — it is a standalone full-screen page
