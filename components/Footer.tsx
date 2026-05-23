@@ -67,9 +67,16 @@ export default function Footer() {
             La première plateforme dédiée aux stylistes africains. Commandez, découvrez, portez la beauté africaine.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
-            {['IG', 'FB', 'TT', 'WA'].map(r => (
-              <div key={r} style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', color: '#888', fontWeight: 700, cursor: 'pointer', border: '1px solid #2a2a2a' }}>
-                {r}
+            {[
+              { icon: 'bxl-instagram', color: '#E1306C' },
+              { icon: 'bxl-facebook', color: '#1877F2' },
+              { icon: 'bxl-tiktok', color: '#fff' },
+              { icon: 'bxl-whatsapp', color: '#25D366' },
+            ].map(({ icon, color }) => (
+              <div key={icon} style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: '1px solid #2a2a2a', transition: 'all 0.2s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = color; (e.currentTarget as HTMLElement).style.background = `${color}22` }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a'; (e.currentTarget as HTMLElement).style.background = '#1a1a1a' }}>
+                <i className={`bx ${icon}`} style={{ fontSize: '1.2rem', color }} />
               </div>
             ))}
           </div>
@@ -99,9 +106,15 @@ export default function Footer() {
 
         <div>
           <div style={s.title}>Contact</div>
-          <p style={{ ...s.link, cursor: 'default' }}>📍 Cotonou, Bénin</p>
-          <p style={{ ...s.link, cursor: 'default' }}>📞 +229 97 00 00 00</p>
-          <p style={{ ...s.link, cursor: 'default' }}>✉️ contact@dahomey-tech.bj</p>
+          <p style={{ ...s.link, cursor: 'default', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <i className="bx bx-map" style={{ color: '#008751', fontSize: '1rem' }} /> Cotonou, Bénin
+          </p>
+          <p style={{ ...s.link, cursor: 'default', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <i className="bx bx-phone" style={{ color: '#008751', fontSize: '1rem' }} /> +229 97 00 00 00
+          </p>
+          <p style={{ ...s.link, cursor: 'default', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <i className="bx bx-envelope" style={{ color: '#008751', fontSize: '1rem' }} /> contact@dahomey-tech.bj
+          </p>
           <div style={{ marginTop: '1.5rem' }}>
             <div style={{ background: 'linear-gradient(135deg, #008751 33%, #FCD116 33% 66%, #E8112D 66%)', height: '4px', borderRadius: '2px', width: '60px' }} />
             <p style={{ marginTop: '0.75rem', color: '#555', fontSize: '0.75rem', fontFamily: 'Montserrat, sans-serif' }}>🇧🇯 Bénin · Afrique de l'Ouest</p>

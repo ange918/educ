@@ -31,11 +31,6 @@ export default function LandingPage() {
         </div>
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: '8rem 2rem 4rem', width: '100%' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(0,135,81,0.15)', border: '1px solid rgba(0,135,81,0.4)', padding: '0.4rem 1rem', borderRadius: '50px', marginBottom: '2rem' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#008751', display: 'inline-block', animation: 'pulse 2s infinite' }} />
-            <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.8rem', color: '#008751', fontWeight: 600 }}>🇧🇯 La plateforme n°1 des stylistes béninois</span>
-          </div>
-
           <h1 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(2.2rem, 6vw, 5rem)', lineHeight: 1.05, marginBottom: '1.5rem', maxWidth: '700px' }}>
             La mode africaine<br />
             <span style={{ background: 'linear-gradient(90deg, #008751, #FCD116)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>à portée de clic</span>

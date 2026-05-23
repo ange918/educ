@@ -103,11 +103,6 @@ export default function Navbar() {
             onMouseLeave={e => (e.currentTarget.style.color = '#ccc')}>
             Stylistes
           </Link>
-          <Link href="/dashboard" style={{ color: '#ccc', transition: 'color 0.2s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#FCD116')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#ccc')}>
-            Dashboard
-          </Link>
           <Link href="/auth/login">
             <button style={btnStyle}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 30px rgba(0,135,81,0.5)' }}
@@ -129,7 +124,7 @@ export default function Navbar() {
       </nav>
 
       <div style={mobileMenuStyle}>
-        {['Catalogue', 'Stylistes', 'Dashboard'].map(item => (
+        {['Catalogue', 'Stylistes'].map(item => (
           <Link key={item} href={`/${item.toLowerCase()}`} style={{ fontFamily: 'Unbounded, sans-serif', fontSize: '1.5rem', color: '#fff' }}
             onClick={() => setMenuOpen(false)}>
             {item}
