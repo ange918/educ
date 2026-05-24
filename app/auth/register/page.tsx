@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { VILLES } from '@/lib/mockData'
 import { slugify } from '@/lib/utils'
+import { createClient } from '@/lib/supabase/client'
 import { User, Mail, Phone, MapPin, Lock, AtSign, MessageCircle, CheckSquare, Square, ArrowLeft, ArrowRight, Rocket, CheckCircle } from 'lucide-react'
 
 type Step = 1 | 2 | 3
@@ -14,14 +15,50 @@ export default function RegisterPage() {
   const [step, setStep] = useState<Step>(1)
   const [form, setForm] = useState({ nom: '', email: '', telephone: '', ville: '', password: '', bio: '', whatsapp: '', instagram: '', accepted: false })
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!form.accepted) return
+    setError('')
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1200))
-    document.cookie = 'dahomey_session=mock; path=/'
+    const supabase = createClient()
+
+    const { data, error: authError } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+    })
+
+    if (authError) {
+      setError(authError.message)
+      setLoading(false)
+      return
+    }
+
+    if (data.user) {
+      const slug = slugify(form.nom)
+      const { error: insertError } = await supabase.from('stylistes').insert({
+        id: data.user.id,
+        nom: form.nom,
+        email: form.email,
+        telephone: form.telephone || null,
+        whatsapp: form.whatsapp || null,
+        instagram: form.instagram || null,
+        bio: form.bio || null,
+        ville: form.ville || 'Cotonou',
+        slug,
+      })
+
+      if (insertError) {
+        setError(insertError.message)
+        setLoading(false)
+        return
+      }
+    }
+
     setLoading(false)
     router.push('/dashboard')
+    router.refresh()
   }
 
   const inputStyle: React.CSSProperties = {
@@ -74,6 +111,12 @@ export default function RegisterPage() {
           ))}
         </div>
 
+        {error && (
+          <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Montserrat, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           {step === 1 && (
             <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: '16px', padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -109,11 +152,11 @@ export default function RegisterPage() {
               </div>
 
               {field('Mot de passe *', <Lock size={15} />,
-                <input required type="password" style={inputStyle} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="Min. 8 caractères"
+                <input required type="password" minLength={8} style={inputStyle} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="Min. 8 caractères"
                   onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#2a2a2a')} />
               )}
 
-              <button type="button" onClick={() => setStep(2)} style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: '0 8px 30px rgba(0,135,81,0.3)' }}>
+              <button type="button" onClick={() => { if (!form.nom || !form.email || !form.telephone || !form.ville || form.password.length < 8) return; setStep(2) }} style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: '0 8px 30px rgba(0,135,81,0.3)' }}>
                 Continuer <ArrowRight size={17} />
               </button>
             </div>

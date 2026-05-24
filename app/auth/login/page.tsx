@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { LogIn, Eye, EyeOff, Mail, Lock, ArrowLeft } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -16,10 +17,20 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
     setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
-    document.cookie = 'dahomey_session=mock; path=/'
+    const supabase = createClient()
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    })
     setLoading(false)
+    if (authError) {
+      setError(authError.message === 'Invalid login credentials'
+        ? 'Email ou mot de passe incorrect.'
+        : authError.message)
+      return
+    }
     router.push('/dashboard')
+    router.refresh()
   }
 
   const inputStyle: React.CSSProperties = {
