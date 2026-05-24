@@ -5,6 +5,7 @@ import Footer from '@/components/Footer'
 import TenueCard from '@/components/TenueCard'
 import StylisteCard from '@/components/StylisteCard'
 import { TENUES, STYLISTES, CATEGORIES, VILLES } from '@/lib/mockData'
+import { Search, SlidersHorizontal, X, LayoutGrid, Users } from 'lucide-react'
 
 const PRIX_MAX = 200000
 
@@ -33,6 +34,8 @@ export default function CataloguePage() {
     })
   }, [ville, search])
 
+  const hasFilter = categorie || ville || prixMax < PRIX_MAX || search
+
   const inputStyle: React.CSSProperties = {
     background: '#111',
     border: '1px solid #2a2a2a',
@@ -58,9 +61,12 @@ export default function CataloguePage() {
 
             {/* Toggle vue */}
             <div style={{ display: 'inline-flex', background: '#1a1a1a', borderRadius: '50px', padding: '0.25rem', marginBottom: '2rem' }}>
-              {(['tenues', 'stylistes'] as const).map(v => (
-                <button key={v} onClick={() => setVue(v)} style={{ padding: '0.6rem 1.5rem', borderRadius: '50px', border: 'none', fontFamily: 'Unbounded, sans-serif', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', background: vue === v ? '#008751' : 'transparent', color: vue === v ? '#fff' : '#888', textTransform: 'capitalize' }}>
-                  {v}
+              {([
+                { key: 'tenues', label: 'Tenues', icon: <LayoutGrid size={14} /> },
+                { key: 'stylistes', label: 'Stylistes', icon: <Users size={14} /> },
+              ] as const).map(({ key, label, icon }) => (
+                <button key={key} onClick={() => setVue(key)} style={{ padding: '0.6rem 1.5rem', borderRadius: '50px', border: 'none', fontFamily: 'Unbounded, sans-serif', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.3s', background: vue === key ? '#008751' : 'transparent', color: vue === key ? '#fff' : '#888', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  {icon}{label}
                 </button>
               ))}
             </div>
@@ -68,33 +74,35 @@ export default function CataloguePage() {
             {/* Filtres */}
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
               <div style={{ position: 'relative', flex: '1', minWidth: '200px' }}>
+                <Search size={14} style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }} />
                 <input type="text" placeholder="Rechercher..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inputStyle, paddingLeft: '2.5rem' }} />
-                <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }}>🔍</span>
               </div>
 
               {vue === 'tenues' && (
-                <select value={categorie} onChange={e => setCategorie(e.target.value)} style={inputStyle}>
-                  <option value="">Toutes les catégories</option>
-                  {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                </select>
+                <div style={{ position: 'relative', flex: '1', minWidth: '180px' }}>
+                  <SlidersHorizontal size={14} style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#555', pointerEvents: 'none' }} />
+                  <select value={categorie} onChange={e => setCategorie(e.target.value)} style={{ ...inputStyle, paddingLeft: '2.5rem' }}>
+                    <option value="">Toutes catégories</option>
+                    {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.emoji} {c.label}</option>)}
+                  </select>
+                </div>
               )}
 
-              <select value={ville} onChange={e => setVille(e.target.value)} style={{ ...inputStyle, maxWidth: '200px' }}>
-                <option value="">Toutes les villes</option>
+              <select value={ville} onChange={e => setVille(e.target.value)} style={{ ...inputStyle, maxWidth: '180px' }}>
+                <option value="">Toutes villes</option>
                 {VILLES.map(v => <option key={v} value={v}>{v}</option>)}
               </select>
 
               {vue === 'tenues' && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: '250px' }}>
-                  <span style={{ color: '#888', fontSize: '0.8rem', fontFamily: 'Montserrat, sans-serif', whiteSpace: 'nowrap' }}>Max: {new Intl.NumberFormat('fr-FR').format(prixMax)} XOF</span>
-                  <input type="range" min={5000} max={PRIX_MAX} step={5000} value={prixMax} onChange={e => setPrixMax(Number(e.target.value))}
-                    style={{ accentColor: '#008751', flex: 1 }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: '240px' }}>
+                  <span style={{ color: '#888', fontSize: '0.75rem', fontFamily: 'Montserrat, sans-serif', whiteSpace: 'nowrap' }}>Max: {new Intl.NumberFormat('fr-FR').format(prixMax)} XOF</span>
+                  <input type="range" min={5000} max={PRIX_MAX} step={5000} value={prixMax} onChange={e => setPrixMax(Number(e.target.value))} style={{ accentColor: '#008751', flex: 1 }} />
                 </div>
               )}
 
-              {(categorie || ville || prixMax < PRIX_MAX || search) && (
-                <button onClick={() => { setCategorie(''); setVille(''); setPrixMax(PRIX_MAX); setSearch('') }} style={{ background: 'rgba(232,17,45,0.15)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.75rem 1.25rem', borderRadius: '10px', fontFamily: 'Montserrat, sans-serif', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-                  ✕ Réinitialiser
+              {hasFilter && (
+                <button onClick={() => { setCategorie(''); setVille(''); setPrixMax(PRIX_MAX); setSearch('') }} style={{ background: 'rgba(232,17,45,0.12)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.75rem 1.1rem', borderRadius: '10px', fontFamily: 'Montserrat, sans-serif', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <X size={14} /> Réinitialiser
                 </button>
               )}
             </div>
@@ -103,8 +111,10 @@ export default function CataloguePage() {
 
         {/* Résultats */}
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2.5rem 2rem 5rem' }}>
-          <p style={{ color: '#555', fontFamily: 'Montserrat, sans-serif', fontSize: '0.875rem', marginBottom: '2rem' }}>
-            {vue === 'tenues' ? `${tenuesFiltrees.length} tenue(s) trouvée(s)` : `${stylistesFiltres.length} styliste(s) trouvé(s)`}
+          <p style={{ color: '#555', fontFamily: 'Montserrat, sans-serif', fontSize: '0.875rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            {vue === 'tenues'
+              ? <><LayoutGrid size={14} color="#008751" /> {tenuesFiltrees.length} tenue(s) trouvée(s)</>
+              : <><Users size={14} color="#008751" /> {stylistesFiltres.length} styliste(s) trouvé(s)</>}
           </p>
 
           {vue === 'tenues' ? (
@@ -114,7 +124,7 @@ export default function CataloguePage() {
               </div>
             ) : (
               <div style={{ textAlign: 'center', padding: '5rem 2rem', color: '#555' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>👗</div>
+                <LayoutGrid size={48} color="#2a2a2a" style={{ margin: '0 auto 1rem' }} />
                 <p style={{ fontFamily: 'Unbounded, sans-serif', fontSize: '1rem' }}>Aucune tenue trouvée</p>
               </div>
             )
@@ -125,7 +135,7 @@ export default function CataloguePage() {
               </div>
             ) : (
               <div style={{ textAlign: 'center', padding: '5rem 2rem', color: '#555' }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✂️</div>
+                <Users size={48} color="#2a2a2a" style={{ margin: '0 auto 1rem' }} />
                 <p style={{ fontFamily: 'Unbounded, sans-serif', fontSize: '1rem' }}>Aucun styliste trouvé</p>
               </div>
             )

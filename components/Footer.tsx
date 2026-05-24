@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { MapPin, Phone, Mail, ShieldCheck, FileText, Cookie, ArrowRight } from 'lucide-react'
 
 export default function Footer() {
   const s = {
@@ -37,10 +38,12 @@ export default function Footer() {
       marginBottom: '1.2rem',
     },
     link: {
-      display: 'block',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
       color: '#888',
       fontSize: '0.875rem',
-      marginBottom: '0.6rem',
+      marginBottom: '0.65rem',
       transition: 'color 0.2s',
       fontFamily: 'Montserrat, sans-serif',
     } as React.CSSProperties,
@@ -57,9 +60,32 @@ export default function Footer() {
     } as React.CSSProperties,
   }
 
+  const socials = [
+    { icon: 'bxl-instagram', color: '#E1306C', href: '#' },
+    { icon: 'bxl-facebook', color: '#1877F2', href: '#' },
+    { icon: 'bxl-tiktok', color: '#fff', href: '#' },
+    { icon: 'bxl-whatsapp', color: '#25D366', href: '#' },
+  ]
+
+  const navLinks = [
+    ['Catalogue', '/catalogue'],
+    ['Nos stylistes', '/catalogue'],
+    ['Devenir styliste', '/auth/register'],
+    ['Comment ça marche', '/'],
+  ]
+
+  const categories = ['Boubou', 'Pagne Wax', 'Kaftan', 'Dashiki', 'Robe de soirée', 'Costume africain']
+
+  const legalLinks = [
+    { label: 'Confidentialité', icon: <ShieldCheck size={14} /> },
+    { label: 'CGU', icon: <FileText size={14} /> },
+    { label: 'Cookies', icon: <Cookie size={14} /> },
+  ]
+
   return (
     <footer style={s.footer}>
       <div style={s.grid}>
+        {/* Colonne marque */}
         <div>
           <Image src="/logo-icon.jpg" alt="logo" width={48} height={48} style={{ borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem' }} />
           <span style={s.logo}>DAHOMEY-TECH</span>
@@ -67,53 +93,55 @@ export default function Footer() {
             La première plateforme dédiée aux stylistes africains. Commandez, découvrez, portez la beauté africaine.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
-            {[
-              { icon: 'bxl-instagram', color: '#E1306C' },
-              { icon: 'bxl-facebook', color: '#1877F2' },
-              { icon: 'bxl-tiktok', color: '#fff' },
-              { icon: 'bxl-whatsapp', color: '#25D366' },
-            ].map(({ icon, color }) => (
-              <div key={icon} style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: '1px solid #2a2a2a', transition: 'all 0.2s' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = color; (e.currentTarget as HTMLElement).style.background = `${color}22` }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a'; (e.currentTarget as HTMLElement).style.background = '#1a1a1a' }}>
-                <i className={`bx ${icon}`} style={{ fontSize: '1.2rem', color }} />
-              </div>
+            {socials.map(({ icon, color, href }) => (
+              <a key={icon} href={href} style={{ textDecoration: 'none' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: '1px solid #2a2a2a', transition: 'all 0.2s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = color; (e.currentTarget as HTMLElement).style.background = `${color}22` }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a'; (e.currentTarget as HTMLElement).style.background = '#1a1a1a' }}>
+                  <i className={`bx ${icon}`} style={{ fontSize: '1.2rem', color }} />
+                </div>
+              </a>
             ))}
           </div>
         </div>
 
+        {/* Navigation */}
         <div>
           <div style={s.title}>Navigation</div>
-          {[['Catalogue', '/catalogue'], ['Nos stylistes', '/catalogue'], ['Devenir styliste', '/auth/register'], ['Comment ça marche', '/']].map(([l, h]) => (
-            <Link key={l} href={h} style={s.link}
+          {navLinks.map(([label, href]) => (
+            <Link key={label} href={href} style={s.link}
               onMouseEnter={e => (e.currentTarget.style.color = '#FCD116')}
               onMouseLeave={e => (e.currentTarget.style.color = '#888')}>
-              {l}
+              <ArrowRight size={13} color="#008751" />
+              {label}
             </Link>
           ))}
         </div>
 
+        {/* Catégories */}
         <div>
           <div style={s.title}>Catégories</div>
-          {['Boubou', 'Pagne Wax', 'Kaftan', 'Dashiki', 'Robe de soirée', 'Costume africain'].map(c => (
+          {categories.map(c => (
             <Link key={c} href="/catalogue" style={s.link}
               onMouseEnter={e => (e.currentTarget.style.color = '#FCD116')}
               onMouseLeave={e => (e.currentTarget.style.color = '#888')}>
+              <ArrowRight size={13} color="#008751" />
               {c}
             </Link>
           ))}
         </div>
 
+        {/* Contact */}
         <div>
           <div style={s.title}>Contact</div>
-          <p style={{ ...s.link, cursor: 'default', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <i className="bx bx-map" style={{ color: '#008751', fontSize: '1rem' }} /> Cotonou, Bénin
+          <p style={{ ...s.link, cursor: 'default' }}>
+            <MapPin size={14} color="#008751" /> Cotonou, Bénin
           </p>
-          <p style={{ ...s.link, cursor: 'default', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <i className="bx bx-phone" style={{ color: '#008751', fontSize: '1rem' }} /> +229 97 00 00 00
+          <p style={{ ...s.link, cursor: 'default' }}>
+            <Phone size={14} color="#008751" /> +229 97 00 00 00
           </p>
-          <p style={{ ...s.link, cursor: 'default', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <i className="bx bx-envelope" style={{ color: '#008751', fontSize: '1rem' }} /> contact@dahomey-tech.bj
+          <p style={{ ...s.link, cursor: 'default' }}>
+            <Mail size={14} color="#008751" /> contact@dahomey-tech.bj
           </p>
           <div style={{ marginTop: '1.5rem' }}>
             <div style={{ background: 'linear-gradient(135deg, #008751 33%, #FCD116 33% 66%, #E8112D 66%)', height: '4px', borderRadius: '2px', width: '60px' }} />
@@ -127,8 +155,12 @@ export default function Footer() {
           Fait avec fierté au Bénin 🇧🇯 — © {new Date().getFullYear()} DAHOMEY-TECH
         </p>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
-          {['Confidentialité', 'CGU', 'Cookies'].map(l => (
-            <span key={l} style={{ color: '#444', fontSize: '0.8rem', cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>{l}</span>
+          {legalLinks.map(({ label, icon }) => (
+            <span key={label} style={{ color: '#444', fontSize: '0.8rem', cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', display: 'flex', alignItems: 'center', gap: '0.35rem', transition: 'color 0.2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#888')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#444')}>
+              {icon}{label}
+            </span>
           ))}
         </div>
       </div>
