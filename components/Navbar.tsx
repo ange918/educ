@@ -1,17 +1,26 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, X, LogIn, ShoppingBag } from 'lucide-react'
+import { gsap } from 'gsap'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const navRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    gsap.fromTo(navRef.current,
+      { y: -80, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.1 }
+    )
   }, [])
 
   const navStyle: React.CSSProperties = {
@@ -23,21 +32,11 @@ export default function Navbar() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    transition: 'all 0.3s ease',
+    transition: 'background 0.3s ease, border-bottom 0.3s ease, backdrop-filter 0.3s ease',
     background: scrolled ? 'rgba(10,10,10,0.95)' : 'transparent',
     backdropFilter: scrolled ? 'blur(20px)' : 'none',
     borderBottom: scrolled ? '1px solid rgba(0,135,81,0.2)' : 'none',
-  }
-
-  const logoTextStyle: React.CSSProperties = {
-    fontFamily: 'Unbounded, sans-serif',
-    fontWeight: 900,
-    fontSize: '1.1rem',
-    letterSpacing: '0.05em',
-    background: 'linear-gradient(90deg, #008751, #FCD116, #E8112D)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
+    opacity: 0,
   }
 
   const linkStyle: React.CSSProperties = {
@@ -64,14 +63,16 @@ export default function Navbar() {
     display: 'flex',
     alignItems: 'center',
     gap: '0.4rem',
+    border: 'none',
+    cursor: 'pointer',
   }
 
   return (
     <>
-      <nav style={navStyle}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <Image src="/logo-icon.jpg" alt="logo" width={40} height={40} style={{ borderRadius: '50%', objectFit: 'cover' }} />
-          <span style={logoTextStyle}>DAHOMEY-TECH</span>
+      <nav ref={navRef} style={navStyle}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
+          <Image src="/logo-icon.jpg" alt="DAHOMEY-TECH" width={42} height={42}
+            style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(0,135,81,0.6)' }} />
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="nav-links-desktop">
@@ -94,13 +95,11 @@ export default function Navbar() {
         <button
           style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', display: 'none', padding: '8px' }}
           onClick={() => setMenuOpen(!menuOpen)}
-          className="nav-burger"
-        >
+          className="nav-burger">
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
-      {/* Menu mobile */}
       <div style={{
         position: 'fixed', top: '72px', left: 0, right: 0, bottom: 0,
         background: 'rgba(10,10,10,0.98)',
