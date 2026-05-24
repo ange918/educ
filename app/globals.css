@@ -76,3 +76,11 @@ input, textarea, select {
     gap: 3rem;
   }
 }
+
+.valeurs-desktop { display: grid; }
+.valeurs-mobile  { display: none; }
+
+@media (max-width: 768px) {
+  .valeurs-desktop { display: none; }
+  .valeurs-mobile  { display: block; }
+}
