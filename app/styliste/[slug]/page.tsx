@@ -5,7 +5,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import TenueCard from '@/components/TenueCard'
 import { STYLISTES, TENUES } from '@/lib/mockData'
-import { MessageCircle, MapPin, AtSign, Shirt, Eye, ShoppingBag, BadgeCheck, ArrowLeft } from 'lucide-react'
+import { MapPin, AtSign, Shirt, Eye, ShoppingBag, BadgeCheck, ArrowLeft } from 'lucide-react'
+import WhatsAppButton from '@/components/WhatsAppButton'
 
 export function generateStaticParams() {
   return STYLISTES.map(s => ({ slug: s.slug }))
@@ -60,13 +61,7 @@ export default function StylistePage({ params }: { params: { slug: string } }) {
                 ))}
               </div>
             </div>
-            <a href={`https://wa.me/${styliste.whatsapp}`} target="_blank" rel="noopener noreferrer">
-              <button style={{ background: '#25D366', color: '#fff', padding: '0.875rem 1.75rem', borderRadius: '50px', fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.6rem', boxShadow: '0 8px 30px rgba(37,211,102,0.3)', border: 'none', transition: 'transform 0.2s' }}
-                onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
-                onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
-                <MessageCircle size={18} fill="white" /> Contacter sur WhatsApp
-              </button>
-            </a>
+            <WhatsAppButton whatsapp={styliste.whatsapp} />
           </div>
 
           {/* Bio */}

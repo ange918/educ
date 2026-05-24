@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Phone, Mail, ShieldCheck, FileText, Cookie, ArrowRight } from 'lucide-react'
