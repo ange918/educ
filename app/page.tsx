@@ -73,9 +73,6 @@ export default function LandingPage() {
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(10,10,10,0.92) 40%, rgba(10,10,10,0.65) 100%)' }} />
         </div>
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: '8rem 2rem 4rem', width: '100%' }}>
-          <p style={{ color: '#008751', fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-            🌍 La plateforme des stylistes africains
-          </p>
           <h1 ref={heroTitleRef} style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(2.2rem, 6vw, 5rem)', lineHeight: 1.05, marginBottom: '1.5rem', maxWidth: '700px', opacity: 0 }}>
             La mode africaine<br />
             <span style={{ background: 'linear-gradient(90deg, #008751, #FCD116)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>à portée de clic</span>
