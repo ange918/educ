@@ -7,7 +7,7 @@ import Footer from '@/components/Footer'
 import TenueCard from '@/components/TenueCard'
 import StylisteCard from '@/components/StylisteCard'
 import { STYLISTES, TENUES, CATEGORIES } from '@/lib/mockData'
-import { ArrowRight, UserPlus, ChevronDown, ChevronUp, Users, Shirt, ShoppingBag, Flame, Star } from 'lucide-react'
+import { ArrowRight, UserPlus, ChevronDown, ChevronUp, Users, Shirt, ShoppingBag, Flame, Star, Scissors, Gem, Palette, Sparkles, Crown } from 'lucide-react'
 
 const FAQ = [
   { q: 'Comment passer une commande ?', r: 'Trouvez une tenue qui vous plaît, cliquez sur "Commander sur WhatsApp". Vous serez redirigé directement vers le styliste avec un message pré-rempli.' },
@@ -95,13 +95,22 @@ export default function LandingPage() {
             <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.5rem)' }}>Explorez par catégorie</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: '1rem' }}>
-            {CATEGORIES.map(cat => (
-              <Link href={`/catalogue?categorie=${cat.id}`} key={cat.id}>
+            {[
+              { id: 'boubou',     label: 'Boubou',          icon: Shirt,     color: '#008751', bg: 'rgba(0,135,81,0.12)',    border: 'rgba(0,135,81,0.3)' },
+              { id: 'pagne',      label: 'Pagne',            icon: Scissors,  color: '#FCD116', bg: 'rgba(252,209,22,0.1)',   border: 'rgba(252,209,22,0.25)' },
+              { id: 'kaftan',     label: 'Kaftan',           icon: Gem,       color: '#E8112D', bg: 'rgba(232,17,45,0.1)',    border: 'rgba(232,17,45,0.25)' },
+              { id: 'dashiki',    label: 'Dashiki',          icon: Palette,   color: '#FCD116', bg: 'rgba(252,209,22,0.1)',   border: 'rgba(252,209,22,0.25)' },
+              { id: 'robe-soiree',label: 'Robe de soirée',  icon: Sparkles,  color: '#008751', bg: 'rgba(0,135,81,0.12)',    border: 'rgba(0,135,81,0.3)' },
+              { id: 'costume',    label: 'Costume africain', icon: Crown,     color: '#E8112D', bg: 'rgba(232,17,45,0.1)',    border: 'rgba(232,17,45,0.25)' },
+            ].map(({ id, label, icon: Icon, color, bg, border }) => (
+              <Link href={`/catalogue?categorie=${id}`} key={id}>
                 <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: '16px', padding: '2rem 1rem', textAlign: 'center', cursor: 'pointer', transition: 'all 0.3s' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#008751'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.background = 'rgba(0,135,81,0.08)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#1a1a1a'; (e.currentTarget as HTMLElement).style.transform = 'none'; (e.currentTarget as HTMLElement).style.background = '#111' }}>
-                  <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{cat.emoji}</div>
-                  <div style={{ fontFamily: 'Unbounded, sans-serif', fontSize: '0.8rem', fontWeight: 700, color: '#fff' }}>{cat.label}</div>
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = border; el.style.transform = 'translateY(-6px)'; el.style.background = bg; el.style.boxShadow = `0 12px 40px ${color}22` }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#1a1a1a'; el.style.transform = 'none'; el.style.background = '#111'; el.style.boxShadow = 'none' }}>
+                  <div style={{ width: '60px', height: '60px', borderRadius: '16px', background: bg, border: `1px solid ${border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                    <Icon size={28} color={color} strokeWidth={1.5} />
+                  </div>
+                  <div style={{ fontFamily: 'Unbounded, sans-serif', fontSize: '0.78rem', fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>{label}</div>
                 </div>
               </Link>
             ))}
