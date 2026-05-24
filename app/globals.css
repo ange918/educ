@@ -54,3 +54,25 @@ input, textarea, select {
 ::-webkit-scrollbar-thumb { background: var(--vert); border-radius: 3px; }
 
 ::selection { background: var(--vert); color: var(--blanc); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .about-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}

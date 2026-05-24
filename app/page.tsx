@@ -109,7 +109,7 @@ export default function LandingPage() {
 
       {/* ── À PROPOS ── */}
       <section id="about" style={{ padding: '7rem 2rem', background: '#080808' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+        <div className="about-grid" style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div>
             <p style={{ color: '#008751', fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>À PROPOS</p>
             <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.5rem)', marginBottom: '1.5rem', lineHeight: 1.2 }}>
@@ -259,7 +259,7 @@ export default function LandingPage() {
 
       {/* ── CONTACT ── */}
       <section id="contact" style={{ padding: '7rem 2rem', background: '#080808' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'start' }}>
+        <div className="contact-grid" style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
           {/* Infos contact */}
           <div>
