@@ -6,8 +6,8 @@ import { gsap } from 'gsap'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import {
-  ArrowRight, UserPlus, ChevronDown, ChevronUp, ChevronLeft, ChevronRight,
-  Users, Shirt, ShoppingBag, Star, Rocket, Globe, Gem,
+  ArrowRight, UserPlus, ChevronDown, ChevronUp,
+  Users, Shirt, ShoppingBag, Star, Target, Eye, Lightbulb,
   MessageCircle, MapPin, Phone, Mail, CheckCircle,
   Search, Heart, Zap
 } from 'lucide-react'
@@ -28,29 +28,15 @@ const STEPS = [
 ]
 
 const VALEURS = [
-  { icon: Rocket, color: '#008751', label: 'Notre mission', text: "Connecter les stylistes africains talentueux avec des clients qui valorisent l'authenticité et l'élégance de la mode africaine, tout en leur offrant une visibilité digitale gratuite." },
-  { icon: Globe, color: '#FCD116', label: 'Notre vision', text: "Devenir la référence incontournable de la mode africaine en ligne — une plateforme où chaque créateur du continent peut exposer son art et chaque client trouver la pièce unique qui lui ressemble." },
-  { icon: Gem, color: '#E8112D', label: 'Nos valeurs', text: "Authenticité africaine, excellence artisanale, accessibilité numérique et solidarité entre créateurs. Nous croyons que la mode est un vecteur de fierté culturelle et de développement économique." },
+  { icon: Target, color: '#008751', label: 'Notre mission', text: "Connecter les stylistes africains talentueux avec des clients qui valorisent l'authenticité et l'élégance de la mode africaine, tout en leur offrant une visibilité digitale gratuite." },
+  { icon: Eye, color: '#FCD116', label: 'Notre vision', text: "Devenir la référence incontournable de la mode africaine en ligne — une plateforme où chaque créateur du continent peut exposer son art et chaque client trouver la pièce unique qui lui ressemble." },
+  { icon: Lightbulb, color: '#E8112D', label: 'Nos valeurs', text: "Authenticité africaine, excellence artisanale, accessibilité numérique et solidarité entre créateurs. Nous croyons que la mode est un vecteur de fierté culturelle et de développement économique." },
 ]
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [contactForm, setContactForm] = useState({ nom: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
-  const [valeurIndex, setValeurIndex] = useState(0)
-  const valeurTimer = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  const resetValeurTimer = () => {
-    if (valeurTimer.current) clearInterval(valeurTimer.current)
-    valeurTimer.current = setInterval(() => {
-      setValeurIndex(i => (i + 1) % VALEURS.length)
-    }, 3000)
-  }
-
-  useEffect(() => {
-    resetValeurTimer()
-    return () => { if (valeurTimer.current) clearInterval(valeurTimer.current) }
-  }, [])
   const heroTitleRef = useRef<HTMLHeadingElement>(null)
   const heroSubRef = useRef<HTMLParagraphElement>(null)
   const heroBtnsRef = useRef<HTMLDivElement>(null)
@@ -165,8 +151,7 @@ export default function LandingPage() {
             <p style={{ color: '#FCD116', fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>MISSION · VISION · VALEURS</p>
             <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.5rem)' }}>Ce qui nous anime</h2>
           </div>
-          {/* Desktop — grille */}
-          <div className="valeurs-desktop" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
             {VALEURS.map(({ icon: Icon, color, label, text }) => (
               <div key={label} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: '20px', padding: '2.5rem 2rem', transition: 'border-color 0.3s' }}
                 onMouseEnter={e => (e.currentTarget.style.borderColor = color + '55')}
@@ -178,47 +163,6 @@ export default function LandingPage() {
                 <p style={{ fontFamily: 'Montserrat, sans-serif', color: '#777', lineHeight: 1.8, fontSize: '0.9rem' }}>{text}</p>
               </div>
             ))}
-          </div>
-
-          {/* Mobile — carousel vertical */}
-          <div className="valeurs-mobile">
-            <div style={{ overflow: 'hidden', position: 'relative' }}>
-              <div style={{ transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)', transform: `translateY(-${valeurIndex * 100}%)` }}>
-                {VALEURS.map(({ icon: Icon, color, label, text }) => (
-                  <div key={label} style={{ background: '#111', border: `1px solid ${color}44`, borderRadius: '20px', padding: '2.5rem 2rem' }}>
-                    <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: color + '18', border: `1px solid ${color}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                      <Icon size={26} color={color} strokeWidth={1.5} />
-                    </div>
-                    <h3 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: '1rem', marginBottom: '1rem', color: '#fff' }}>{label}</h3>
-                    <p style={{ fontFamily: 'Montserrat, sans-serif', color: '#777', lineHeight: 1.8, fontSize: '0.9rem' }}>{text}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Contrôles */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
-              <button
-                onClick={() => { setValeurIndex(i => (i - 1 + VALEURS.length) % VALEURS.length); resetValeurTimer() }}
-                style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#1a1a1a', border: '1px solid #2a2a2a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'border-color 0.2s' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = '#008751')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}>
-                <ChevronLeft size={18} />
-              </button>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                {VALEURS.map((_, i) => (
-                  <button key={i} onClick={() => { setValeurIndex(i); resetValeurTimer() }}
-                    style={{ width: i === valeurIndex ? '24px' : '8px', height: '8px', borderRadius: '4px', background: i === valeurIndex ? VALEURS[valeurIndex].color : '#2a2a2a', border: 'none', cursor: 'pointer', transition: 'all 0.3s', padding: 0 }} />
-                ))}
-              </div>
-              <button
-                onClick={() => { setValeurIndex(i => (i + 1) % VALEURS.length); resetValeurTimer() }}
-                style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#1a1a1a', border: '1px solid #2a2a2a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'border-color 0.2s' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = '#008751')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}>
-                <ChevronRight size={18} />
-              </button>
-            </div>
           </div>
         </div>
       </section>
