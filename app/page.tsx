@@ -110,7 +110,7 @@ export default function LandingPage() {
       {/* ── À PROPOS ── */}
       <section id="about" style={{ padding: '7rem 2rem', background: '#080808' }}>
         <div className="about-grid" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div>
+          <div data-gsap="slide-left">
             <p style={{ color: '#008751', fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>À PROPOS</p>
             <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.5rem)', marginBottom: '1.5rem', lineHeight: 1.2 }}>
               L'élégance africaine,<br />
@@ -130,7 +130,7 @@ export default function LandingPage() {
               ))}
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div data-gsap="slide-right" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', minHeight: '260px', gridRow: 'span 2' }}>
               <Image src="/visual1.jpg" alt="about" fill sizes="25vw" style={{ objectFit: 'cover' }} />
             </div>
@@ -147,11 +147,11 @@ export default function LandingPage() {
       {/* ── MISSION / VISION / VALEURS ── */}
       <section id="mission" style={{ padding: '7rem 2rem' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div data-gsap="fade-up" style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <p style={{ color: '#FCD116', fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>MISSION · VISION · VALEURS</p>
             <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.5rem)' }}>Ce qui nous anime</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+          <div data-gsap-stagger style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
             {VALEURS.map(({ icon: Icon, color, label, text }) => (
               <div key={label} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: '20px', padding: '2.5rem 2rem', transition: 'border-color 0.3s' }}
                 onMouseEnter={e => (e.currentTarget.style.borderColor = color + '55')}
@@ -170,14 +170,14 @@ export default function LandingPage() {
       {/* ── COMMENT ÇA MARCHE ── */}
       <section id="comment-ca-marche" style={{ padding: '7rem 2rem', background: '#080808' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
+          <div data-gsap="fade-up" style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
             <p style={{ color: '#E8112D', fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>PROCESSUS</p>
             <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.5rem)', marginBottom: '1rem' }}>Comment ça marche ?</h2>
             <p style={{ fontFamily: 'Montserrat, sans-serif', color: '#666', fontSize: '1rem', maxWidth: '500px', margin: '0 auto' }}>
               Commander une tenue africaine n'a jamais été aussi simple.
             </p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
+          <div data-gsap-stagger style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
             {STEPS.map(({ n, icon: Icon, color, bg, border, title, desc }) => (
               <div key={n} style={{ background: '#111', border: `1px solid #1a1a1a`, borderRadius: '20px', padding: '2rem 1.75rem', position: 'relative', overflow: 'hidden', transition: 'border-color 0.3s, transform 0.3s' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = border; (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)' }}
@@ -207,7 +207,7 @@ export default function LandingPage() {
       <section style={{ background: 'linear-gradient(135deg, #008751 0%, #006b40 100%)', padding: '5rem 2rem', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-80px', right: '-80px', width: '350px', height: '350px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
         <div style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '250px', height: '250px', borderRadius: '50%', background: 'rgba(0,0,0,0.1)' }} />
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+        <div data-gsap="zoom-in" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
           <Image src="/logo-icon.jpg" alt="logo" width={80} height={80} style={{ borderRadius: '50%', objectFit: 'cover', margin: '0 auto 1.5rem', border: '3px solid rgba(255,255,255,0.3)', display: 'block' }} />
           <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.5rem)', marginBottom: '1rem', color: '#fff' }}>Vous êtes styliste ?</h2>
           <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '1.1rem', color: 'rgba(255,255,255,0.85)', marginBottom: '2.5rem', lineHeight: 1.7 }}>
@@ -235,11 +235,11 @@ export default function LandingPage() {
       {/* ── FAQ ── */}
       <section id="faq" style={{ padding: '7rem 2rem' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+          <div data-gsap="fade-up" style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
             <p style={{ color: '#008751', fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>FAQ</p>
             <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.5rem)' }}>Questions fréquentes</h2>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div data-gsap-stagger style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {FAQ.map((item, i) => (
               <div key={i} style={{ background: '#111', border: `1px solid ${openFaq === i ? '#008751' : '#1a1a1a'}`, borderRadius: '12px', overflow: 'hidden', transition: 'border-color 0.3s' }}>
                 <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem 1.5rem', background: 'none', cursor: 'pointer', textAlign: 'left', border: 'none' }}>
@@ -262,7 +262,7 @@ export default function LandingPage() {
         <div className="contact-grid" style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
           {/* Infos contact */}
-          <div>
+          <div data-gsap="slide-left">
             <p style={{ color: '#FCD116', fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '1rem' }}>CONTACT</p>
             <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', marginBottom: '1.25rem', lineHeight: 1.2 }}>
               Parlons de votre<br /><span style={{ color: '#008751' }}>projet ensemble</span>
@@ -291,7 +291,7 @@ export default function LandingPage() {
           </div>
 
           {/* Formulaire */}
-          <div>
+          <div data-gsap="slide-right">
             {sent ? (
               <div style={{ background: 'rgba(0,135,81,0.1)', border: '1px solid rgba(0,135,81,0.3)', borderRadius: '20px', padding: '3rem 2rem', textAlign: 'center' }}>
                 <CheckCircle size={48} color="#008751" style={{ margin: '0 auto 1rem' }} />

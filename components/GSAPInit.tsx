@@ -45,7 +45,7 @@ export default function GSAPInit() {
       )
     })
 
-    // Slide depuis la gauche pour les titres [data-gsap="slide-left"]
+    // Slide depuis la gauche [data-gsap="slide-left"]
     const leftEls = document.querySelectorAll('[data-gsap="slide-left"]')
     leftEls.forEach(el => {
       gsap.fromTo(el,
@@ -54,6 +54,42 @@ export default function GSAPInit() {
           opacity: 1, x: 0,
           duration: 0.9,
           ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    })
+
+    // Slide depuis la droite [data-gsap="slide-right"]
+    const rightEls = document.querySelectorAll('[data-gsap="slide-right"]')
+    rightEls.forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, x: 60 },
+        {
+          opacity: 1, x: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    })
+
+    // Zoom depuis le centre [data-gsap="zoom-in"]
+    const zoomEls = document.querySelectorAll('[data-gsap="zoom-in"]')
+    zoomEls.forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, scale: 0.85, y: 30 },
+        {
+          opacity: 1, scale: 1, y: 0,
+          duration: 0.8,
+          ease: 'back.out(1.4)',
           scrollTrigger: {
             trigger: el,
             start: 'top 88%',

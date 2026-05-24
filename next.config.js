@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  allowedDevOrigins: ['*.janeway.replit.dev', '*.replit.dev', '*.replit.app'],
+  allowedDevOrigins: ['*.janeway.replit.dev', '*.picard.replit.dev', '*.replit.dev', '*.replit.app'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '*.supabase.co' },
