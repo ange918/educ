@@ -1,21 +1,31 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
-import { CATEGORIES } from '@/lib/mockData'
+import { createClient } from '@/lib/supabase/client'
+import type { Categorie } from '@/lib/supabase/types'
 import { ArrowLeft, Camera, X, Plus, CheckCircle, Tag, AlignLeft, DollarSign, Layers, Package, ToggleLeft, ToggleRight, Upload } from 'lucide-react'
 
 const TAILLES_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'Sur mesure']
 
 export default function NouvelleTenuePage() {
   const router = useRouter()
+  const [categories, setCategories] = useState<Categorie[]>([])
   const [form, setForm] = useState({ nom: '', description: '', prix: '', categorie: '', disponible: true, stock: '1' })
   const [tailles, setTailles] = useState<string[]>([])
   const [couleurs, setCouleurs] = useState<string[]>([''])
   const [photos, setPhotos] = useState<File[]>([])
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.from('categories').select('*').order('ordre').then(({ data }) => {
+      setCategories(data || [])
+    })
+  }, [])
 
   const toggleTaille = (t: string) => setTailles(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t])
   const addCouleur = () => setCouleurs([...couleurs, ''])
@@ -29,9 +39,42 @@ export default function NouvelleTenuePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1200))
+    const supabase = createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { router.push('/auth/login'); return }
+
+    const photoUrls: string[] = []
+    for (const file of photos) {
+      const ext = file.name.split('.').pop()
+      const path = `${user.id}/${Date.now()}.${ext}`
+      const { error: uploadErr } = await supabase.storage.from('photos').upload(path, file)
+      if (!uploadErr) {
+        const { data: urlData } = supabase.storage.from('photos').getPublicUrl(path)
+        photoUrls.push(urlData.publicUrl)
+      }
+    }
+
+    const couleursFiltered = couleurs.filter(c => c.trim() !== '')
+
+    const { error: insertErr } = await supabase.from('tenues').insert({
+      styliste_id: user.id,
+      nom: form.nom,
+      description: form.description || null,
+      prix: Number(form.prix),
+      categorie: form.categorie,
+      disponible: form.disponible,
+      stock: Number(form.stock),
+      tailles,
+      couleurs: couleursFiltered,
+      photos: photoUrls,
+      photo_principale: photoUrls[0] || null,
+    })
+
     setLoading(false)
+    if (insertErr) { setError(insertErr.message); return }
     setSuccess(true)
     setTimeout(() => router.push('/dashboard'), 2000)
   }
@@ -64,6 +107,8 @@ export default function NouvelleTenuePage() {
           <span style={{ color: '#333' }}>·</span>
           <h1 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: '1.5rem' }}>Nouvelle tenue</h1>
         </div>
+
+        {error && <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Montserrat, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
@@ -110,8 +155,8 @@ export default function NouvelleTenuePage() {
               </div>
             </div>
             <div>
-              <label style={{ ...labelStyle, display: 'flex', alignItems: 'center', gap: '0.4rem' }}><AlignLeft size={13} /> Description *</label>
-              <textarea required rows={4} style={{ background: '#0A0A0A', border: '1px solid #2a2a2a', borderRadius: '10px', color: '#fff', padding: '0.875rem 1rem', fontSize: '0.9rem', fontFamily: 'Montserrat, sans-serif', width: '100%', resize: 'vertical', transition: 'border-color 0.2s' }} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Décrivez votre création..."
+              <label style={{ ...labelStyle, display: 'flex', alignItems: 'center', gap: '0.4rem' }}><AlignLeft size={13} /> Description</label>
+              <textarea rows={4} style={{ background: '#0A0A0A', border: '1px solid #2a2a2a', borderRadius: '10px', color: '#fff', padding: '0.875rem 1rem', fontSize: '0.9rem', fontFamily: 'Montserrat, sans-serif', width: '100%', resize: 'vertical', transition: 'border-color 0.2s' }} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Décrivez votre création..."
                 onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#2a2a2a')} />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -130,7 +175,9 @@ export default function NouvelleTenuePage() {
                   <select required style={inputStyle} value={form.categorie} onChange={e => setForm({ ...form, categorie: e.target.value })}
                     onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#2a2a2a')}>
                     <option value="">Choisir...</option>
-                    {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.emoji} {c.label}</option>)}
+                    {categories.map(c => (
+                      <option key={c.id} value={c.slug}>{c.icone ? `${c.icone} ` : ''}{c.nom}</option>
+                    ))}
                   </select>
                 </div>
               </div>

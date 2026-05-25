@@ -1,30 +1,77 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
-import { STYLISTES } from '@/lib/mockData'
+import { createClient } from '@/lib/supabase/client'
+import type { Styliste } from '@/lib/supabase/types'
 import { ArrowLeft, Camera, User, AlignLeft, MapPin, Phone, MessageCircle, AtSign, Save, CheckCircle } from 'lucide-react'
 
-const MOI = STYLISTES[0]
-
 export default function ProfilPage() {
-  const [form, setForm] = useState({ nom: MOI.nom, bio: MOI.bio, ville: MOI.ville, telephone: MOI.telephone, whatsapp: MOI.whatsapp, instagram: MOI.instagram })
-  const [photo, setPhoto] = useState<File | null>(null)
-  const [photoPreview, setPhotoPreview] = useState(MOI.photo)
-  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  const [styliste, setStyliste] = useState<Styliste | null>(null)
+  const [form, setForm] = useState({ nom: '', bio: '', ville: '', telephone: '', whatsapp: '', instagram: '' })
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    const supabase = createClient()
+    const load = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { router.push('/auth/login'); return }
+      const { data } = await supabase.from('stylistes').select('*').eq('id', user.id).single()
+      if (data) {
+        setStyliste(data)
+        setForm({ nom: data.nom || '', bio: data.bio || '', ville: data.ville || '', telephone: data.telephone || '', whatsapp: data.whatsapp || '', instagram: data.instagram || '' })
+        setPhotoPreview(data.photo_url || null)
+      }
+      setLoading(false)
+    }
+    load()
+  }, [router])
 
   const handlePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
-    if (f) { setPhoto(f); setPhotoPreview(URL.createObjectURL(f)) }
+    if (f) { setPhotoFile(f); setPhotoPreview(URL.createObjectURL(f)) }
   }
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
-    await new Promise(r => setTimeout(r, 1000))
-    setLoading(false)
+    if (!styliste) return
+    setError('')
+    setSaving(true)
+    const supabase = createClient()
+
+    let photo_url = styliste.photo_url
+
+    if (photoFile) {
+      const ext = photoFile.name.split('.').pop()
+      const path = `${styliste.id}/profil.${ext}`
+      const { error: uploadErr } = await supabase.storage.from('photos').upload(path, photoFile, { upsert: true })
+      if (!uploadErr) {
+        const { data: urlData } = supabase.storage.from('photos').getPublicUrl(path)
+        photo_url = urlData.publicUrl
+      }
+    }
+
+    const { error: updateErr } = await supabase.from('stylistes').update({
+      nom: form.nom,
+      bio: form.bio || null,
+      ville: form.ville,
+      telephone: form.telephone || null,
+      whatsapp: form.whatsapp || null,
+      instagram: form.instagram || null,
+      photo_url,
+      updated_at: new Date().toISOString(),
+    }).eq('id', styliste.id)
+
+    setSaving(false)
+    if (updateErr) { setError(updateErr.message); return }
     setSaved(true)
     setTimeout(() => setSaved(false), 3000)
   }
@@ -46,6 +93,15 @@ export default function ProfilPage() {
     </div>
   )
 
+  if (loading) {
+    return (
+      <div style={{ background: '#0A0A0A', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: '3px solid #1a1a1a', borderTopColor: '#008751', animation: 'spin 0.8s linear infinite' }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      </div>
+    )
+  }
+
   return (
     <div style={{ background: '#0A0A0A', minHeight: '100vh' }}>
       <Navbar />
@@ -58,10 +114,16 @@ export default function ProfilPage() {
           <h1 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: '1.5rem' }}>Mon profil</h1>
         </div>
 
+        {error && <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Montserrat, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>}
+
         {/* Photo */}
         <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: '16px', padding: '2rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-          <div style={{ position: 'relative', width: '100px', height: '100px', flexShrink: 0 }}>
-            <Image src={photoPreview} alt="profil" fill style={{ objectFit: 'cover', borderRadius: '50%', border: '3px solid #008751' }} />
+          <div style={{ position: 'relative', width: '100px', height: '100px', flexShrink: 0, borderRadius: '50%', border: '3px solid #008751', overflow: 'hidden', background: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {photoPreview ? (
+              <Image src={photoPreview} alt="profil" fill style={{ objectFit: 'cover' }} />
+            ) : (
+              <User size={36} color="#333" />
+            )}
           </div>
           <div>
             <p style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.4rem' }}>{form.nom}</p>
@@ -111,8 +173,8 @@ export default function ProfilPage() {
             )}
           </div>
 
-          <button type="submit" disabled={loading} style={{ background: saved ? 'linear-gradient(135deg, #006b40, #008751)' : loading ? '#1a1a1a' : 'linear-gradient(135deg, #008751, #00a862)', color: loading ? '#555' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: loading ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-            {loading ? 'Enregistrement...' : saved ? <><CheckCircle size={18} /> Profil enregistré !</> : <><Save size={18} /> Enregistrer le profil</>}
+          <button type="submit" disabled={saving} style={{ background: saved ? 'linear-gradient(135deg, #006b40, #008751)' : saving ? '#1a1a1a' : 'linear-gradient(135deg, #008751, #00a862)', color: saving ? '#555' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: saving ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: saving ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            {saving ? 'Enregistrement...' : saved ? <><CheckCircle size={18} /> Profil enregistré !</> : <><Save size={18} /> Enregistrer le profil</>}
           </button>
         </form>
       </div>

@@ -3,10 +3,11 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { VILLES } from '@/lib/mockData'
 import { slugify } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import { User, Mail, Phone, MapPin, Lock, AtSign, MessageCircle, CheckSquare, Square, ArrowLeft, ArrowRight, Rocket, CheckCircle } from 'lucide-react'
+
+const VILLES = ['Cotonou', 'Porto-Novo', 'Parakou', 'Abomey-Calavi', 'Natitingou', 'Abidjan', 'Dakar', 'Lagos']
 
 type Step = 1 | 2 | 3
 

@@ -3,10 +3,9 @@ import { useState, useMemo, useEffect } from 'react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import StylisteCard from '@/components/StylisteCard'
-import { CATEGORIES, VILLES } from '@/lib/mockData'
 import { formatPrix, buildWhatsAppLink } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
-import type { Tenue, Styliste } from '@/lib/supabase/types'
+import type { Tenue, Styliste, Categorie } from '@/lib/supabase/types'
 import { Search, SlidersHorizontal, X, LayoutGrid, Users, MapPin, MessageCircle, Tag, Eye } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -78,13 +77,14 @@ export default function CataloguePage() {
   const [search, setSearch] = useState('')
   const [tenues, setTenues] = useState<TenueWithStyliste[]>([])
   const [stylistes, setStylistes] = useState<Styliste[]>([])
+  const [categories, setCategories] = useState<Categorie[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const supabase = createClient()
     const loadData = async () => {
       setLoading(true)
-      const [{ data: tenuesData }, { data: stylistesData }] = await Promise.all([
+      const [{ data: tenuesData }, { data: stylistesData }, { data: catsData }] = await Promise.all([
         supabase
           .from('tenues')
           .select('*, stylistes(id, nom, whatsapp, slug, photo_url, ville)')
@@ -94,9 +94,14 @@ export default function CataloguePage() {
           .from('stylistes')
           .select('*')
           .order('created_at', { ascending: false }),
+        supabase
+          .from('categories')
+          .select('*')
+          .order('ordre'),
       ])
       setTenues((tenuesData as TenueWithStyliste[]) || [])
       setStylistes((stylistesData as Styliste[]) || [])
+      setCategories((catsData as Categorie[]) || [])
       setLoading(false)
     }
     loadData()
@@ -125,6 +130,12 @@ export default function CataloguePage() {
       return true
     })
   }, [stylistes, ville, search])
+
+  const villes = useMemo(() => {
+    const set = new Set<string>()
+    stylistes.forEach(s => { if (s.ville) set.add(s.ville) })
+    return Array.from(set).sort()
+  }, [stylistes])
 
   const hasFilter = categorie || ville || prixMax < PRIX_MAX || search
 
@@ -164,14 +175,14 @@ export default function CataloguePage() {
                   <SlidersHorizontal size={14} style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#555', pointerEvents: 'none' }} />
                   <select value={categorie} onChange={e => setCategorie(e.target.value)} style={{ ...inputStyle, paddingLeft: '2.5rem' }}>
                     <option value="">Toutes catégories</option>
-                    {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.emoji} {c.label}</option>)}
+                    {categories.map(c => <option key={c.id} value={c.slug}>{c.icone ? `${c.icone} ` : ''}{c.nom}</option>)}
                   </select>
                 </div>
               )}
 
               <select value={ville} onChange={e => setVille(e.target.value)} style={{ ...inputStyle, maxWidth: '180px' }}>
                 <option value="">Toutes villes</option>
-                {VILLES.map(v => <option key={v} value={v}>{v}</option>)}
+                {villes.map(v => <option key={v} value={v}>{v}</option>)}
               </select>
 
               {vue === 'tenues' && (
@@ -220,24 +231,7 @@ export default function CataloguePage() {
               ) : (
                 stylistesFiltres.length > 0 ? (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                    {stylistesFiltres.map(s => {
-                      const mockStyliste = {
-                        id: s.id,
-                        slug: s.slug || '',
-                        nom: s.nom,
-                        bio: s.bio || '',
-                        ville: s.ville,
-                        telephone: s.telephone || '',
-                        whatsapp: s.whatsapp || '',
-                        instagram: s.instagram || '',
-                        photo: s.photo_url || 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80',
-                        nb_tenues: 0,
-                        nb_vues: 0,
-                        nb_commandes: 0,
-                        verified: s.verified,
-                      }
-                      return <StylisteCard key={s.id} styliste={mockStyliste} />
-                    })}
+                    {stylistesFiltres.map(s => <StylisteCard key={s.id} styliste={s} />)}
                   </div>
                 ) : (
                   <div style={{ textAlign: 'center', padding: '5rem 2rem', color: '#555' }}>
