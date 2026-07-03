@@ -34,6 +34,9 @@ export default function TenuePage({ params }: { params: { id: string } }) {
       if (error || !data) { router.replace('/catalogue'); return }
       setTenue(data as TenueWithStyliste)
 
+      // .then() requis : le builder supabase-js n'exécute la requête qu'une fois awaité
+      supabase.rpc('increment_vues', { p_tenue_id: params.id }).then(() => {})
+
       const { data: autres } = await supabase
         .from('tenues')
         .select('*, stylistes(id, nom, whatsapp, slug, photo_url, ville)')

@@ -28,6 +28,7 @@ export default function RegisterPage() {
     const { data, error: authError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
+      options: { data: { full_name: form.nom } },
     })
 
     if (authError) {
@@ -38,7 +39,9 @@ export default function RegisterPage() {
 
     if (data.user) {
       const slug = slugify(form.nom)
-      const { error: insertError } = await supabase.from('stylistes').insert({
+      // Le trigger handle_new_user crée déjà la ligne à l'inscription :
+      // upsert pour la compléter sans erreur de clé dupliquée.
+      const { error: insertError } = await supabase.from('stylistes').upsert({
         id: data.user.id,
         nom: form.nom,
         email: form.email,

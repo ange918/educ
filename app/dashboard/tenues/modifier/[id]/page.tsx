@@ -4,37 +4,65 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import { createClient } from '@/lib/supabase/client'
-import type { Categorie } from '@/lib/supabase/types'
+import type { Categorie, Tenue } from '@/lib/supabase/types'
 import { ArrowLeft, Camera, X, Plus, CheckCircle, Tag, AlignLeft, DollarSign, Layers, Package, ToggleLeft, ToggleRight, Upload } from 'lucide-react'
 
 const TAILLES_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'Sur mesure']
 
-export default function NouvelleTenuePage() {
+export default function ModifierTenuePage({ params }: { params: { id: string } }) {
   const router = useRouter()
   const [categories, setCategories] = useState<Categorie[]>([])
   const [form, setForm] = useState({ nom: '', description: '', prix: '', categorie: '', disponible: true, stock: '1' })
   const [tailles, setTailles] = useState<string[]>([])
   const [couleurs, setCouleurs] = useState<string[]>([''])
-  const [photos, setPhotos] = useState<File[]>([])
+  const [photosExistantes, setPhotosExistantes] = useState<string[]>([])
+  const [nouvellesPhotos, setNouvellesPhotos] = useState<File[]>([])
+  const [chargement, setChargement] = useState(true)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.from('categories').select('*').order('ordre').then(({ data }) => {
-      setCategories(data || [])
-    })
-  }, [])
+    const load = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { router.push('/auth/login'); return }
+
+      const [{ data: cats }, { data: tenue }] = await Promise.all([
+        supabase.from('categories').select('*').order('ordre'),
+        supabase.from('tenues').select('*').eq('id', params.id).eq('styliste_id', user.id).single(),
+      ])
+
+      setCategories(cats || [])
+      if (!tenue) { router.replace('/dashboard'); return }
+
+      const t = tenue as Tenue
+      setForm({
+        nom: t.nom,
+        description: t.description || '',
+        prix: String(t.prix),
+        categorie: t.categorie || '',
+        disponible: t.disponible,
+        stock: String(t.stock ?? 1),
+      })
+      setTailles(t.tailles || [])
+      setCouleurs(t.couleurs?.length ? t.couleurs : [''])
+      setPhotosExistantes(t.photos || [])
+      setChargement(false)
+    }
+    load()
+  }, [params.id, router])
 
   const toggleTaille = (t: string) => setTailles(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t])
   const addCouleur = () => setCouleurs([...couleurs, ''])
   const updateCouleur = (i: number, v: string) => setCouleurs(couleurs.map((c, idx) => idx === i ? v : c))
   const removeCouleur = (i: number) => setCouleurs(couleurs.filter((_, idx) => idx !== i))
 
+  const totalPhotos = photosExistantes.length + nouvellesPhotos.length
+
   const handlePhotos = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []).slice(0, 5 - photos.length)
-    setPhotos([...photos, ...files])
+    const files = Array.from(e.target.files || []).slice(0, 5 - totalPhotos)
+    setNouvellesPhotos([...nouvellesPhotos, ...files])
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,9 +74,9 @@ export default function NouvelleTenuePage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { router.push('/auth/login'); return }
 
-    const photoUrls: string[] = []
-    for (let i = 0; i < photos.length; i++) {
-      const file = photos[i]
+    const photoUrls = [...photosExistantes]
+    for (let i = 0; i < nouvellesPhotos.length; i++) {
+      const file = nouvellesPhotos[i]
       const ext = file.name.split('.').pop()
       const path = `${user.id}/${Date.now()}-${i}.${ext}`
       const { error: uploadErr } = await supabase.storage.from('photos').upload(path, file)
@@ -63,8 +91,7 @@ export default function NouvelleTenuePage() {
 
     const couleursFiltered = couleurs.filter(c => c.trim() !== '')
 
-    const { error: insertErr } = await supabase.from('tenues').insert({
-      styliste_id: user.id,
+    const { error: updateErr } = await supabase.from('tenues').update({
       nom: form.nom,
       description: form.description || null,
       prix: Number(form.prix),
@@ -75,12 +102,13 @@ export default function NouvelleTenuePage() {
       couleurs: couleursFiltered,
       photos: photoUrls,
       photo_principale: photoUrls[0] || null,
-    })
+      updated_at: new Date().toISOString(),
+    }).eq('id', params.id).eq('styliste_id', user.id)
 
     setLoading(false)
-    if (insertErr) { setError(insertErr.message); return }
+    if (updateErr) { setError(updateErr.message); return }
     setSuccess(true)
-    setTimeout(() => router.push('/dashboard'), 2000)
+    setTimeout(() => router.push('/dashboard'), 1500)
   }
 
   const inputStyle: React.CSSProperties = {
@@ -90,11 +118,21 @@ export default function NouvelleTenuePage() {
   const iconPos: React.CSSProperties = { position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#555', pointerEvents: 'none' }
   const labelStyle: React.CSSProperties = { fontFamily: 'Unbounded, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#888', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.6rem' }
 
+  if (chargement) return (
+    <div style={{ background: '#0A0A0A', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ textAlign: 'center', color: '#555' }}>
+        <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: '3px solid #1a1a1a', borderTopColor: '#008751', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem' }} />
+        <p style={{ fontFamily: 'Montserrat, sans-serif' }}>Chargement...</p>
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      </div>
+    </div>
+  )
+
   if (success) return (
     <div style={{ background: '#0A0A0A', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ textAlign: 'center' }}>
         <CheckCircle size={64} color="#008751" style={{ margin: '0 auto 1.5rem' }} />
-        <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: '1.5rem', color: '#fff', marginBottom: '0.5rem' }}>Tenue publiée !</h2>
+        <h2 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: '1.5rem', color: '#fff', marginBottom: '0.5rem' }}>Tenue mise à jour !</h2>
         <p style={{ color: '#888', fontFamily: 'Montserrat, sans-serif' }}>Redirection vers le tableau de bord...</p>
       </div>
     </div>
@@ -109,7 +147,7 @@ export default function NouvelleTenuePage() {
             <ArrowLeft size={14} /> Retour
           </Link>
           <span style={{ color: '#333' }}>·</span>
-          <h1 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: '1.5rem' }}>Nouvelle tenue</h1>
+          <h1 style={{ fontFamily: 'Unbounded, sans-serif', fontWeight: 900, fontSize: '1.5rem' }}>Modifier la tenue</h1>
         </div>
 
         {error && <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Montserrat, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>}
@@ -122,15 +160,23 @@ export default function NouvelleTenuePage() {
               <Camera size={14} /> Photos (max 5)
             </label>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-              {photos.map((f, i) => (
-                <div key={i} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '10px', overflow: 'hidden', border: '1px solid #2a2a2a' }}>
-                  <img src={URL.createObjectURL(f)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  <button type="button" onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '4px', right: '4px', background: '#E8112D', color: '#fff', border: 'none', borderRadius: '50%', width: '22px', height: '22px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {photosExistantes.map((url, i) => (
+                <div key={url} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '10px', overflow: 'hidden', border: '1px solid #2a2a2a' }}>
+                  <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <button type="button" onClick={() => setPhotosExistantes(photosExistantes.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '4px', right: '4px', background: '#E8112D', color: '#fff', border: 'none', borderRadius: '50%', width: '22px', height: '22px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <X size={12} />
                   </button>
                 </div>
               ))}
-              {photos.length < 5 && (
+              {nouvellesPhotos.map((f, i) => (
+                <div key={i} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '10px', overflow: 'hidden', border: '1px solid #008751' }}>
+                  <img src={URL.createObjectURL(f)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <button type="button" onClick={() => setNouvellesPhotos(nouvellesPhotos.filter((_, idx) => idx !== i))} style={{ position: 'absolute', top: '4px', right: '4px', background: '#E8112D', color: '#fff', border: 'none', borderRadius: '50%', width: '22px', height: '22px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+              {totalPhotos < 5 && (
                 <label style={{ width: '100px', height: '100px', borderRadius: '10px', border: '2px dashed #2a2a2a', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#555', transition: 'all 0.2s', gap: '0.35rem' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#008751'; (e.currentTarget as HTMLElement).style.color = '#008751' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2a2a2a'; (e.currentTarget as HTMLElement).style.color = '#555' }}>
@@ -141,7 +187,7 @@ export default function NouvelleTenuePage() {
               )}
             </div>
             <p style={{ color: '#555', fontFamily: 'Montserrat, sans-serif', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <Camera size={12} /> JPG, PNG, WebP · Stocké sur Supabase Storage
+              <Camera size={12} /> JPG, PNG, WebP · La première photo est la photo principale
             </p>
           </div>
 
@@ -244,7 +290,7 @@ export default function NouvelleTenuePage() {
           </div>
 
           <button type="submit" disabled={loading} style={{ background: loading ? '#1a1a1a' : 'linear-gradient(135deg, #008751, #00a862)', color: loading ? '#555' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Unbounded, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: loading ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-            {loading ? 'Publication...' : <><CheckCircle size={18} /> Publier la tenue</>}
+            {loading ? 'Enregistrement...' : <><CheckCircle size={18} /> Enregistrer les modifications</>}
           </button>
         </form>
       </div>
