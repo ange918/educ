@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, LogIn, Store, Search } from 'lucide-react'
 import { gsap } from 'gsap'
 
 export default function Navbar() {
@@ -27,11 +26,6 @@ export default function Navbar() {
     position: 'sticky',
     top: 0, left: 0, right: 0,
     zIndex: 1000,
-    padding: '0 1.25rem',
-    height: '64px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     background: 'rgba(247,245,239,0.92)',
     backdropFilter: 'blur(14px)',
     borderBottom: scrolled ? '1px solid var(--bordure)' : '1px solid transparent',
@@ -69,47 +63,45 @@ export default function Navbar() {
   return (
     <>
       <nav ref={navRef} style={navStyle}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <Image src="/logo-icon.jpg" alt="DAHOMEY-TECH" width={36} height={36}
-            style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--vert)' }} />
-          <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '0.95rem', color: 'var(--encre)', display: 'none' }} className="nav-wordmark">
-            DAHOMEY-TECH
-          </span>
-        </Link>
+        <div className="dt-container" style={{ height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <Image src="/logo-icon.jpg" alt="DAHOMEY-TECH" width={36} height={36}
+              style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--vert)' }} />
+            <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '0.95rem', color: 'var(--encre)', display: 'none' }} className="nav-wordmark">
+              DAHOMEY-TECH
+            </span>
+          </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }} className="nav-links-desktop">
-          <Link href="/catalogue" style={linkStyle}>
-            <Search size={15} />
-            Explorer
-          </Link>
-          <Link href="/catalogue" style={linkStyle}>Stylistes</Link>
-          <Link href="/auth/login" style={{ ...linkStyle, color: 'var(--gris-texte)' }}>
-            <LogIn size={15} />
-            Connexion
-          </Link>
-          <Link href="/auth/register">
-            <button style={btnStyle}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}>
-              <Store size={15} />
-              Devenir styliste
-            </button>
-          </Link>
-        </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }} className="nav-links-desktop">
+            <Link href="/catalogue" style={linkStyle}>
+              <i className="bx bx-search" style={{ fontSize: '15px' }} /> Explorer
+            </Link>
+            <Link href="/catalogue" style={linkStyle}>Stylistes</Link>
+            <Link href="/auth/login" style={{ ...linkStyle, color: 'var(--gris-texte)' }}>
+              <i className="bx bx-log-in" style={{ fontSize: '15px' }} /> Connexion
+            </Link>
+            <Link href="/auth/register">
+              <button style={btnStyle}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}>
+                <i className="bx bxs-store" style={{ fontSize: '15px' }} /> Devenir styliste
+              </button>
+            </Link>
+          </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }} className="nav-mobile-actions">
-          <Link href="/auth/register">
-            <button style={{ ...btnStyle, padding: '0.5rem 0.9rem', fontSize: '0.75rem' }}>
-              <Store size={14} />
-              Vendre
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }} className="nav-mobile-actions">
+            <Link href="/auth/register">
+              <button style={{ ...btnStyle, padding: '0.5rem 0.9rem', fontSize: '0.75rem' }}>
+                <i className="bx bxs-store" style={{ fontSize: '14px' }} /> Vendre
+              </button>
+            </Link>
+            <button
+              style={{ background: 'none', border: 'none', color: 'var(--encre)', cursor: 'pointer', padding: '4px', fontSize: '24px', display: 'flex' }}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Menu">
+              <i className={`bx ${menuOpen ? 'bx-x' : 'bx-menu'}`} />
             </button>
-          </Link>
-          <button
-            style={{ background: 'none', border: 'none', color: 'var(--encre)', cursor: 'pointer', padding: '6px' }}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu">
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          </div>
         </div>
       </nav>
 
@@ -122,8 +114,7 @@ export default function Navbar() {
       }}>
         <Link href="/catalogue" style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.3rem', fontWeight: 700, color: 'var(--encre)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}
           onClick={() => setMenuOpen(false)}>
-          <Search size={20} color="var(--vert)" />
-          Explorer le catalogue
+          <i className="bx bx-search" style={{ fontSize: '20px', color: 'var(--vert)' }} /> Explorer le catalogue
         </Link>
         <Link href="/auth/login" style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.3rem', fontWeight: 700, color: 'var(--encre)' }}
           onClick={() => setMenuOpen(false)}>
@@ -131,8 +122,7 @@ export default function Navbar() {
         </Link>
         <Link href="/auth/register" onClick={() => setMenuOpen(false)}>
           <button style={{ ...btnStyle, fontSize: '1rem', padding: '0.8rem 2rem' }}>
-            <Store size={18} />
-            Devenir styliste
+            <i className="bx bxs-store" style={{ fontSize: '18px' }} /> Devenir styliste
           </button>
         </Link>
       </div>

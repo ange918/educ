@@ -7,7 +7,10 @@ import StylisteCard from '@/components/StylisteCard'
 import TenueCard from '@/components/TenueCard'
 import { createClient } from '@/lib/supabase/client'
 import type { Tenue, Styliste, Categorie } from '@/lib/supabase/types'
-import { Search, X, LayoutGrid, Users, ChevronDown } from 'lucide-react'
+
+function Bx({ name, size = 16, color, style }: { name: string; size?: number; color?: string; style?: React.CSSProperties }) {
+  return <i className={`bx ${name}`} style={{ fontSize: size, color, lineHeight: 1, ...style }} />
+}
 
 const PRIX_MAX = 200000
 
@@ -112,7 +115,7 @@ function CatalogueInner() {
       <Navbar />
 
       {/* En-tête */}
-      <div style={{ maxWidth: '760px', margin: '0 auto', padding: '1.75rem 1.25rem 0.5rem' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1.75rem 1.25rem 0.5rem' }}>
         <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: 'clamp(1.5rem, 5vw, 2rem)', color: 'var(--encre)', marginBottom: '0.3rem' }}>
           {vue === 'tenues' ? 'Nos tenues' : 'Nos stylistes'}
         </h1>
@@ -123,8 +126,8 @@ function CatalogueInner() {
         {/* Bascule Tenues / Stylistes */}
         <div style={{ display: 'inline-flex', background: 'var(--blanc)', border: '1px solid var(--bordure)', borderRadius: '50px', padding: '0.25rem', marginBottom: '1.25rem' }}>
           {([
-            { key: 'tenues', label: 'Tenues', icon: <LayoutGrid size={14} /> },
-            { key: 'stylistes', label: 'Stylistes', icon: <Users size={14} /> },
+            { key: 'tenues', label: 'Tenues', icon: <Bx name="bx-grid-alt" size={14} /> },
+            { key: 'stylistes', label: 'Stylistes', icon: <Bx name="bxs-group" size={14} /> },
           ] as const).map(({ key, label, icon }) => (
             <button key={key} onClick={() => setVue(key)} style={{
               padding: '0.5rem 1.35rem', borderRadius: '50px', border: 'none',
@@ -141,7 +144,7 @@ function CatalogueInner() {
         {/* Barre recherche + tri */}
         <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
           <div style={{ flex: 1, minWidth: '180px', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--blanc)', border: '1px solid var(--bordure)', borderRadius: '50px', padding: '0.65rem 1.1rem' }}>
-            <Search size={16} color="var(--gris-texte)" />
+            <Bx name="bx-search" size={16} color="var(--gris-texte)" />
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
@@ -150,7 +153,7 @@ function CatalogueInner() {
             />
           </div>
           <button onClick={() => setShowFilters(f => !f)} style={{ ...pill(showFilters), display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <LayoutGrid size={14} /> Filtres
+            <Bx name="bx-slider-alt" size={14} /> Filtres
           </button>
           {vue === 'tenues' && (
             <div style={{ position: 'relative' }}>
@@ -160,7 +163,7 @@ function CatalogueInner() {
                 <option value="prix-asc">Prix croissant</option>
                 <option value="prix-desc">Prix décroissant</option>
               </select>
-              <ChevronDown size={15} color="var(--gris-texte)" style={{ position: 'absolute', right: '0.7rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+              <Bx name="bx-chevron-down" size={16} color="var(--gris-texte)" style={{ position: 'absolute', right: '0.7rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
             </div>
           )}
         </div>
@@ -201,13 +204,13 @@ function CatalogueInner() {
             padding: '0.5rem 1rem', borderRadius: '50px', fontFamily: 'Inter, sans-serif', fontSize: '0.78rem',
             fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginBottom: '1.25rem',
           }}>
-            <X size={14} /> Réinitialiser les filtres
+            <Bx name="bx-x" size={15} /> Réinitialiser les filtres
           </button>
         )}
       </div>
 
       {/* Grille */}
-      <div style={{ maxWidth: '760px', margin: '0 auto', padding: '0.5rem 1.25rem 3rem' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0.5rem 1.25rem 3rem' }}>
         {loading ? (
           <div style={{ textAlign: 'center', padding: '4rem 2rem', color: 'var(--gris-texte)' }}>
             <div style={{ width: '38px', height: '38px', borderRadius: '50%', border: '3px solid var(--bordure)', borderTopColor: 'var(--vert)', animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem' }} />
@@ -216,19 +219,19 @@ function CatalogueInner() {
           </div>
         ) : vue === 'tenues' ? (
           tenuesFiltrees.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '1rem' }}>
+            <div className="dt-products">
               {tenuesFiltrees.map(t => <TenueCard key={t.id} tenue={t} />)}
             </div>
           ) : (
-            <EmptyState icon={<LayoutGrid size={44} color="var(--bordure)" />} titre="Aucune tenue trouvée" sous="Essayez d'ajuster vos filtres ou revenez bientôt." />
+            <EmptyState icon={<Bx name="bx-grid-alt" size={44} color="var(--bordure)" />} titre="Aucune tenue trouvée" sous="Essayez d'ajuster vos filtres ou revenez bientôt." />
           )
         ) : (
           stylistesFiltres.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '1rem' }}>
+            <div className="dt-products">
               {stylistesFiltres.map(s => <StylisteCard key={s.id} styliste={s} />)}
             </div>
           ) : (
-            <EmptyState icon={<Users size={44} color="var(--bordure)" />} titre="Aucun styliste trouvé" sous="Les premiers créateurs rejoignent la plateforme bientôt." />
+            <EmptyState icon={<Bx name="bxs-group" size={44} color="var(--bordure)" />} titre="Aucun styliste trouvé" sous="Les premiers créateurs rejoignent la plateforme bientôt." />
           )
         )}
       </div>

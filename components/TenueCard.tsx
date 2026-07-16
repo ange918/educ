@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { MessageCircle, Tag } from 'lucide-react'
 import type { Tenue, Styliste } from '@/lib/supabase/types'
 import { formatPrix, buildWhatsAppLink } from '@/lib/utils'
 
@@ -35,7 +34,7 @@ export default function TenueCard({ tenue }: { tenue: TenueWithStyliste }) {
             <Image src={photo} alt={tenue.nom} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover', transition: 'transform 0.4s ease', transform: hovered ? 'scale(1.06)' : 'scale(1)' }} />
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--bordure)' }}>
-              <Tag size={36} />
+              <i className="bx bx-tag" style={{ fontSize: '34px' }} />
             </div>
           )}
           {!tenue.disponible && (
@@ -60,7 +59,7 @@ export default function TenueCard({ tenue }: { tenue: TenueWithStyliste }) {
           {tenue.disponible && whatsapp && (
             <a href={wa} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}>
               <button style={{ background: '#25D366', color: '#fff', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', boxShadow: '0 3px 10px rgba(37,211,102,0.35)' }}>
-                <MessageCircle size={15} fill="currentColor" />
+                <i className="bx bxl-whatsapp" style={{ fontSize: '17px' }} />
               </button>
             </a>
           )}
