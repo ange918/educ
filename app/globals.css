@@ -74,6 +74,48 @@ input, textarea, select {
 .pb-bottomnav { padding-bottom: 76px; }
 @media (min-width: 900px) { .pb-bottomnav { padding-bottom: 0; } }
 
+/* ===== Landing responsive ===== */
+.dt-container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+
+.dt-section { padding: 2.25rem 0; }
+@media (min-width: 900px) { .dt-section { padding: 3.25rem 0; } }
+
+/* Hero : empilé mobile, 2 colonnes desktop */
+.dt-hero { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
+@media (min-width: 900px) { .dt-hero { grid-template-columns: 1.05fr 1fr; gap: 3.5rem; } }
+
+/* Barre de confiance */
+.dt-trust { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 0.5rem; }
+@media (min-width: 700px) { .dt-trust { grid-template-columns: repeat(4, 1fr); } }
+
+/* Grille catégories (cercles) */
+.dt-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+@media (min-width: 700px) { .dt-cats { grid-template-columns: repeat(6, 1fr); } }
+
+/* Grille produits */
+.dt-products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (min-width: 700px) { .dt-products { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1000px) { .dt-products { grid-template-columns: repeat(4, 1fr); } }
+
+/* Grille boutiques/stylistes */
+.dt-shops { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (min-width: 900px) { .dt-shops { grid-template-columns: repeat(4, 1fr); } }
+
+/* Grille paiement */
+.dt-pay { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+@media (min-width: 700px) { .dt-pay { grid-template-columns: repeat(2, 1fr); } }
+
+/* Bloc "pourquoi" : image + texte */
+.dt-why { display: grid; grid-template-columns: 1fr; gap: 0; border-radius: 22px; overflow: hidden; }
+@media (min-width: 900px) { .dt-why { grid-template-columns: 1fr 1fr; } }
+
+/* Titre de section responsive */
+.dt-h1 { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--encre); line-height: 1.12; font-size: clamp(1.9rem, 5vw, 3.1rem); }
+.dt-h2 { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--encre); font-size: clamp(1.2rem, 3vw, 1.6rem); }
+
+/* Icônes boxicons — taille utilitaire */
+.bx-ic { line-height: 1; display: inline-flex; }
+
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

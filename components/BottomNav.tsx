@@ -1,14 +1,13 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Users, Search, LayoutGrid, User } from 'lucide-react'
 
 const ITEMS = [
-  { href: '/', label: 'Accueil', icon: Home, match: (p: string) => p === '/' },
-  { href: '/catalogue', label: 'Stylistes', icon: Users, match: (p: string) => p.startsWith('/styliste') || (p.startsWith('/catalogue') && false) },
-  { href: '/catalogue?focus=recherche', label: 'Rechercher', icon: Search, match: (p: string) => p.startsWith('/catalogue') },
-  { href: '/catalogue#categories', label: 'Catégories', icon: LayoutGrid, match: (p: string) => p.startsWith('/tenue') },
-  { href: '/auth/login', label: 'Compte', icon: User, match: (p: string) => p.startsWith('/auth') || p.startsWith('/dashboard') },
+  { href: '/', label: 'Accueil', icon: 'bxs-home', match: (p: string) => p === '/' },
+  { href: '/catalogue', label: 'Stylistes', icon: 'bxs-group', match: (p: string) => p.startsWith('/styliste') },
+  { href: '/catalogue?focus=recherche', label: 'Rechercher', icon: 'bx-search', match: (p: string) => p.startsWith('/catalogue') },
+  { href: '/catalogue#categories', label: 'Catégories', icon: 'bxs-layer', match: (p: string) => p.startsWith('/tenue') },
+  { href: '/auth/login', label: 'Compte', icon: 'bx-user', match: (p: string) => p.startsWith('/auth') || p.startsWith('/dashboard') },
 ]
 
 export default function BottomNav() {
@@ -27,7 +26,7 @@ export default function BottomNav() {
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
-      {ITEMS.map(({ href, label, icon: Icon, match }) => {
+      {ITEMS.map(({ href, label, icon, match }) => {
         const active = match(pathname)
         return (
           <Link key={label} href={href} style={{ flex: 1, display: 'flex' }}>
@@ -36,7 +35,7 @@ export default function BottomNav() {
               gap: '3px', width: '100%', color: active ? 'var(--vert)' : 'var(--gris-texte)',
               transition: 'color 0.2s',
             }}>
-              <Icon size={20} strokeWidth={active ? 2.4 : 2} />
+              <i className={`bx ${icon}`} style={{ fontSize: '20px' }} />
               <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.65rem', fontWeight: active ? 700 : 500 }}>{label}</span>
             </div>
           </Link>

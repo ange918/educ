@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { MapPin, BadgeCheck, User } from 'lucide-react'
 import type { Styliste } from '@/lib/supabase/types'
 
 const GRADIENTS = [
@@ -45,14 +44,14 @@ export default function StylisteCard({ styliste }: { styliste: Styliste }) {
           )}
           {styliste.verified && (
             <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', background: 'rgba(255,255,255,0.95)', color: 'var(--vert)', padding: '0.3rem 0.65rem', borderRadius: '50px', fontSize: '0.65rem', fontWeight: 700, fontFamily: 'Sora, sans-serif', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-              <BadgeCheck size={12} />Vérifiée
+              <i className="bx bxs-badge-check" style={{ fontSize: '13px' }} />Vérifiée
             </div>
           )}
         </div>
         <div style={{ padding: '1rem 1.1rem 1.1rem' }}>
           <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.95rem', fontWeight: 700, color: 'var(--encre)', marginBottom: '0.3rem' }}>{styliste.nom}</h3>
           <p style={{ color: 'var(--gris-texte)', fontSize: '0.75rem', fontFamily: 'Inter, sans-serif', display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: styliste.bio ? '0.5rem' : 0 }}>
-            <MapPin size={11} color="var(--vert)" />{styliste.ville}
+            <i className="bx bxs-map" style={{ fontSize: '12px', color: 'var(--vert)' }} />{styliste.ville}
           </p>
           {styliste.bio && (
             <p style={{ color: 'var(--gris-texte)', fontSize: '0.8rem', lineHeight: 1.5, fontFamily: 'Inter, sans-serif', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as const, overflow: 'hidden' }}>
