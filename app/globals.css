@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
 
 *, *::before, *::after {
@@ -8,24 +8,36 @@
 }
 
 :root {
-  --noir: #0A0A0A;
+  /* Fond & texte */
+  --creme: #F7F5EF;
+  --blanc: #FFFFFF;
+  --encre: #14201A;
+  --gris-texte: #6E7268;
+  --bordure: #E7E3D8;
+
+  /* Identité Dahomey-Tech (drapeau béninois) */
   --vert: #008751;
   --vert-clair: #00a862;
+  --vert-soft: #E6F2EC;
   --jaune: #FCD116;
+  --jaune-soft: #FFF6D9;
   --rouge: #E8112D;
-  --blanc: #FFFFFF;
-  --gris: #1A1A1A;
-  --gris-clair: #2A2A2A;
-  --gris-texte: #999999;
-  --font-titre: 'Unbounded', sans-serif;
-  --font-corps: 'Montserrat', sans-serif;
+  --rouge-soft: #FDE7E9;
+
+  /* Alias rétrocompatibles (composants non encore migrés) */
+  --noir: #14201A;
+  --gris: #FFFFFF;
+  --gris-clair: #F0EEE6;
+
+  --font-titre: 'Sora', sans-serif;
+  --font-corps: 'Inter', sans-serif;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--noir);
-  color: var(--blanc);
+  background-color: var(--creme);
+  color: var(--encre);
   font-family: var(--font-corps);
   font-size: 16px;
   line-height: 1.6;
@@ -50,10 +62,59 @@ input, textarea, select {
 }
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--noir); }
+::-webkit-scrollbar-track { background: var(--creme); }
 ::-webkit-scrollbar-thumb { background: var(--vert); border-radius: 3px; }
 
 ::selection { background: var(--vert); color: var(--blanc); }
+
+/* Liseré tricolore signature — utilisé comme séparateur ou accent de badge */
+.liser-benin { background: linear-gradient(90deg, var(--vert) 0 33%, var(--jaune) 33% 66%, var(--rouge) 66% 100%); }
+
+/* Espace réservé en bas pour ne pas passer sous le bottom nav mobile */
+.pb-bottomnav { padding-bottom: 76px; }
+@media (min-width: 900px) { .pb-bottomnav { padding-bottom: 0; } }
+
+/* ===== Landing responsive ===== */
+.dt-container { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+
+.dt-section { padding: 2.25rem 0; }
+@media (min-width: 900px) { .dt-section { padding: 3.25rem 0; } }
+
+/* Hero : empilé mobile, 2 colonnes desktop */
+.dt-hero { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
+@media (min-width: 900px) { .dt-hero { grid-template-columns: 1.05fr 1fr; gap: 3.5rem; } }
+
+/* Barre de confiance */
+.dt-trust { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 0.5rem; }
+@media (min-width: 700px) { .dt-trust { grid-template-columns: repeat(4, 1fr); } }
+
+/* Grille catégories (cercles) */
+.dt-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+@media (min-width: 700px) { .dt-cats { grid-template-columns: repeat(6, 1fr); } }
+
+/* Grille produits */
+.dt-products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (min-width: 700px) { .dt-products { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1000px) { .dt-products { grid-template-columns: repeat(4, 1fr); } }
+
+/* Grille boutiques/stylistes */
+.dt-shops { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (min-width: 900px) { .dt-shops { grid-template-columns: repeat(4, 1fr); } }
+
+/* Grille paiement */
+.dt-pay { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+@media (min-width: 700px) { .dt-pay { grid-template-columns: repeat(2, 1fr); } }
+
+/* Bloc "pourquoi" : image + texte */
+.dt-why { display: grid; grid-template-columns: 1fr; gap: 0; border-radius: 22px; overflow: hidden; }
+@media (min-width: 900px) { .dt-why { grid-template-columns: 1fr 1fr; } }
+
+/* Titre de section responsive */
+.dt-h1 { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--encre); line-height: 1.12; font-size: clamp(1.9rem, 5vw, 3.1rem); }
+.dt-h2 { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--encre); font-size: clamp(1.2rem, 3vw, 1.6rem); }
+
+/* Icônes boxicons — taille utilitaire */
+.bx-ic { line-height: 1; display: inline-flex; }
 
 .about-grid {
   display: grid;
