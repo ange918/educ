@@ -73,15 +73,15 @@ export default function Navbar() {
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }} className="nav-links-desktop">
-            <Link href="/catalogue" style={linkStyle}>
+            <Link href="/catalogue" style={linkStyle} data-track="nav:catalogue">
               <i className="bx bx-search" style={{ fontSize: '15px' }} /> Explorer
             </Link>
-            <Link href="/catalogue" style={linkStyle}>Stylistes</Link>
-            <Link href="/auth/login" style={{ ...linkStyle, color: 'var(--gris-texte)' }}>
+            <Link href="/catalogue" style={linkStyle} data-track="nav:stylistes">Stylistes</Link>
+            <Link href="/auth/login" style={{ ...linkStyle, color: 'var(--gris-texte)' }} data-track="nav:connexion">
               <i className="bx bx-log-in" style={{ fontSize: '15px' }} /> Connexion
             </Link>
             <Link href="/auth/register">
-              <button style={btnStyle}
+              <button style={btnStyle} data-track="nav:devenir-styliste"
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)' }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}>
                 <i className="bx bxs-store" style={{ fontSize: '15px' }} /> Devenir styliste
@@ -91,7 +91,7 @@ export default function Navbar() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }} className="nav-mobile-actions">
             <Link href="/auth/register">
-              <button style={{ ...btnStyle, padding: '0.5rem 0.9rem', fontSize: '0.75rem' }}>
+              <button style={{ ...btnStyle, padding: '0.5rem 0.9rem', fontSize: '0.75rem' }} data-track="nav:devenir-styliste">
                 <i className="bx bxs-store" style={{ fontSize: '14px' }} /> Vendre
               </button>
             </Link>
