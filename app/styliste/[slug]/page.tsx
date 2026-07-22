@@ -62,9 +62,9 @@ export default async function StylistePage({ params }: { params: { slug: string 
             </div>
             <div style={{ flex: 1, paddingBottom: '0.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
-                <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', color: '#14201A' }}>{styliste.nom}</h1>
+                <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', color: '#14201A' }}>{styliste.nom}</h1>
                 {styliste.verified && (
-                  <span style={{ background: '#008751', color: '#fff', padding: '0.3rem 0.7rem', borderRadius: '50px', fontSize: '0.65rem', fontWeight: 700, fontFamily: 'Sora, sans-serif', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                  <span style={{ background: '#008751', color: '#fff', padding: '0.3rem 0.7rem', borderRadius: '50px', fontSize: '0.65rem', fontWeight: 700, fontFamily: 'Orbitron, sans-serif', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                     <BadgeCheck size={12} /> Vérifié
                   </span>
                 )}
@@ -85,7 +85,7 @@ export default async function StylistePage({ params }: { params: { slug: string 
                   { v: totalVues, l: 'Vues', icon: <Eye size={14} color="#C8972A" /> },
                 ].map(({ v, l, icon }) => (
                   <div key={l} style={{ textAlign: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#C8972A', justifyContent: 'center' }}>{icon}{v}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#C8972A', justifyContent: 'center' }}>{icon}{v}</div>
                     <div style={{ color: '#9AA093', fontSize: '0.65rem', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{l}</div>
                   </div>
                 ))}
@@ -97,13 +97,13 @@ export default async function StylistePage({ params }: { params: { slug: string 
           {/* Bio */}
           {styliste.bio && (
             <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '2rem', marginBottom: '3rem' }}>
-              <h2 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, marginBottom: '1rem', color: '#008751' }}>À propos</h2>
+              <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, marginBottom: '1rem', color: '#008751' }}>À propos</h2>
               <p style={{ fontFamily: 'Inter, sans-serif', color: '#6E7268', lineHeight: 1.8, fontSize: '0.95rem' }}>{styliste.bio}</p>
             </div>
           )}
 
           {/* Tenues */}
-          <h2 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.4rem', marginBottom: '2rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.4rem', marginBottom: '2rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <Shirt size={20} color="#C8972A" /> Toutes les tenues <span style={{ color: '#C8972A' }}>({tenuesList.length})</span>
           </h2>
           {tenuesList.length > 0 ? (

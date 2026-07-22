@@ -99,7 +99,7 @@ function CatalogueInner() {
     border: `1px solid ${active ? 'var(--vert)' : 'var(--bordure)'}`,
     background: active ? 'var(--vert)' : 'var(--blanc)',
     color: active ? '#fff' : 'var(--encre)',
-    fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.78rem',
+    fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.78rem',
     cursor: 'pointer', whiteSpace: 'nowrap',
   })
 
@@ -116,7 +116,7 @@ function CatalogueInner() {
 
       {/* En-tête */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1.75rem 1.25rem 0.5rem' }}>
-        <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: 'clamp(1.5rem, 5vw, 2rem)', color: 'var(--encre)', marginBottom: '0.3rem' }}>
+        <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: 'clamp(1.5rem, 5vw, 2rem)', color: 'var(--encre)', marginBottom: '0.3rem' }}>
           {vue === 'tenues' ? 'Nos tenues' : 'Nos stylistes'}
         </h1>
         <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'var(--gris-texte)', marginBottom: '1.25rem' }}>
@@ -131,7 +131,7 @@ function CatalogueInner() {
           ] as const).map(({ key, label, icon }) => (
             <button key={key} onClick={() => setVue(key)} style={{
               padding: '0.5rem 1.35rem', borderRadius: '50px', border: 'none',
-              fontFamily: 'Sora, sans-serif', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer',
+              fontFamily: 'Orbitron, sans-serif', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer',
               background: vue === key ? 'var(--encre)' : 'transparent',
               color: vue === key ? '#fff' : 'var(--gris-texte)',
               display: 'flex', alignItems: 'center', gap: '0.4rem',
@@ -173,7 +173,7 @@ function CatalogueInner() {
           <div style={{ background: 'var(--blanc)', border: '1px solid var(--bordure)', borderRadius: '16px', padding: '1.1rem', marginBottom: '1.25rem' }}>
             {vue === 'tenues' && categories.length > 0 && (
               <>
-                <p style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.72rem', fontWeight: 700, color: 'var(--gris-texte)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>Catégorie</p>
+                <p style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.72rem', fontWeight: 700, color: 'var(--gris-texte)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>Catégorie</p>
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
                   <button onClick={() => setCategorie('')} style={pill(!categorie)}>Toutes</button>
                   {categories.map(c => (
@@ -186,7 +186,7 @@ function CatalogueInner() {
             )}
             {villes.length > 0 && (
               <>
-                <p style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.72rem', fontWeight: 700, color: 'var(--gris-texte)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>Ville</p>
+                <p style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.72rem', fontWeight: 700, color: 'var(--gris-texte)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.6rem' }}>Ville</p>
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   <button onClick={() => setVille('')} style={pill(!ville)}>Toutes</button>
                   {villes.map(v => (
@@ -245,7 +245,7 @@ function EmptyState({ icon, titre, sous }: { icon: React.ReactNode; titre: strin
   return (
     <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--blanc)', borderRadius: '18px', border: '1px solid var(--bordure)' }}>
       <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>{icon}</div>
-      <p style={{ fontFamily: 'Sora, sans-serif', fontSize: '1rem', fontWeight: 700, color: 'var(--encre)' }}>{titre}</p>
+      <p style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '1rem', fontWeight: 700, color: 'var(--encre)' }}>{titre}</p>
       <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'var(--gris-texte)', marginTop: '0.5rem' }}>{sous}</p>
     </div>
   )

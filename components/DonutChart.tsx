@@ -19,7 +19,7 @@ export default function DonutChart({ data, titre, sousTitre }: { data: DonutSlic
 
   return (
     <div style={{ background: '#17181B', border: '1px solid #26272B', borderRadius: '16px', padding: '1.5rem' }}>
-      <h3 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: '#fff', marginBottom: '0.15rem' }}>{titre}</h3>
+      <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: '#fff', marginBottom: '0.15rem' }}>{titre}</h3>
       {sousTitre && <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', color: '#8A8D93', marginBottom: '1.25rem' }}>{sousTitre}</p>}
 
       {total === 0 ? (
@@ -33,7 +33,7 @@ export default function DonutChart({ data, titre, sousTitre }: { data: DonutSlic
                 strokeDasharray={`${a.dash} ${a.gap}`} strokeDashoffset={a.off}
                 transform={`rotate(-90 ${cx} ${cy})`} strokeLinecap="butt" />
             ))}
-            <text x={cx} y={cy - 4} textAnchor="middle" style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '22px', fill: '#fff' }}>{total}</text>
+            <text x={cx} y={cy - 4} textAnchor="middle" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '22px', fill: '#fff' }}>{total}</text>
             <text x={cx} y={cy + 14} textAnchor="middle" style={{ fontFamily: 'Inter, sans-serif', fontSize: '9px', fill: '#8A8D93' }}>TOTAL</text>
           </svg>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1, minWidth: '120px' }}>

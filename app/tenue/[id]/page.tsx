@@ -105,7 +105,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
                 )}
                 {!tenue.disponible && (
                   <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ background: '#E8112D', color: '#fff', padding: '0.6rem 1.5rem', borderRadius: '50px', fontFamily: 'Sora, sans-serif', fontWeight: 700 }}>ÉPUISÉ</span>
+                    <span style={{ background: '#E8112D', color: '#fff', padding: '0.6rem 1.5rem', borderRadius: '50px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700 }}>ÉPUISÉ</span>
                   </div>
                 )}
                 {photoActive > 0 && (
@@ -132,11 +132,11 @@ export default function TenuePage({ params }: { params: { id: string } }) {
 
             {/* Détails */}
             <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(0,135,81,0.12)', border: '1px solid rgba(0,135,81,0.3)', color: '#008751', padding: '0.3rem 0.75rem', borderRadius: '50px', fontSize: '0.7rem', fontWeight: 700, fontFamily: 'Sora, sans-serif', textTransform: 'uppercase', marginBottom: '1rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(0,135,81,0.12)', border: '1px solid rgba(0,135,81,0.3)', color: '#008751', padding: '0.3rem 0.75rem', borderRadius: '50px', fontSize: '0.7rem', fontWeight: 700, fontFamily: 'Orbitron, sans-serif', textTransform: 'uppercase', marginBottom: '1rem' }}>
                 <Tag size={11} /> {tenue.categorie}
               </div>
 
-              <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: 'clamp(1.4rem, 3vw, 2rem)', marginBottom: '1rem', lineHeight: 1.2, color: '#14201A' }}>{tenue.nom}</h1>
+              <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: 'clamp(1.4rem, 3vw, 2rem)', marginBottom: '1rem', lineHeight: 1.2, color: '#14201A' }}>{tenue.nom}</h1>
 
               {styliste && (
                 <Link href={`/styliste/${styliste.slug || styliste.id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', textDecoration: 'none' }}>
@@ -153,7 +153,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
                 </Link>
               )}
 
-              <div style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '2.2rem', color: '#C8972A', marginBottom: '2rem' }}>
+              <div style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '2.2rem', color: '#C8972A', marginBottom: '2rem' }}>
                 {formatPrix(tenue.prix)}
               </div>
 
@@ -164,7 +164,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
               {/* Tailles */}
               {tenue.tailles?.length > 0 && (
                 <div style={{ marginBottom: '1.5rem' }}>
-                  <p style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <p style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <Shirt size={13} /> Taille
                   </p>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -180,7 +180,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
               {/* Couleurs */}
               {tenue.couleurs?.length > 0 && (
                 <div style={{ marginBottom: '2.5rem' }}>
-                  <p style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Couleur</p>
+                  <p style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Couleur</p>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     {tenue.couleurs.map(c => (
                       <button key={c} onClick={() => setCouleurChoisie(c)} style={{ padding: '0.5rem 1rem', border: `2px solid ${couleurChoisie === c ? '#C8972A' : '#E7E3D8'}`, borderRadius: '8px', background: couleurChoisie === c ? '#FFF6D9' : '#FFFFFF', color: couleurChoisie === c ? '#C8972A' : '#6E7268', fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', transition: 'all 0.2s' }}>
@@ -194,7 +194,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {tenue.disponible && whatsapp ? (
                   <a href={whatsappMsg} target="_blank" rel="noopener noreferrer" data-track="commande:whatsapp">
-                    <button style={{ width: '100%', background: '#E8112D', color: '#fff', padding: '1.1rem 2rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', transition: 'all 0.3s', border: 'none', boxShadow: '0 8px 40px rgba(232,17,45,0.3)' }}
+                    <button style={{ width: '100%', background: '#E8112D', color: '#fff', padding: '1.1rem 2rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', transition: 'all 0.3s', border: 'none', boxShadow: '0 8px 40px rgba(232,17,45,0.3)' }}
                       onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
                       onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
                       <MessageCircle size={20} fill="white" />
@@ -202,7 +202,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
                     </button>
                   </a>
                 ) : (
-                  <button disabled style={{ width: '100%', background: '#E7E3D8', color: '#9AA093', padding: '1.1rem 2rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'not-allowed', border: '1px solid #E7E3D8' }}>
+                  <button disabled style={{ width: '100%', background: '#E7E3D8', color: '#9AA093', padding: '1.1rem 2rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'not-allowed', border: '1px solid #E7E3D8' }}>
                     Épuisé
                   </button>
                 )}
@@ -217,7 +217,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
           {/* Autres tenues */}
           {autresTenues.length > 0 && (
             <div style={{ marginTop: '5rem' }}>
-              <h2 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.3rem', marginBottom: '2rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.3rem', marginBottom: '2rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                 <Shirt size={18} color="#C8972A" />
                 Autres tenues de <span style={{ color: '#C8972A', marginLeft: '0.3rem' }}>{styliste?.nom}</span>
               </h2>

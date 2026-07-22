@@ -43,7 +43,7 @@ export default function StylisteGraphs() {
 
   return (
     <div style={{ marginTop: '3.5rem' }}>
-      <h2 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.2rem', marginBottom: '1.5rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+      <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.2rem', marginBottom: '1.5rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
         <BarChart3 size={20} color="#008751" /> Mes statistiques <span style={{ color: '#9AA093', fontWeight: 500, fontSize: '0.9rem' }}>· 30 derniers jours</span>
       </h2>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '1rem' }}>
