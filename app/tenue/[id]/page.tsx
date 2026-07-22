@@ -91,7 +91,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
             <span style={{ color: '#14201A', fontWeight: 600 }}>{tenue.nom}</span>
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'start' }}>
+          <div className="tenue-detail-grid">
 
             {/* Galerie */}
             <div>
@@ -229,6 +229,12 @@ export default function TenuePage({ params }: { params: { id: string } }) {
         </div>
       </div>
       <Footer />
+      <style>{`
+        .tenue-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        @media (max-width: 860px) {
+          .tenue-detail-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+      `}</style>
     </div>
   )
 }
