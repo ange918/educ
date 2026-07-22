@@ -25,7 +25,8 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   const p = request.nextUrl.pathname
-  if (!user && (p.startsWith('/dashboard') || p.startsWith('/akonde'))) {
+  // /akonde n'est PAS protégé par login : c'est un accès par code (voir la page).
+  if (!user && p.startsWith('/dashboard')) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
@@ -33,5 +34,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/akonde/:path*'],
+  matcher: ['/dashboard/:path*'],
 }
