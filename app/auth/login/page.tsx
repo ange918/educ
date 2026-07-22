@@ -103,7 +103,9 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
-      <style>{`.auth-panel-left { display: flex; } @media (max-width: 768px) { .auth-panel-left { display: none; } }`}</style>
+      {/* !important requis : le panneau a un style inline display:flex, qu'une
+          règle de feuille de style ne peut écraser que via !important. */}
+      <style>{`@media (max-width: 768px) { .auth-panel-left { display: none !important; } }`}</style>
     </div>
   )
 }

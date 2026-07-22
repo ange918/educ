@@ -180,7 +180,11 @@ export default function RegisterPage() {
                   onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
               )}
 
-              <button type="button" onClick={() => { if (!form.nom || !form.email || !form.telephone || !form.ville || form.password.length < 8) return; setStep(2) }} style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: '0 8px 30px rgba(0,135,81,0.3)' }}>
+              <button type="button" onClick={() => {
+                if (!form.nom || !form.email || !form.telephone || !form.ville) { setError('Merci de remplir tous les champs obligatoires (nom, email, téléphone, ville).'); return }
+                if (form.password.length < 8) { setError('Le mot de passe doit contenir au moins 8 caractères.'); return }
+                setError(''); setStep(2)
+              }} style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: '0 8px 30px rgba(0,135,81,0.3)' }}>
                 Continuer <ArrowRight size={17} />
               </button>
             </div>
