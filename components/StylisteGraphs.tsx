@@ -46,7 +46,7 @@ export default function StylisteGraphs() {
       <h2 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.2rem', marginBottom: '1.5rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
         <BarChart3 size={20} color="#008751" /> Mes statistiques <span style={{ color: '#9AA093', fontWeight: 500, fontSize: '0.9rem' }}>· 30 derniers jours</span>
       </h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '1rem' }}>
         <BarChart data={tenues} color="#008751" titre="Tenues ajoutées" icone="bxs-t-shirt" />
         <BarChart data={ventes} color="#C8972A" titre="Ventes / commandes" icone="bxs-cart" />
         <BarChart data={clics} color="#E8112D" titre="Clics sur mon profil" icone="bxs-mouse" />

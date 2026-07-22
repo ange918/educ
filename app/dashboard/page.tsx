@@ -178,8 +178,8 @@ export default function DashboardPage() {
                         </div>
                       )}
                     </div>
-                    <div style={{ flex: 1, minWidth: '150px' }}>
-                      <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.25rem' }}>{tenue.nom}</h3>
+                    <div style={{ flex: 1, minWidth: '120px' }}>
+                      <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.25rem', wordBreak: 'break-word' }}>{tenue.nom}</h3>
                       <p style={{ color: '#6E7268', fontSize: '0.75rem', fontFamily: 'Inter, sans-serif', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                         <Eye size={11} color="#9AA093" /> {tenue.vues} vues · {tenue.categorie}
                       </p>
@@ -191,7 +191,7 @@ export default function DashboardPage() {
                       {tenue.disponible ? <CheckCircle size={11} /> : <XCircle size={11} />}
                       {tenue.disponible ? 'Disponible' : 'Épuisé'}
                     </button>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                       <Link href={`/dashboard/tenues/modifier/${tenue.id}`}>
                         <button style={{ background: '#FFF6D9', border: '1px solid rgba(200,151,42,0.3)', color: '#C8972A', padding: '0.5rem 1rem', borderRadius: '8px', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                           <Pencil size={13} /> Modifier

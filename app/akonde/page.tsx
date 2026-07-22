@@ -130,7 +130,7 @@ export default function AkondePage() {
         </div>
 
         {/* Camemberts */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '1rem' }}>
           <DonutChart data={appareil} titre="Par appareil" sousTitre="Répartition des visites" />
           <DonutChart data={elements} titre="Clics par élément" sousTitre="Boutons & liens les plus cliqués" />
         </div>
