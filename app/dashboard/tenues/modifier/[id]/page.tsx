@@ -136,7 +136,7 @@ export default function ModifierTenuePage() {
     padding: '0.875rem 1rem 0.875rem 2.8rem', fontSize: '0.9rem', fontFamily: 'Inter, sans-serif', width: '100%', transition: 'border-color 0.2s',
   }
   const iconPos: React.CSSProperties = { position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#9AA093', pointerEvents: 'none' }
-  const labelStyle: React.CSSProperties = { fontFamily: 'Sora, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.6rem' }
+  const labelStyle: React.CSSProperties = { fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.6rem' }
 
   // États plein écran
   if (chargement) return (
@@ -158,12 +158,12 @@ export default function ModifierTenuePage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6rem 2rem' }}>
         <div style={{ textAlign: 'center', maxWidth: '360px' }}>
           <X size={48} color="#E7E3D8" style={{ margin: '0 auto 1rem' }} />
-          <h2 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.3rem', color: '#14201A', marginBottom: '0.5rem' }}>Tenue introuvable</h2>
+          <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.3rem', color: '#14201A', marginBottom: '0.5rem' }}>Tenue introuvable</h2>
           <p style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', marginBottom: '1.75rem' }}>
             Cette tenue n'existe pas ou ne vous appartient pas.
           </p>
           <Link href="/dashboard">
-            <button style={{ background: '#008751', color: '#fff', padding: '0.85rem 1.75rem', borderRadius: '10px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', border: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+            <button style={{ background: '#008751', color: '#fff', padding: '0.85rem 1.75rem', borderRadius: '10px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', border: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
               <ArrowLeft size={16} /> Retour au tableau de bord
             </button>
           </Link>
@@ -176,7 +176,7 @@ export default function ModifierTenuePage() {
     <div style={{ background: '#F7F5EF', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ textAlign: 'center' }}>
         <CheckCircle size={64} color="#008751" style={{ margin: '0 auto 1.5rem' }} />
-        <h2 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A', marginBottom: '0.5rem' }}>Modifications enregistrées !</h2>
+        <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A', marginBottom: '0.5rem' }}>Modifications enregistrées !</h2>
         <p style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif' }}>Redirection vers le tableau de bord…</p>
       </div>
     </div>
@@ -191,7 +191,7 @@ export default function ModifierTenuePage() {
             <ArrowLeft size={14} /> Retour
           </Link>
           <span style={{ color: '#C4C0B3' }}>·</span>
-          <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A' }}>Modifier la tenue</h1>
+          <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A' }}>Modifier la tenue</h1>
         </div>
 
         {error && <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>}
@@ -210,7 +210,7 @@ export default function ModifierTenuePage() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   {i === 0 && (
-                    <span style={{ position: 'absolute', bottom: '4px', left: '4px', background: 'rgba(0,135,81,0.92)', color: '#fff', fontFamily: 'Sora, sans-serif', fontSize: '0.55rem', fontWeight: 700, padding: '0.15rem 0.4rem', borderRadius: '50px' }}>Principale</span>
+                    <span style={{ position: 'absolute', bottom: '4px', left: '4px', background: 'rgba(0,135,81,0.92)', color: '#fff', fontFamily: 'Orbitron, sans-serif', fontSize: '0.55rem', fontWeight: 700, padding: '0.15rem 0.4rem', borderRadius: '50px' }}>Principale</span>
                   )}
                   <button type="button" onClick={() => removePhotoExistante(url)} style={{ position: 'absolute', top: '4px', right: '4px', background: '#E8112D', color: '#fff', border: 'none', borderRadius: '50%', width: '22px', height: '22px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <X size={12} />
@@ -244,7 +244,7 @@ export default function ModifierTenuePage() {
 
           {/* Infos */}
           <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Tag size={14} /> Informations
             </h3>
             <div>
@@ -342,10 +342,10 @@ export default function ModifierTenuePage() {
 
           {/* Actions */}
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button type="submit" disabled={loading} style={{ flex: 1, minWidth: '200px', background: loading ? '#E7E3D8' : 'linear-gradient(135deg, #008751, #00a862)', color: loading ? '#9AA093' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: loading ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            <button type="submit" disabled={loading} style={{ flex: 1, minWidth: '200px', background: loading ? '#E7E3D8' : 'linear-gradient(135deg, #008751, #00a862)', color: loading ? '#9AA093' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: loading ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
               {loading ? 'Enregistrement…' : <><CheckCircle size={18} /> Enregistrer les modifications</>}
             </button>
-            <button type="button" onClick={handleSupprimer} disabled={loading} style={{ background: '#FDE7E9', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '1.1rem 1.5rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+            <button type="button" onClick={handleSupprimer} disabled={loading} style={{ background: '#FDE7E9', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '1.1rem 1.5rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
               <Trash2 size={16} /> Supprimer
             </button>
           </div>

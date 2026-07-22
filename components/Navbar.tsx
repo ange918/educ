@@ -49,7 +49,7 @@ export default function Navbar() {
     borderRadius: '50px',
     fontWeight: 700,
     fontSize: '0.8rem',
-    fontFamily: 'Sora, sans-serif',
+    fontFamily: 'Orbitron, sans-serif',
     transition: 'transform 0.2s, box-shadow 0.2s',
     boxShadow: '0 4px 16px rgba(0,135,81,0.28)',
     display: 'flex',
@@ -67,7 +67,7 @@ export default function Navbar() {
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <Image src="/logo-icon.jpg" alt="DAHOMEY-TECH" width={36} height={36}
               style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--vert)' }} />
-            <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '0.95rem', color: 'var(--encre)', display: 'none' }} className="nav-wordmark">
+            <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '0.95rem', color: 'var(--encre)', display: 'none' }} className="nav-wordmark">
               DAHOMEY-TECH
             </span>
           </Link>
@@ -112,11 +112,11 @@ export default function Navbar() {
         flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         gap: '2rem', zIndex: 999, backdropFilter: 'blur(20px)',
       }}>
-        <Link href="/catalogue" style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.3rem', fontWeight: 700, color: 'var(--encre)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}
+        <Link href="/catalogue" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '1.3rem', fontWeight: 700, color: 'var(--encre)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}
           onClick={() => setMenuOpen(false)}>
           <i className="bx bx-search" style={{ fontSize: '20px', color: 'var(--vert)' }} /> Explorer le catalogue
         </Link>
-        <Link href="/auth/login" style={{ fontFamily: 'Sora, sans-serif', fontSize: '1.3rem', fontWeight: 700, color: 'var(--encre)' }}
+        <Link href="/auth/login" style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '1.3rem', fontWeight: 700, color: 'var(--encre)' }}
           onClick={() => setMenuOpen(false)}>
           Connexion
         </Link>

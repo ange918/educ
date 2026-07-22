@@ -80,7 +80,7 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
       </div>
 
       {/* Titre */}
-      <div style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.1rem', background: 'linear-gradient(90deg, #008751, #FCD116, #E8112D)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '0.1em', marginBottom: '2.5rem' }}>
+      <div style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.1rem', background: 'linear-gradient(90deg, #008751, #FCD116, #E8112D)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '0.1em', marginBottom: '2.5rem' }}>
         DAHOMEY-TECH
       </div>
 
@@ -91,7 +91,7 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: '0.7rem', color: 'var(--gris-texte)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Chargement</span>
-          <span ref={percentRef} style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.75rem', color: 'var(--vert)', fontWeight: 700 }}>{pct}%</span>
+          <span ref={percentRef} style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.75rem', color: 'var(--vert)', fontWeight: 700 }}>{pct}%</span>
         </div>
       </div>
 

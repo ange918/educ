@@ -72,7 +72,7 @@ export default function RegisterPage() {
   }
   const iconPos: React.CSSProperties = { position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#9AA093', pointerEvents: 'none' }
   const labelStyle: React.CSSProperties = {
-    fontFamily: 'Sora, sans-serif', fontSize: '0.65rem', fontWeight: 700, color: '#6E7268',
+    fontFamily: 'Orbitron, sans-serif', fontSize: '0.65rem', fontWeight: 700, color: '#6E7268',
     textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.6rem',
   }
 
@@ -98,12 +98,12 @@ export default function RegisterPage() {
         <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(0,135,81,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
           <Mail size={34} color="#008751" />
         </div>
-        <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#14201A', marginBottom: '0.75rem' }}>Vérifiez votre email</h1>
+        <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#14201A', marginBottom: '0.75rem' }}>Vérifiez votre email</h1>
         <p style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '2rem' }}>
           Un lien de confirmation a été envoyé à <strong style={{ color: '#14201A' }}>{form.email}</strong>. Cliquez sur ce lien pour activer votre compte, puis connectez-vous pour accéder à votre tableau de bord.
         </p>
         <Link href="/auth/login">
-          <button style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '0.9rem 2rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '0.9rem 2rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             Aller à la connexion <ArrowRight size={17} />
           </button>
         </Link>
@@ -116,7 +116,7 @@ export default function RegisterPage() {
       <div style={{ width: '100%', maxWidth: '540px' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <Image src="/logo-icon.jpg" alt="logo" width={60} height={60} style={{ borderRadius: '50%', objectFit: 'cover', margin: '0 auto 1rem', border: '2px solid #008751' }} />
-          <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.6rem', marginBottom: '0.4rem', color: '#14201A' }}>Rejoindre DAHOMEY-TECH</h1>
+          <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.6rem', marginBottom: '0.4rem', color: '#14201A' }}>Rejoindre DAHOMEY-TECH</h1>
           <p style={{ color: '#9AA093', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem' }}>Espace styliste — 100% gratuit</p>
         </div>
 
@@ -126,7 +126,7 @@ export default function RegisterPage() {
             <div key={s.n} style={{ display: 'flex', alignItems: 'center', flex: i < steps.length - 1 ? 1 : 0 }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.3rem' }}>
                 <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: step > s.n ? '#008751' : step === s.n ? 'rgba(0,135,81,0.2)' : '#FFFFFF', border: `2px solid ${step >= s.n ? '#008751' : '#E7E3D8'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }}>
-                  {step > s.n ? <CheckCircle size={16} color="#fff" /> : <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.8rem', color: step >= s.n ? '#fff' : '#9AA093' }}>{s.n}</span>}
+                  {step > s.n ? <CheckCircle size={16} color="#fff" /> : <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.8rem', color: step >= s.n ? '#fff' : '#9AA093' }}>{s.n}</span>}
                 </div>
                 <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.7rem', color: step === s.n ? '#14201A' : '#9AA093', fontWeight: step === s.n ? 600 : 400 }}>{s.label}</span>
               </div>
@@ -144,7 +144,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit}>
           {step === 1 && (
             <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', marginBottom: '0.25rem' }}>Vos informations</h3>
+              <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', marginBottom: '0.25rem' }}>Vos informations</h3>
 
               {field('Nom / atelier *', <User size={15} />,
                 <input required style={inputStyle} value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} placeholder="Ex: Adiza Couture"
@@ -184,7 +184,7 @@ export default function RegisterPage() {
                 if (!form.nom || !form.email || !form.telephone || !form.ville) { setError('Merci de remplir tous les champs obligatoires (nom, email, téléphone, ville).'); return }
                 if (form.password.length < 8) { setError('Le mot de passe doit contenir au moins 8 caractères.'); return }
                 setError(''); setStep(2)
-              }} style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: '0 8px 30px rgba(0,135,81,0.3)' }}>
+              }} style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: '0 8px 30px rgba(0,135,81,0.3)' }}>
                 Continuer <ArrowRight size={17} />
               </button>
             </div>
@@ -192,7 +192,7 @@ export default function RegisterPage() {
 
           {step === 2 && (
             <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751' }}>Votre atelier</h3>
+              <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751' }}>Votre atelier</h3>
               <div>
                 <label style={labelStyle}>Bio / description</label>
                 <textarea rows={4} style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '10px', color: '#14201A', padding: '0.9rem 1rem', fontSize: '0.9rem', fontFamily: 'Inter, sans-serif', width: '100%', resize: 'vertical', transition: 'border-color 0.2s' }} value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} placeholder="Parlez de votre style..."
@@ -207,10 +207,10 @@ export default function RegisterPage() {
                   onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
               )}
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button type="button" onClick={() => setStep(1)} style={{ flex: 1, background: 'transparent', border: '1px solid #E7E3D8', color: '#6E7268', padding: '1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                <button type="button" onClick={() => setStep(1)} style={{ flex: 1, background: 'transparent', border: '1px solid #E7E3D8', color: '#6E7268', padding: '1rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                   <ArrowLeft size={15} /> Retour
                 </button>
-                <button type="button" onClick={() => setStep(3)} style={{ flex: 2, background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: '0 8px 30px rgba(0,135,81,0.3)' }}>
+                <button type="button" onClick={() => setStep(3)} style={{ flex: 2, background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: '0 8px 30px rgba(0,135,81,0.3)' }}>
                   Continuer <ArrowRight size={15} />
                 </button>
               </div>
@@ -220,7 +220,7 @@ export default function RegisterPage() {
           {step === 3 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '1.75rem' }}>
-                <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', marginBottom: '1.25rem' }}>Récapitulatif</h3>
+                <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', marginBottom: '1.25rem' }}>Récapitulatif</h3>
                 {[['Atelier', form.nom], ['Email', form.email], ['Ville', form.ville], ['WhatsApp', form.whatsapp || '—'], ['Instagram', form.instagram || '—']].map(([l, v]) => (
                   <div key={l} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.6rem 0', borderBottom: '1px solid #E7E3D8' }}>
                     <span style={{ color: '#9AA093', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem' }}>{l}</span>
@@ -237,10 +237,10 @@ export default function RegisterPage() {
               </label>
 
               <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <button type="button" onClick={() => setStep(2)} style={{ flex: 1, background: 'transparent', border: '1px solid #E7E3D8', color: '#6E7268', padding: '1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                <button type="button" onClick={() => setStep(2)} style={{ flex: 1, background: 'transparent', border: '1px solid #E7E3D8', color: '#6E7268', padding: '1rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                   <ArrowLeft size={15} /> Retour
                 </button>
-                <button type="submit" disabled={!form.accepted || loading} style={{ flex: 2, background: !form.accepted || loading ? '#E7E3D8' : 'linear-gradient(135deg, #008751, #00a862)', color: !form.accepted || loading ? '#9AA093' : '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: !form.accepted || loading ? 'not-allowed' : 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: !form.accepted || loading ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', transition: 'all 0.3s' }}>
+                <button type="submit" disabled={!form.accepted || loading} style={{ flex: 2, background: !form.accepted || loading ? '#E7E3D8' : 'linear-gradient(135deg, #008751, #00a862)', color: !form.accepted || loading ? '#9AA093' : '#fff', padding: '1rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: !form.accepted || loading ? 'not-allowed' : 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', boxShadow: !form.accepted || loading ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', transition: 'all 0.3s' }}>
                   {loading ? 'Création...' : <><Rocket size={15} /> Créer mon espace</>}
                 </button>
               </div>

@@ -88,13 +88,13 @@ export default function NouvelleTenuePage() {
     padding: '0.875rem 1rem 0.875rem 2.8rem', fontSize: '0.9rem', fontFamily: 'Inter, sans-serif', width: '100%', transition: 'border-color 0.2s',
   }
   const iconPos: React.CSSProperties = { position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#9AA093', pointerEvents: 'none' }
-  const labelStyle: React.CSSProperties = { fontFamily: 'Sora, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.6rem' }
+  const labelStyle: React.CSSProperties = { fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.6rem' }
 
   if (success) return (
     <div style={{ background: '#F7F5EF', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ textAlign: 'center' }}>
         <CheckCircle size={64} color="#008751" style={{ margin: '0 auto 1.5rem' }} />
-        <h2 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A', marginBottom: '0.5rem' }}>Tenue publiée !</h2>
+        <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A', marginBottom: '0.5rem' }}>Tenue publiée !</h2>
         <p style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif' }}>Redirection vers le tableau de bord...</p>
       </div>
     </div>
@@ -109,7 +109,7 @@ export default function NouvelleTenuePage() {
             <ArrowLeft size={14} /> Retour
           </Link>
           <span style={{ color: '#C4C0B3' }}>·</span>
-          <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A' }}>Nouvelle tenue</h1>
+          <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A' }}>Nouvelle tenue</h1>
         </div>
 
         {error && <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>}
@@ -147,7 +147,7 @@ export default function NouvelleTenuePage() {
 
           {/* Infos */}
           <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Tag size={14} /> Informations
             </h3>
             <div>
@@ -243,7 +243,7 @@ export default function NouvelleTenuePage() {
             </div>
           </div>
 
-          <button type="submit" disabled={loading} style={{ background: loading ? '#E7E3D8' : 'linear-gradient(135deg, #008751, #00a862)', color: loading ? '#9AA093' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: loading ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+          <button type="submit" disabled={loading} style={{ background: loading ? '#E7E3D8' : 'linear-gradient(135deg, #008751, #00a862)', color: loading ? '#9AA093' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: loading ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: loading ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
             {loading ? 'Publication...' : <><CheckCircle size={18} /> Publier la tenue</>}
           </button>
         </form>

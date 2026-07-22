@@ -39,23 +39,23 @@ export default function TenueCard({ tenue }: { tenue: TenueWithStyliste }) {
           )}
           {!tenue.disponible && (
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(20,32,26,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ background: 'var(--rouge)', color: '#fff', padding: '0.35rem 0.9rem', borderRadius: '50px', fontSize: '0.7rem', fontWeight: 700, fontFamily: 'Sora, sans-serif' }}>ÉPUISÉ</span>
+              <span style={{ background: 'var(--rouge)', color: '#fff', padding: '0.35rem 0.9rem', borderRadius: '50px', fontSize: '0.7rem', fontWeight: 700, fontFamily: 'Orbitron, sans-serif' }}>ÉPUISÉ</span>
             </div>
           )}
-          <div style={{ position: 'absolute', top: '0.6rem', left: '0.6rem', background: 'rgba(255,255,255,0.92)', color: 'var(--vert)', padding: '0.28rem 0.65rem', borderRadius: '50px', fontSize: '0.62rem', fontWeight: 700, fontFamily: 'Sora, sans-serif', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          <div style={{ position: 'absolute', top: '0.6rem', left: '0.6rem', background: 'rgba(255,255,255,0.92)', color: 'var(--vert)', padding: '0.28rem 0.65rem', borderRadius: '50px', fontSize: '0.62rem', fontWeight: 700, fontFamily: 'Orbitron, sans-serif', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             {tenue.categorie}
           </div>
         </div>
       </Link>
       <div style={{ padding: '0.85rem 0.9rem 0.95rem' }}>
         <Link href={`/tenue/${tenue.id}`}>
-          <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: 'var(--encre)', marginBottom: '0.3rem', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' as const, overflow: 'hidden' }}>{tenue.nom}</h3>
+          <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: 'var(--encre)', marginBottom: '0.3rem', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' as const, overflow: 'hidden' }}>{tenue.nom}</h3>
         </Link>
         <p style={{ color: 'var(--gris-texte)', fontSize: '0.72rem', marginBottom: '0.6rem', fontFamily: 'Inter, sans-serif' }}>
           par <Link href={styliste?.slug ? `/styliste/${styliste.slug}` : '#'} style={{ color: 'var(--vert)', fontWeight: 600 }}>{styliste?.nom || '—'}</Link>
         </p>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem' }}>
-          <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '0.95rem', color: 'var(--encre)' }}>{formatPrix(tenue.prix)}</span>
+          <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '0.95rem', color: 'var(--encre)' }}>{formatPrix(tenue.prix)}</span>
           {tenue.disponible && whatsapp && (
             <a href={wa} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}>
               <button style={{ background: '#25D366', color: '#fff', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', boxShadow: '0 3px 10px rgba(37,211,102,0.35)' }}>

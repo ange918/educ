@@ -81,7 +81,7 @@ export default function ProfilPage() {
     padding: '0.875rem 1rem 0.875rem 2.8rem', fontSize: '0.9rem', fontFamily: 'Inter, sans-serif', width: '100%', transition: 'border-color 0.2s',
   }
   const iconPos: React.CSSProperties = { position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: '#9AA093', pointerEvents: 'none' }
-  const labelStyle: React.CSSProperties = { fontFamily: 'Sora, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.6rem' }
+  const labelStyle: React.CSSProperties = { fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: '#6E7268', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '0.6rem' }
 
   const field = (label: string, icon: React.ReactNode, input: React.ReactNode) => (
     <div>
@@ -111,7 +111,7 @@ export default function ProfilPage() {
             <ArrowLeft size={14} /> Retour
           </Link>
           <span style={{ color: '#C4C0B3' }}>·</span>
-          <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A' }}>Mon profil</h1>
+          <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A' }}>Mon profil</h1>
         </div>
 
         {error && <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>}
@@ -126,7 +126,7 @@ export default function ProfilPage() {
             )}
           </div>
           <div>
-            <p style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.4rem' }}>{form.nom}</p>
+            <p style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', marginBottom: '0.4rem' }}>{form.nom}</p>
             <p style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', marginBottom: '1rem' }}>Photo de profil</p>
             <label style={{ background: 'rgba(0,135,81,0.15)', border: '1px solid rgba(0,135,81,0.3)', color: '#008751', padding: '0.6rem 1.25rem', borderRadius: '8px', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
               <Camera size={14} /> Changer la photo
@@ -137,7 +137,7 @@ export default function ProfilPage() {
 
         <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#008751', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <User size={14} /> Informations personnelles
             </h3>
             {field('Nom / atelier *', <User size={14} />,
@@ -156,7 +156,7 @@ export default function ProfilPage() {
           </div>
 
           <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#25D366', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem', fontWeight: 700, color: '#25D366', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <MessageCircle size={14} /> Contacts & Réseaux
             </h3>
             {field('Téléphone', <Phone size={14} />,
@@ -173,7 +173,7 @@ export default function ProfilPage() {
             )}
           </div>
 
-          <button type="submit" disabled={saving} style={{ background: saved ? 'linear-gradient(135deg, #006b40, #008751)' : saving ? '#E7E3D8' : 'linear-gradient(135deg, #008751, #00a862)', color: saving ? '#9AA093' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: saving ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: saving ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+          <button type="submit" disabled={saving} style={{ background: saved ? 'linear-gradient(135deg, #006b40, #008751)' : saving ? '#E7E3D8' : 'linear-gradient(135deg, #008751, #00a862)', color: saving ? '#9AA093' : '#fff', padding: '1.1rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: saving ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.3s', boxShadow: saving ? 'none' : '0 8px 30px rgba(0,135,81,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
             {saving ? 'Enregistrement...' : saved ? <><CheckCircle size={18} /> Profil enregistré !</> : <><Save size={18} /> Enregistrer le profil</>}
           </button>
         </form>
