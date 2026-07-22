@@ -17,6 +17,7 @@ export default function RegisterPage() {
   const [form, setForm] = useState({ nom: '', email: '', telephone: '', ville: '', password: '', bio: '', whatsapp: '', instagram: '', accepted: false })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [emailSent, setEmailSent] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -25,10 +26,25 @@ export default function RegisterPage() {
     setLoading(true)
     const supabase = createClient()
 
+    // Toutes les infos du formulaire sont transmises dans les métadonnées :
+    // le trigger handle_new_user crée le profil styliste complet côté serveur,
+    // ce qui fonctionne même quand la confirmation d'email est active
+    // (le client n'a pas encore de session à cet instant).
     const { data, error: authError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
-      options: { data: { full_name: form.nom } },
+      options: {
+        emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/auth/login` : undefined,
+        data: {
+          full_name: form.nom,
+          telephone: form.telephone || '',
+          whatsapp: form.whatsapp || '',
+          instagram: form.instagram || '',
+          bio: form.bio || '',
+          ville: form.ville || 'Cotonou',
+          slug: slugify(form.nom),
+        },
+      },
     })
 
     if (authError) {
@@ -37,30 +53,15 @@ export default function RegisterPage() {
       return
     }
 
-    if (data.user) {
-      const slug = slugify(form.nom)
-      // Le trigger handle_new_user crée déjà la ligne à l'inscription :
-      // upsert pour la compléter sans erreur de clé dupliquée.
-      const { error: insertError } = await supabase.from('stylistes').upsert({
-        id: data.user.id,
-        nom: form.nom,
-        email: form.email,
-        telephone: form.telephone || null,
-        whatsapp: form.whatsapp || null,
-        instagram: form.instagram || null,
-        bio: form.bio || null,
-        ville: form.ville || 'Cotonou',
-        slug,
-      })
+    setLoading(false)
 
-      if (insertError) {
-        setError(insertError.message)
-        setLoading(false)
-        return
-      }
+    // Pas de session => l'email doit être confirmé avant l'accès au tableau de bord.
+    if (!data.session) {
+      setEmailSent(true)
+      return
     }
 
-    setLoading(false)
+    // Session active (confirmation d'email désactivée) => accès direct.
     router.push('/dashboard')
     router.refresh()
   }
@@ -87,6 +88,25 @@ export default function RegisterPage() {
       <div style={{ position: 'relative' }}>
         <span style={iconPos}>{icon}</span>
         {input}
+      </div>
+    </div>
+  )
+
+  if (emailSent) return (
+    <div style={{ background: '#F7F5EF', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+      <div style={{ width: '100%', maxWidth: '480px', background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '20px', padding: '3rem 2rem', textAlign: 'center' }}>
+        <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(0,135,81,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+          <Mail size={34} color="#008751" />
+        </div>
+        <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#14201A', marginBottom: '0.75rem' }}>Vérifiez votre email</h1>
+        <p style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '2rem' }}>
+          Un lien de confirmation a été envoyé à <strong style={{ color: '#14201A' }}>{form.email}</strong>. Cliquez sur ce lien pour activer votre compte, puis connectez-vous pour accéder à votre tableau de bord.
+        </p>
+        <Link href="/auth/login">
+          <button style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '0.9rem 2rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', border: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+            Aller à la connexion <ArrowRight size={17} />
+          </button>
+        </Link>
       </div>
     </div>
   )

@@ -7,7 +7,8 @@ import Navbar from '@/components/Navbar'
 import { formatPrix } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import type { Styliste, Tenue } from '@/lib/supabase/types'
-import { Shirt, Eye, ShoppingBag, Star, Plus, Pencil, Trash2, MapPin, ExternalLink, MessageCircle, TrendingUp, CheckCircle, XCircle, LogOut } from 'lucide-react'
+import StylisteGraphs from '@/components/StylisteGraphs'
+import { Shirt, Eye, ShoppingBag, Star, Plus, Pencil, Trash2, MapPin, ExternalLink, MessageCircle, TrendingUp, CheckCircle, XCircle, LogOut, ShieldCheck } from 'lucide-react'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -134,6 +135,7 @@ export default function DashboardPage() {
             {[
               { label: 'Modifier mon profil', href: '/dashboard/profil', icon: <Pencil size={15} />, color: '#C8972A' },
               { label: 'Voir ma page publique', href: styliste?.slug ? `/styliste/${styliste.slug}` : '#', icon: <ExternalLink size={15} />, color: '#008751' },
+              ...(styliste?.is_admin ? [{ label: 'Tableau de bord admin', href: '/admin', icon: <ShieldCheck size={15} />, color: '#14201A' }] : []),
               { label: 'Contact support', href: '#', icon: <MessageCircle size={15} />, color: '#E8112D' },
             ].map(({ label, href, icon, color }) => (
               <Link key={label} href={href}>
@@ -205,6 +207,9 @@ export default function DashboardPage() {
               })}
             </div>
           )}
+
+          {/* Graphes : tenues ajoutées, ventes, clics sur le profil */}
+          <StylisteGraphs />
         </div>
       </div>
     </div>

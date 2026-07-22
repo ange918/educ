@@ -24,7 +24,8 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+  const p = request.nextUrl.pathname
+  if (!user && (p.startsWith('/dashboard') || p.startsWith('/admin'))) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
@@ -32,5 +33,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: ['/dashboard/:path*', '/admin/:path*'],
 }
