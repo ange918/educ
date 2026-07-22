@@ -107,7 +107,7 @@ export default async function StylistePage({ params }: { params: { slug: string 
             <Shirt size={20} color="#C8972A" /> Toutes les tenues <span style={{ color: '#C8972A' }}>({tenuesList.length})</span>
           </h2>
           {tenuesList.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.5rem', paddingBottom: '5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(240px, 100%), 1fr))', gap: '1.5rem', paddingBottom: '5rem' }}>
               {tenuesList.map(t => <TenueCard key={t.id} tenue={t} />)}
             </div>
           ) : (
