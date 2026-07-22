@@ -193,7 +193,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {tenue.disponible && whatsapp ? (
-                  <a href={whatsappMsg} target="_blank" rel="noopener noreferrer">
+                  <a href={whatsappMsg} target="_blank" rel="noopener noreferrer" data-track="commande:whatsapp">
                     <button style={{ width: '100%', background: '#E8112D', color: '#fff', padding: '1.1rem 2rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', transition: 'all 0.3s', border: 'none', boxShadow: '0 8px 40px rgba(232,17,45,0.3)' }}
                       onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
                       onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>

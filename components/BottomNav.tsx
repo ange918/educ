@@ -29,7 +29,7 @@ export default function BottomNav() {
       {ITEMS.map(({ href, label, icon, match }) => {
         const active = match(pathname)
         return (
-          <Link key={label} href={href} style={{ flex: 1, display: 'flex' }}>
+          <Link key={label} href={href} style={{ flex: 1, display: 'flex' }} data-track={`bottomnav:${label.toLowerCase()}`}>
             <div style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               gap: '3px', width: '100%', color: active ? 'var(--vert)' : 'var(--gris-texte)',
