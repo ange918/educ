@@ -47,14 +47,18 @@ export default function NouvelleTenuePage() {
     if (!user) { router.push('/auth/login'); return }
 
     const photoUrls: string[] = []
-    for (const file of photos) {
+    for (let i = 0; i < photos.length; i++) {
+      const file = photos[i]
       const ext = file.name.split('.').pop()
-      const path = `${user.id}/${Date.now()}.${ext}`
+      const path = `${user.id}/${Date.now()}-${i}.${ext}`
       const { error: uploadErr } = await supabase.storage.from('photos').upload(path, file)
-      if (!uploadErr) {
-        const { data: urlData } = supabase.storage.from('photos').getPublicUrl(path)
-        photoUrls.push(urlData.publicUrl)
+      if (uploadErr) {
+        setError(`Échec de l'envoi de la photo « ${file.name} » : ${uploadErr.message}`)
+        setLoading(false)
+        return
       }
+      const { data: urlData } = supabase.storage.from('photos').getPublicUrl(path)
+      photoUrls.push(urlData.publicUrl)
     }
 
     const couleursFiltered = couleurs.filter(c => c.trim() !== '')

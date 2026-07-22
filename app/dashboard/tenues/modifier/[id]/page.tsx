@@ -88,10 +88,13 @@ export default function ModifierTenuePage() {
       const ext = file.name.split('.').pop()
       const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
       const { error: uploadErr } = await supabase.storage.from('photos').upload(path, file)
-      if (!uploadErr) {
-        const { data: urlData } = supabase.storage.from('photos').getPublicUrl(path)
-        uploadedUrls.push(urlData.publicUrl)
+      if (uploadErr) {
+        setError(`Échec de l'envoi de la photo « ${file.name} » : ${uploadErr.message}`)
+        setLoading(false)
+        return
       }
+      const { data: urlData } = supabase.storage.from('photos').getPublicUrl(path)
+      uploadedUrls.push(urlData.publicUrl)
     }
 
     const photosFinales = [...photosExistantes, ...uploadedUrls]

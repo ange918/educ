@@ -8,6 +8,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server'
 import type { Tenue, Styliste } from '@/lib/supabase/types'
 import { MapPin, AtSign, Shirt, Eye, BadgeCheck, ArrowLeft } from 'lucide-react'
 import WhatsAppButton from '@/components/WhatsAppButton'
+import TrackProfilVue from '@/components/TrackProfilVue'
 
 type TenueWithStyliste = Tenue & { stylistes?: Styliste }
 
@@ -34,6 +35,7 @@ export default async function StylistePage({ params }: { params: { slug: string 
 
   return (
     <div className="pb-bottomnav" style={{ background: '#F7F5EF', minHeight: '100vh' }}>
+      <TrackProfilVue stylisteId={styliste.id} />
       <Navbar />
       <div style={{ position: 'relative' }}>
 

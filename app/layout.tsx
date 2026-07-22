@@ -3,6 +3,7 @@ import './globals.css'
 import 'boxicons/css/boxicons.min.css'
 import AppShell from '@/components/AppShell'
 import BottomNav from '@/components/BottomNav'
+import TrackVisite from '@/components/TrackVisite'
 
 export const metadata: Metadata = {
   title: 'DAHOMEY-TECH — Stylistes vérifiés, une seule adresse',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AppShell>{children}</AppShell>
         <BottomNav />
+        <TrackVisite />
       </body>
     </html>
   )

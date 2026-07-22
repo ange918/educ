@@ -11,6 +11,7 @@ export type Styliste = {
   photo_url?: string
   slug?: string
   verified: boolean
+  is_admin?: boolean
   created_at: string
   updated_at: string
 }
@@ -46,6 +47,7 @@ export type Commande = {
   taille?: string
   couleur?: string
   message?: string
+  montant?: number
   statut: 'en_attente' | 'confirmé' | 'annulé' | 'livré'
   created_at: string
 }
