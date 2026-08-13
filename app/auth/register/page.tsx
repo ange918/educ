@@ -166,11 +166,11 @@ export default function RegisterPage() {
                   <label style={labelStyle}><MapPin size={11} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.3rem' }} />Ville *</label>
                   <div style={{ position: 'relative' }}>
                     <MapPin size={15} style={iconPos} />
-                    <select required style={inputStyle} value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })}
-                      onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')}>
-                      <option value="">Ville...</option>
-                      {VILLES.map(v => <option key={v} value={v}>{v}</option>)}
-                    </select>
+                    <input required list="villes-suggestions" style={inputStyle} value={form.ville} onChange={e => setForm({ ...form, ville: e.target.value })} placeholder="Votre ville"
+                      onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
+                    <datalist id="villes-suggestions">
+                      {VILLES.map(v => <option key={v} value={v} />)}
+                    </datalist>
                   </div>
                 </div>
               </div>
