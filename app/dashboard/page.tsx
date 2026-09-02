@@ -74,7 +74,7 @@ export default function DashboardPage() {
     { bg: 'rgba(0,135,81,0.12)', border: 'rgba(0,135,81,0.25)', icon: <Shirt size={22} color="#008751" />, val: tenues.length, label: 'Tenues publiées', sub: `${tenues.filter(t => t.disponible).length} disponibles`, subColor: '#008751' },
     { bg: 'rgba(252,209,22,0.1)', border: 'rgba(252,209,22,0.2)', icon: <Eye size={22} color="#C8972A" />, val: totalVues.toLocaleString(), label: 'Vues totales', sub: 'Toutes tenues', subColor: '#C8972A' },
     { bg: 'rgba(37,211,102,0.1)', border: 'rgba(37,211,102,0.2)', icon: <ShoppingBag size={22} color="#25D366" />, val: '—', label: 'Commandes WhatsApp', sub: 'Via la plateforme', subColor: '#25D366' },
-    { bg: 'rgba(232,17,45,0.1)', border: 'rgba(232,17,45,0.2)', icon: <Star size={22} color="#E8112D" fill="#E8112D" />, val: styliste?.verified ? 'Vérifié' : 'En attente', label: 'Statut du compte', sub: styliste?.verified ? 'Compte certifié ✓' : 'Vérification en cours', subColor: styliste?.verified ? '#008751' : '#E8112D' },
+    { bg: styliste?.verified ? 'rgba(0,135,81,0.12)' : 'rgba(252,209,22,0.1)', border: styliste?.verified ? 'rgba(0,135,81,0.25)' : 'rgba(252,209,22,0.2)', icon: <Star size={22} color={styliste?.verified ? '#008751' : '#C8972A'} fill={styliste?.verified ? '#008751' : '#C8972A'} />, val: 'Actif', label: 'Statut du compte', sub: styliste?.verified ? 'Profil certifié ✓' : 'Certification en cours', subColor: styliste?.verified ? '#008751' : '#C8972A' },
   ]
 
   return (
