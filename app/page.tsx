@@ -13,6 +13,8 @@ import type { Tenue, Styliste } from '@/lib/supabase/types'
 
 type TenueWithStyliste = Tenue & { stylistes?: Styliste }
 
+const HERO_CARDS = ['/hero-1.jpg', '/hero-2.jpg', '/hero-3.jpg']
+
 const TABS = [
   { id: 'tous', label: 'Pour vous' },
   { id: 'nouveautes', label: 'Nouveautés' },
@@ -40,13 +42,14 @@ function Bx({ name, size = 18, color }: { name: string; size?: number; color?: s
 export default function LandingPage() {
   const [tenues, setTenues] = useState<TenueWithStyliste[]>([])
   const [stylistes, setStylistes] = useState<Styliste[]>([])
+  const [vedette, setVedette] = useState<{ styliste: Styliste; vues: number } | null>(null)
   const [tab, setTab] = useState('tous')
   const [search, setSearch] = useState('')
 
   useEffect(() => {
     const supabase = createClient()
     const load = async () => {
-      const [{ data: tenuesData }, { data: stylistesData }] = await Promise.all([
+      const [{ data: tenuesData }, { data: stylistesData }, { data: toutesTenues }] = await Promise.all([
         supabase
           .from('tenues')
           .select('*, stylistes(id, nom, whatsapp, slug, photo_url, ville, verified)')
@@ -54,9 +57,22 @@ export default function LandingPage() {
           .order('created_at', { ascending: false })
           .limit(8),
         supabase.from('stylistes').select('*').order('created_at', { ascending: false }).limit(4),
+        supabase.from('tenues').select('styliste_id, vues, stylistes(*)').eq('disponible', true),
       ])
       setTenues((tenuesData as TenueWithStyliste[]) || [])
       setStylistes((stylistesData as Styliste[]) || [])
+
+      // Atelier en vedette = le styliste dont les tenues cumulent le plus de vues
+      const parStyliste = new Map<string, { styliste: Styliste; vues: number }>()
+      for (const t of (toutesTenues as unknown as TenueWithStyliste[]) || []) {
+        const s = t.stylistes
+        if (!s) continue
+        const entry = parStyliste.get(s.id) || { styliste: s, vues: 0 }
+        entry.vues += t.vues || 0
+        parStyliste.set(s.id, entry)
+      }
+      const top = Array.from(parStyliste.values()).sort((a, b) => b.vues - a.vues)[0]
+      setVedette(top || null)
     }
     load()
   }, [])
@@ -67,8 +83,6 @@ export default function LandingPage() {
     if (tab === 'nouveautes') list = [...list].sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
     return list.slice(0, 8)
   }, [tenues, tab])
-
-  const heroTenue = tenues[0]
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,66 +95,88 @@ export default function LandingPage() {
 
       {/* ── HERO ── */}
       <section className="dt-section" style={{ paddingTop: '1.75rem' }}>
-        <div className="dt-container dt-hero">
-          <div>
-            <p style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: 'var(--vert)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-              <Bx name="bxs-store" size={15} /> Marketplace de stylistes vérifiés
-            </p>
-            <h1 className="dt-h1" style={{ marginBottom: '1.1rem' }}>
-              Des créations sélectionnées, une seule adresse.
-            </h1>
-            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.02rem', color: 'var(--gris-texte)', lineHeight: 1.65, marginBottom: '1.75rem', maxWidth: '520px' }}>
-              Explorez des stylistes africains vérifiés un à un. Boubou, pagne, kaftan — commandez directement sur WhatsApp, sans intermédiaire.
-            </p>
+        <div className="dt-container" style={{ maxWidth: '620px', margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', fontFamily: 'Orbitron, sans-serif', fontSize: '0.7rem', fontWeight: 700, color: 'var(--vert)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+            <Bx name="bxs-store" size={15} /> Marketplace de stylistes vérifiés
+          </p>
+          <h1 className="dt-h1" style={{ marginBottom: '1.1rem' }}>
+            Des créations sélectionnées, une seule adresse.
+          </h1>
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '1.02rem', color: 'var(--gris-texte)', lineHeight: 1.65, marginBottom: '1.75rem', maxWidth: '480px', margin: '0 auto 1.75rem' }}>
+            Explorez des stylistes africains vérifiés un à un. Boubou, pagne, kaftan — commandez directement sur WhatsApp, sans intermédiaire.
+          </p>
 
-            <form onSubmit={handleSearch} style={{ display: 'flex', gap: '0.6rem', marginBottom: '1.5rem', maxWidth: '520px' }}>
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--blanc)', border: '1px solid var(--bordure)', borderRadius: '50px', padding: '0.8rem 1.1rem' }}>
-                <Bx name="bx-search" size={17} color="var(--gris-texte)" />
-                <input
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  placeholder="Rechercher une tenue, un styliste…"
-                  style={{ border: 'none', outline: 'none', background: 'transparent', width: '100%', fontFamily: 'Inter, sans-serif', fontSize: '0.88rem', color: 'var(--encre)' }}
-                />
-              </div>
-              <button type="submit" style={{ background: 'var(--vert)', color: '#fff', border: 'none', borderRadius: '50px', padding: '0 1.5rem', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                Explorer <Bx name="bx-right-arrow-alt" size={17} />
-              </button>
-            </form>
-
-            <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-              {[['bxs-group', '200+', 'stylistes'], ['bxs-t-shirt', '5 000+', 'tenues'], ['bxs-badge-check', '100%', 'vérifiés']].map(([ic, n, l]) => (
-                <div key={l} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Bx name={ic} size={18} color="var(--vert)" />
-                  <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', color: 'var(--encre)' }}>{n}</span>
-                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: 'var(--gris-texte)' }}>{l}</span>
-                </div>
-              ))}
+          <form onSubmit={handleSearch} style={{ display: 'flex', gap: '0.6rem', maxWidth: '480px', margin: '0 auto' }}>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--blanc)', border: '1px solid var(--bordure)', borderRadius: '50px', padding: '0.8rem 1.1rem' }}>
+              <Bx name="bx-search" size={17} color="var(--gris-texte)" />
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Rechercher une tenue, un styliste…"
+                style={{ border: 'none', outline: 'none', background: 'transparent', width: '100%', fontFamily: 'Inter, sans-serif', fontSize: '0.88rem', color: 'var(--encre)' }}
+              />
             </div>
-          </div>
+          </form>
+        </div>
 
-          {/* Visuel vedette */}
-          <div style={{ position: 'relative', borderRadius: '22px', overflow: 'hidden', aspectRatio: '4/5', background: 'var(--vert-soft)', border: '1px solid var(--bordure)' }}>
-            <ProtectedImage
-              src={heroTenue?.photo_principale || heroTenue?.photos?.[0] || '/visual3.jpg'}
-              alt={heroTenue?.nom || 'Création vedette'}
-              fill sizes="(max-width: 900px) 100vw, 50vw"
-              style={{ objectFit: 'cover' }}
-              priority
-            />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(20,32,26,0.35) 0%, transparent 45%)' }} />
-            {heroTenue?.stylistes && (
-              <div style={{ position: 'absolute', left: '1rem', bottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.55rem', background: 'rgba(255,255,255,0.95)', borderRadius: '50px', padding: '0.4rem 0.85rem 0.4rem 0.4rem' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--vert)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.8rem' }}>
-                  {heroTenue.stylistes.nom?.[0]?.toUpperCase()}
-                </div>
-                <span style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.78rem', fontWeight: 700, color: 'var(--encre)' }}>{heroTenue.stylistes.nom}</span>
-                {heroTenue.stylistes.verified && <Bx name="bxs-badge-check" size={15} color="var(--vert)" />}
+        {/* Cartes en éventail */}
+        <div className="dt-hero-cards">
+          {HERO_CARDS.map((src, i) => (
+            <div key={src} className="dt-hero-card">
+              <ProtectedImage src={src} alt="DAHOMEY-TECH" fill sizes="(max-width: 640px) 45vw, 190px" style={{ objectFit: 'cover' }} priority={i === 1} />
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: 'center', marginTop: '2.25rem' }}>
+          <Link href="/catalogue" style={{ background: 'var(--vert)', color: '#fff', border: 'none', borderRadius: '50px', padding: '0.9rem 1.75rem', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+            Explorer le catalogue <Bx name="bx-right-arrow-alt" size={17} />
+          </Link>
+          <div style={{ display: 'flex', gap: '1.75rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '1.5rem' }}>
+            {[['bxs-group', '200+', 'stylistes'], ['bxs-t-shirt', '5 000+', 'tenues'], ['bxs-badge-check', '100%', 'vérifiés']].map(([ic, n, l]) => (
+              <div key={l} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Bx name={ic} size={18} color="var(--vert)" />
+                <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', color: 'var(--encre)' }}>{n}</span>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: 'var(--gris-texte)' }}>{l}</span>
               </div>
-            )}
+            ))}
           </div>
         </div>
       </section>
+
+      {/* ── ATELIER EN VEDETTE ── */}
+      {vedette && (
+        <section className="dt-section" style={{ paddingTop: 0 }}>
+          <div className="dt-container">
+            <div style={{ background: 'var(--blanc)', border: '1px solid var(--bordure)', borderRadius: '22px', padding: 'clamp(1.5rem, 4vw, 2.5rem)', display: 'flex', gap: '1.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <div style={{ position: 'relative', width: '84px', height: '84px', flexShrink: 0, borderRadius: '50%', background: 'var(--vert-soft)', border: '3px solid var(--vert)', overflow: 'hidden' }}>
+                {vedette.styliste.photo_url ? (
+                  <ProtectedImage src={vedette.styliste.photo_url} alt={vedette.styliste.nom} fill style={{ objectFit: 'contain' }} />
+                ) : (
+                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Orbitron, sans-serif', fontWeight: 900, fontSize: '1.7rem', color: 'var(--vert)' }}>
+                    {vedette.styliste.nom?.[0]?.toUpperCase()}
+                  </div>
+                )}
+              </div>
+              <div style={{ flex: 1, minWidth: '220px' }}>
+                <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'Orbitron, sans-serif', fontSize: '0.68rem', fontWeight: 700, color: 'var(--vert)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.4rem' }}>
+                  <Bx name="bxs-star" size={14} /> Atelier en vedette
+                </p>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.25rem', color: 'var(--encre)', marginBottom: '0.3rem' }}>
+                  {vedette.styliste.nom} {vedette.styliste.verified && <Bx name="bxs-badge-check" size={16} color="var(--vert)" />}
+                </h3>
+                <p style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'var(--gris-texte)' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Bx name="bx-map" size={13} color="var(--vert)" /> {vedette.styliste.ville}</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}><Bx name="bx-show" size={13} color="var(--vert)" /> {vedette.vues.toLocaleString('fr-FR')} vues</span>
+                </p>
+              </div>
+              <Link href={`/styliste/${vedette.styliste.slug || vedette.styliste.id}`} style={{ background: 'var(--vert)', color: '#fff', padding: '0.85rem 1.5rem', borderRadius: '50px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', textDecoration: 'none' }}>
+                Voir la boutique <Bx name="bx-right-arrow-alt" size={16} />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── BARRE DE CONFIANCE ── */}
       <section style={{ background: 'var(--blanc)', borderTop: '1px solid var(--bordure)', borderBottom: '1px solid var(--bordure)', padding: '1.25rem 0' }}>

@@ -82,8 +82,18 @@ input, textarea, select {
 @media (min-width: 900px) { .dt-section { padding: 3.25rem 0; } }
 
 /* Hero : empilé mobile, 2 colonnes desktop */
-.dt-hero { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
-@media (min-width: 900px) { .dt-hero { grid-template-columns: 1.05fr 1fr; gap: 3.5rem; } }
+/* Héros : 3 cartes photo en éventail, façon jeu de cartes */
+.dt-hero-cards { position: relative; height: 240px; max-width: 380px; margin: 2.5rem auto 0; }
+.dt-hero-card { position: absolute; top: 0; left: 50%; width: 140px; height: 190px; border-radius: 16px; overflow: hidden; border: 6px solid var(--blanc); box-shadow: 0 14px 34px rgba(20,32,26,0.18); background: var(--vert-soft); transition: transform 0.3s ease; }
+.dt-hero-card:nth-child(1) { transform: translateX(calc(-50% - 56px)) rotate(-8deg); z-index: 1; }
+.dt-hero-card:nth-child(2) { transform: translateX(-50%) rotate(0deg); z-index: 2; }
+.dt-hero-card:nth-child(3) { transform: translateX(calc(-50% + 56px)) rotate(8deg); z-index: 1; }
+@media (min-width: 640px) {
+  .dt-hero-cards { height: 320px; max-width: 500px; }
+  .dt-hero-card { width: 190px; height: 250px; }
+  .dt-hero-card:nth-child(1) { transform: translateX(calc(-50% - 86px)) rotate(-9deg); }
+  .dt-hero-card:nth-child(3) { transform: translateX(calc(-50% + 86px)) rotate(9deg); }
+}
 
 /* Barre de confiance */
 .dt-trust { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 0.5rem; }
