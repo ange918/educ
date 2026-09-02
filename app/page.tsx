@@ -8,8 +8,7 @@ import StylisteCard from '@/components/StylisteCard'
 import TenueCard from '@/components/TenueCard'
 import ProtectedImage from '@/components/ProtectedImage'
 import { createClient } from '@/lib/supabase/client'
-import { CATEGORIES } from '@/lib/mockData'
-import type { Tenue, Styliste } from '@/lib/supabase/types'
+import type { Tenue, Styliste, Categorie } from '@/lib/supabase/types'
 
 type TenueWithStyliste = Tenue & { stylistes?: Styliste }
 
@@ -43,13 +42,23 @@ export default function LandingPage() {
   const [tenues, setTenues] = useState<TenueWithStyliste[]>([])
   const [stylistes, setStylistes] = useState<Styliste[]>([])
   const [vedette, setVedette] = useState<{ styliste: Styliste; vues: number } | null>(null)
+  const [categories, setCategories] = useState<Categorie[]>([])
+  const [stats, setStats] = useState({ stylistes: 0, tenues: 0, verifiesPct: 0 })
   const [tab, setTab] = useState('tous')
   const [search, setSearch] = useState('')
 
   useEffect(() => {
     const supabase = createClient()
     const load = async () => {
-      const [{ data: tenuesData }, { data: stylistesData }, { data: toutesTenues }] = await Promise.all([
+      const [
+        { data: tenuesData },
+        { data: stylistesData },
+        { data: toutesTenues },
+        { data: categoriesData },
+        { count: nbStylistes },
+        { count: nbTenues },
+        { count: nbVerifies },
+      ] = await Promise.all([
         supabase
           .from('tenues')
           .select('*, stylistes(id, nom, whatsapp, slug, photo_url, ville, verified)')
@@ -58,9 +67,19 @@ export default function LandingPage() {
           .limit(8),
         supabase.from('stylistes').select('*').order('created_at', { ascending: false }).limit(4),
         supabase.from('tenues').select('styliste_id, vues, stylistes(*)').eq('disponible', true),
+        supabase.from('categories').select('*').order('ordre'),
+        supabase.from('stylistes').select('*', { count: 'exact', head: true }),
+        supabase.from('tenues').select('*', { count: 'exact', head: true }).eq('disponible', true),
+        supabase.from('stylistes').select('*', { count: 'exact', head: true }).eq('verified', true),
       ])
       setTenues((tenuesData as TenueWithStyliste[]) || [])
       setStylistes((stylistesData as Styliste[]) || [])
+      setCategories((categoriesData as Categorie[]) || [])
+      setStats({
+        stylistes: nbStylistes || 0,
+        tenues: nbTenues || 0,
+        verifiesPct: nbStylistes ? Math.round(((nbVerifies || 0) / nbStylistes) * 100) : 0,
+      })
 
       // Atelier en vedette = le styliste dont les tenues cumulent le plus de vues
       const parStyliste = new Map<string, { styliste: Styliste; vues: number }>()
@@ -133,7 +152,7 @@ export default function LandingPage() {
             Explorer le catalogue <Bx name="bx-right-arrow-alt" size={17} />
           </Link>
           <div style={{ display: 'flex', gap: '1.75rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '1.5rem' }}>
-            {[['bxs-group', '200+', 'stylistes'], ['bxs-t-shirt', '5 000+', 'tenues'], ['bxs-badge-check', '100%', 'vérifiés']].map(([ic, n, l]) => (
+            {[['bxs-group', stats.stylistes.toLocaleString('fr-FR'), 'stylistes'], ['bxs-t-shirt', stats.tenues.toLocaleString('fr-FR'), 'tenues'], ['bxs-badge-check', `${stats.verifiesPct}%`, 'vérifiés']].map(([ic, n, l]) => (
               <div key={l} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Bx name={ic} size={18} color="var(--vert)" />
                 <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', color: 'var(--encre)' }}>{n}</span>
@@ -200,12 +219,12 @@ export default function LandingPage() {
             </Link>
           </div>
           <div className="dt-cats">
-            {CATEGORIES.map(cat => (
-              <Link key={cat.id} href={`/catalogue?categorie=${cat.id}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.55rem' }}>
+            {categories.map(cat => (
+              <Link key={cat.id} href={`/catalogue?categorie=${cat.slug}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.55rem' }}>
                 <div style={{ width: '100%', maxWidth: '78px', aspectRatio: '1/1', borderRadius: '50%', background: 'var(--vert-soft)', border: '1px solid var(--bordure)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Bx name={cat.icon} size={26} color="var(--vert)" />
+                  {cat.icone && <Bx name={cat.icone} size={26} color="var(--vert)" />}
                 </div>
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.74rem', fontWeight: 600, color: 'var(--encre)', textAlign: 'center' }}>{cat.label}</span>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.74rem', fontWeight: 600, color: 'var(--encre)', textAlign: 'center' }}>{cat.nom}</span>
               </Link>
             ))}
           </div>

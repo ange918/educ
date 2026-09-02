@@ -33,19 +33,6 @@ export interface Tenue {
   ville: string
 }
 
-export const CATEGORIES = [
-  { id: 'boubou', label: 'Boubou', icon: 'bxs-t-shirt' },
-  { id: 'kaftan', label: 'Kaftan', icon: 'bxs-crown' },
-  { id: 'robe-soiree', label: 'Robe de soirée', icon: 'bxs-diamond' },
-  { id: 'costume', label: 'Costume africain', icon: 'bxs-award' },
-  { id: 'robe', label: 'Robe', icon: 'bxs-star' },
-  { id: 'tailleur', label: 'Tailleur homme / dame', icon: 'bx-male-sign' },
-  { id: 'tunique', label: 'Tunique', icon: 'bxs-t-shirt' },
-  { id: 'pagne', label: 'Pagne', icon: 'bxs-layer' },
-  { id: 'accessoires', label: 'Accessoires', icon: 'bxs-watch' },
-  { id: 'friperie', label: 'Friperie', icon: 'bxs-shopping-bags' },
-]
-
 export const VILLES = ['Cotonou', 'Porto-Novo', 'Parakou', 'Abomey-Calavi', 'Natitingou', 'Abidjan', 'Dakar', 'Lagos']
 
 export const STYLISTES: Styliste[] = [
