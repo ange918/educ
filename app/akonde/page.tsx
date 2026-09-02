@@ -4,10 +4,24 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import AreaChart from '@/components/AreaChart'
 import DonutChart, { type DonutSlice } from '@/components/DonutChart'
-import { Eye, MousePointerClick, Fingerprint, CalendarDays, ShieldCheck, Lock, RefreshCw } from 'lucide-react'
+import { Eye, MousePointerClick, Fingerprint, CalendarDays, ShieldCheck, Lock, RefreshCw, Users, BadgeCheck } from 'lucide-react'
 
 type Serie = { jour: string; visites: number; clics: number }
 type Elem = { element: string; total: number }
+type StylisteRow = {
+  id: string
+  nom: string
+  ville: string | null
+  email: string | null
+  whatsapp: string | null
+  verified: boolean
+  created_at: string
+  nb_tenues: number
+  nb_tenues_dispo: number
+  nb_vues: number
+  nb_commandes: number
+  nb_clics_profil: number
+}
 type Stats = {
   total_visiteurs: number
   total_clics: number
@@ -18,6 +32,7 @@ type Stats = {
   par_appareil: { ordinateur: number; mobile: number; inconnu: number }
   clics_par_element: Elem[]
   series: Serie[]
+  stylistes?: StylisteRow[]
   error?: string
 }
 
@@ -71,7 +86,9 @@ export default function AkondePage() {
   }
 
   // ── Tableau de bord ──
+  const stylistes = stats.stylistes || []
   const cards = [
+    { icon: <Users size={18} color="#25D366" />, val: stylistes.length, label: 'Stylistes inscrits', sub: `${stylistes.filter(s => s.verified).length} vérifiés` },
     { icon: <Eye size={18} color="#008751" />, val: stats.total_visiteurs, label: 'Visites totales', sub: `+${stats.visites_aujourdhui} aujourd'hui` },
     { icon: <MousePointerClick size={18} color="#2E86DE" />, val: stats.total_clics, label: 'Clics totaux', sub: `+${stats.clics_aujourdhui} aujourd'hui` },
     { icon: <Fingerprint size={18} color="#C8972A" />, val: stats.visiteurs_uniques, label: 'Pages distinctes', sub: 'sessions distinctes' },
@@ -130,9 +147,65 @@ export default function AkondePage() {
         </div>
 
         {/* Camemberts */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
           <DonutChart data={appareil} titre="Par appareil" sousTitre="Répartition des visites" />
           <DonutChart data={elements} titre="Clics par élément" sousTitre="Boutons & liens les plus cliqués" />
+        </div>
+
+        {/* Stylistes inscrits */}
+        <div style={{ background: '#17181B', border: '1px solid #26272B', borderRadius: '14px', padding: '1.5rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <div>
+              <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '1rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Users size={16} color="#25D366" /> Stylistes inscrits
+              </h2>
+              <p style={{ color: '#8A8D93', fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', marginTop: '0.25rem' }}>Détail par styliste — tenues publiées, vues, commandes</p>
+            </div>
+            <span style={{ background: 'rgba(37,211,102,0.12)', color: '#25D366', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', padding: '0.35rem 0.75rem', borderRadius: '999px' }}>
+              {stylistes.length} au total
+            </span>
+          </div>
+
+          {stylistes.length === 0 ? (
+            <p style={{ color: '#5A5D63', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', textAlign: 'center', padding: '1.5rem 0' }}>Aucun styliste inscrit pour le moment.</p>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '640px' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid #26272B' }}>
+                    {['Styliste', 'Ville', 'Statut', 'Tenues', 'Dispo.', 'Vues', 'Commandes', 'Clics profil'].map(h => (
+                      <th key={h} style={{ textAlign: 'left', padding: '0.6rem 0.75rem', color: '#8A8D93', fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {stylistes.map(s => (
+                    <tr key={s.id} style={{ borderBottom: '1px solid #1D1E22' }}>
+                      <td style={{ padding: '0.7rem 0.75rem' }}>
+                        <div style={{ color: '#fff', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', fontWeight: 600 }}>{s.nom}</div>
+                        {s.whatsapp && <div style={{ color: '#5A5D63', fontFamily: 'Inter, sans-serif', fontSize: '0.72rem' }}>{s.whatsapp}</div>}
+                      </td>
+                      <td style={{ padding: '0.7rem 0.75rem', color: '#C8CACD', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem' }}>{s.ville || '—'}</td>
+                      <td style={{ padding: '0.7rem 0.75rem' }}>
+                        {s.verified ? (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: '#25D366', fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', fontWeight: 600 }}>
+                            <BadgeCheck size={13} /> Vérifié
+                          </span>
+                        ) : (
+                          <span style={{ color: '#5A5D63', fontFamily: 'Inter, sans-serif', fontSize: '0.78rem' }}>En attente</span>
+                        )}
+                      </td>
+                      <td style={{ padding: '0.7rem 0.75rem', color: '#fff', fontFamily: 'Orbitron, sans-serif', fontSize: '0.85rem' }}>{s.nb_tenues}</td>
+                      <td style={{ padding: '0.7rem 0.75rem', color: '#C8CACD', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem' }}>{s.nb_tenues_dispo}</td>
+                      <td style={{ padding: '0.7rem 0.75rem', color: '#C8CACD', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem' }}>{s.nb_vues}</td>
+                      <td style={{ padding: '0.7rem 0.75rem', color: '#C8CACD', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem' }}>{s.nb_commandes}</td>
+                      <td style={{ padding: '0.7rem 0.75rem', color: '#C8CACD', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem' }}>{s.nb_clics_profil}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         <p style={{ textAlign: 'center', marginTop: '3rem', color: '#5A5D63', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem' }}>
