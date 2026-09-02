@@ -89,27 +89,27 @@ export default function DashboardPage() {
                 {styliste?.photo_url ? (
                   <Image src={styliste.photo_url} alt={styliste.nom} fill style={{ objectFit: 'cover', borderRadius: '50%', border: '3px solid #008751' }} />
                 ) : (
-                  <div style={{ width: '64px', height: '64px', borderRadius: '50%', border: '3px solid #008751', background: 'rgba(0,135,81,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Sora, sans-serif', fontWeight: 900, fontSize: '1.4rem', color: '#008751' }}>
+                  <div style={{ width: '64px', height: '64px', borderRadius: '50%', border: '3px solid #008751', background: 'rgba(0,135,81,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Orbitron, sans-serif', fontWeight: 900, fontSize: '1.4rem', color: '#008751' }}>
                     {styliste?.nom?.[0]?.toUpperCase() || '?'}
                   </div>
                 )}
               </div>
               <div>
                 <p style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', marginBottom: '0.2rem' }}>Bonjour 👋</p>
-                <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A' }}>{styliste?.nom || '—'}</h1>
+                <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.5rem', color: '#14201A' }}>{styliste?.nom || '—'}</h1>
                 <p style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.2rem' }}>
                   <MapPin size={12} color="#008751" /> {styliste?.ville || '—'}
                 </p>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <button onClick={handleLogout} style={{ background: 'transparent', border: '1px solid #E7E3D8', color: '#6E7268', padding: '0.875rem 1.25rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}
+              <button onClick={handleLogout} style={{ background: 'transparent', border: '1px solid #E7E3D8', color: '#6E7268', padding: '0.875rem 1.25rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#E8112D'; (e.currentTarget as HTMLElement).style.color = '#E8112D' }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#E7E3D8'; (e.currentTarget as HTMLElement).style.color = '#6E7268' }}>
                 <LogOut size={16} /> Déconnexion
               </button>
               <Link href="/dashboard/tenues/nouvelle">
-                <button style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '0.875rem 1.75rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.6rem', border: 'none', boxShadow: '0 4px 20px rgba(0,135,81,0.3)', transition: 'all 0.2s' }}
+                <button style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '0.875rem 1.75rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.6rem', border: 'none', boxShadow: '0 4px 20px rgba(0,135,81,0.3)', transition: 'all 0.2s' }}
                   onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
                   onMouseLeave={e => (e.currentTarget.style.transform = 'none')}>
                   <Plus size={18} /> Ajouter une tenue
@@ -122,7 +122,7 @@ export default function DashboardPage() {
             {statCards.map(({ bg, border, icon, val, label, sub, subColor }) => (
               <div key={label} style={{ background: bg, border: `1px solid ${border}`, borderRadius: '16px', padding: '1.75rem' }}>
                 <div style={{ marginBottom: '1rem' }}>{icon}</div>
-                <div style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.8rem', color: '#14201A', marginBottom: '0.25rem' }}>{val}</div>
+                <div style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.8rem', color: '#14201A', marginBottom: '0.25rem' }}>{val}</div>
                 <div style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.4rem' }}>{label}</div>
                 <div style={{ color: subColor, fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <TrendingUp size={11} /> {sub}
@@ -147,16 +147,16 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          <h2 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.2rem', marginBottom: '1.5rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.2rem', marginBottom: '1.5rem', color: '#14201A', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <Shirt size={20} color="#C8972A" /> Mes tenues <span style={{ color: '#C8972A' }}>({tenues.length})</span>
           </h2>
 
           {tenues.length === 0 ? (
             <div style={{ background: '#FFFFFF', border: '2px dashed #E7E3D8', borderRadius: '16px', padding: '4rem 2rem', textAlign: 'center' }}>
               <Shirt size={48} color="#E7E3D8" style={{ margin: '0 auto 1rem' }} />
-              <p style={{ fontFamily: 'Sora, sans-serif', color: '#9AA093', marginBottom: '1.5rem' }}>Aucune tenue publiée</p>
+              <p style={{ fontFamily: 'Orbitron, sans-serif', color: '#9AA093', marginBottom: '1.5rem' }}>Aucune tenue publiée</p>
               <Link href="/dashboard/tenues/nouvelle">
-                <button style={{ background: '#008751', color: '#fff', padding: '0.875rem 1.75rem', borderRadius: '10px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', border: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                <button style={{ background: '#008751', color: '#fff', padding: '0.875rem 1.75rem', borderRadius: '10px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', border: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
                   <Plus size={16} /> Publier ma première tenue
                 </button>
               </Link>
@@ -178,20 +178,20 @@ export default function DashboardPage() {
                         </div>
                       )}
                     </div>
-                    <div style={{ flex: 1, minWidth: '150px' }}>
-                      <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.25rem' }}>{tenue.nom}</h3>
+                    <div style={{ flex: 1, minWidth: '120px' }}>
+                      <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.25rem', wordBreak: 'break-word' }}>{tenue.nom}</h3>
                       <p style={{ color: '#6E7268', fontSize: '0.75rem', fontFamily: 'Inter, sans-serif', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                         <Eye size={11} color="#9AA093" /> {tenue.vues} vues · {tenue.categorie}
                       </p>
                     </div>
-                    <div style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, color: '#C8972A', fontSize: '1rem' }}>{formatPrix(tenue.prix)}</div>
+                    <div style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, color: '#C8972A', fontSize: '1rem' }}>{formatPrix(tenue.prix)}</div>
                     <button
                       onClick={() => handleToggleDisponible(tenue.id, tenue.disponible)}
                       style={{ padding: '0.3rem 0.75rem', borderRadius: '50px', fontSize: '0.65rem', fontWeight: 700, fontFamily: 'Inter, sans-serif', background: tenue.disponible ? 'rgba(0,135,81,0.15)' : 'rgba(232,17,45,0.15)', color: tenue.disponible ? '#008751' : '#E8112D', border: `1px solid ${tenue.disponible ? '#008751' : '#E8112D'}44`, display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', transition: 'all 0.2s' }}>
                       {tenue.disponible ? <CheckCircle size={11} /> : <XCircle size={11} />}
                       {tenue.disponible ? 'Disponible' : 'Épuisé'}
                     </button>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                       <Link href={`/dashboard/tenues/modifier/${tenue.id}`}>
                         <button style={{ background: '#FFF6D9', border: '1px solid rgba(200,151,42,0.3)', color: '#C8972A', padding: '0.5rem 1rem', borderRadius: '8px', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                           <Pencil size={13} /> Modifier

@@ -48,7 +48,7 @@ export default function AkondePage() {
           <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'linear-gradient(135deg, #008751, #00c766)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.25rem' }}>
             <ShieldCheck size={30} color="#0E0E10" />
           </div>
-          <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#fff', marginBottom: '0.4rem' }}>Tableau de bord</h1>
+          <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#fff', marginBottom: '0.4rem' }}>Tableau de bord</h1>
           <p style={{ color: '#8A8D93', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', marginBottom: '2rem' }}>Espace administrateur DAHOMEY-TECH</p>
 
           <form onSubmit={e => { e.preventDefault(); charger(code) }}>
@@ -61,7 +61,7 @@ export default function AkondePage() {
               />
             </div>
             {error && <p style={{ color: '#E8112D', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', marginBottom: '1rem', textAlign: 'left' }}>{error}</p>}
-            <button type="submit" disabled={loading || !code} style={{ width: '100%', background: loading || !code ? '#2E2F33' : 'linear-gradient(135deg, #008751, #00c766)', color: loading || !code ? '#5A5D63' : '#fff', padding: '0.95rem', borderRadius: '12px', fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: loading || !code ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.2s' }}>
+            <button type="submit" disabled={loading || !code} style={{ width: '100%', background: loading || !code ? '#2E2F33' : 'linear-gradient(135deg, #008751, #00c766)', color: loading || !code ? '#5A5D63' : '#fff', padding: '0.95rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.9rem', cursor: loading || !code ? 'not-allowed' : 'pointer', border: 'none', transition: 'all 0.2s' }}>
               {loading ? 'Vérification…' : 'Entrer'}
             </button>
           </form>
@@ -97,7 +97,7 @@ export default function AkondePage() {
               <ShieldCheck size={20} color="#0E0E10" />
             </div>
             <div>
-              <h1 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.2rem', color: '#fff' }}>DAHOMEY-TECH</h1>
+              <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.2rem', color: '#fff' }}>DAHOMEY-TECH</h1>
               <p style={{ color: '#8A8D93', fontFamily: 'Inter, sans-serif', fontSize: '0.8rem' }}>Tableau de bord — audience & interactions</p>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function AkondePage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#8A8D93', fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.6rem' }}>
                 {icon} {label}
               </div>
-              <div style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.9rem', color: '#fff', marginBottom: '0.15rem' }}>{Number(val).toLocaleString('fr-FR')}</div>
+              <div style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.9rem', color: '#fff', marginBottom: '0.15rem' }}>{Number(val).toLocaleString('fr-FR')}</div>
               <div style={{ color: '#25D366', fontFamily: 'Inter, sans-serif', fontSize: '0.72rem' }}>{sub}</div>
             </div>
           ))}
@@ -130,7 +130,7 @@ export default function AkondePage() {
         </div>
 
         {/* Camemberts */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: '1rem' }}>
           <DonutChart data={appareil} titre="Par appareil" sousTitre="Répartition des visites" />
           <DonutChart data={elements} titre="Clics par élément" sousTitre="Boutons & liens les plus cliqués" />
         </div>

@@ -15,7 +15,7 @@ export default function Footer() {
       marginBottom: '2.5rem',
     } as React.CSSProperties,
     title: {
-      fontFamily: 'Sora, sans-serif',
+      fontFamily: 'Orbitron, sans-serif',
       fontSize: '0.72rem',
       fontWeight: 700,
       color: 'var(--jaune)',
@@ -67,7 +67,7 @@ export default function Footer() {
           {/* Marque */}
           <div>
             <Image src="/logo-icon.jpg" alt="logo" width={44} height={44} style={{ borderRadius: '50%', objectFit: 'cover', marginBottom: '1rem' }} />
-            <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.05rem', color: '#fff', display: 'block', marginBottom: '0.75rem' }}>DAHOMEY-TECH</span>
+            <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.05rem', color: '#fff', display: 'block', marginBottom: '0.75rem' }}>DAHOMEY-TECH</span>
             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', lineHeight: '1.7', fontFamily: 'Inter, sans-serif' }}>
               La marketplace des stylistes africains vérifiés. Commandez, découvrez, portez la beauté africaine.
             </p>
@@ -130,8 +130,8 @@ export default function Footer() {
         </div>
 
         <div style={s.bar}>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem', fontFamily: 'Inter, sans-serif' }}>
-            Fait avec fierté au Bénin 🇧🇯 — © {new Date().getFullYear()} DAHOMEY-TECH
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem', fontFamily: 'Inter, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+            Fait avec <i className="bx bxs-heart" style={{ color: 'var(--vert)', fontSize: '0.85rem' }} /> au Bénin — © {new Date().getFullYear()} DAHOMEY-TECH
           </p>
           <div style={{ display: 'flex', gap: '1.25rem' }}>
             {['Confidentialité', 'CGU', 'Cookies'].map(label => (

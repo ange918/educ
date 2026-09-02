@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
 
 *, *::before, *::after {
@@ -29,11 +29,11 @@
   --gris: #FFFFFF;
   --gris-clair: #F0EEE6;
 
-  --font-titre: 'Sora', sans-serif;
+  --font-titre: 'Orbitron', sans-serif;
   --font-corps: 'Inter', sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   background-color: var(--creme);
@@ -42,6 +42,7 @@ body {
   font-size: 16px;
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -110,8 +111,8 @@ input, textarea, select {
 @media (min-width: 900px) { .dt-why { grid-template-columns: 1fr 1fr; } }
 
 /* Titre de section responsive */
-.dt-h1 { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--encre); line-height: 1.12; font-size: clamp(1.9rem, 5vw, 3.1rem); }
-.dt-h2 { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--encre); font-size: clamp(1.2rem, 3vw, 1.6rem); }
+.dt-h1 { font-family: 'Orbitron', sans-serif; font-weight: 800; color: var(--encre); line-height: 1.12; font-size: clamp(1.9rem, 5vw, 3.1rem); }
+.dt-h2 { font-family: 'Orbitron', sans-serif; font-weight: 800; color: var(--encre); font-size: clamp(1.2rem, 3vw, 1.6rem); }
 
 /* Icônes boxicons — taille utilitaire */
 .bx-ic { line-height: 1; display: inline-flex; }

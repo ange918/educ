@@ -24,7 +24,7 @@ export default function BarChart({
           {icone && <i className={`bx ${icone}`} style={{ fontSize: '15px', color }} />}
           {titre}
         </span>
-        <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#14201A' }}>{total}</span>
+        <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: '#14201A' }}>{total}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'flex-end', gap: '2px', height: '90px' }}>
         {data.map((d, i) => (

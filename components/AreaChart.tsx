@@ -25,7 +25,7 @@ export default function AreaChart({ data }: { data: Point[] }) {
   return (
     <div style={{ background: '#17181B', border: '1px solid #26272B', borderRadius: '16px', padding: '1.5rem' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.25rem' }}>
-        <h3 style={{ fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: '#fff' }}>Fréquentation</h3>
+        <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: '#fff' }}>Fréquentation</h3>
         <div style={{ display: 'flex', gap: '1rem', fontFamily: 'Inter, sans-serif', fontSize: '0.78rem' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#C8CACD' }}>
             <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#008751' }} /> Visites

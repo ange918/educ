@@ -39,17 +39,17 @@ export default function StylisteCard({ styliste }: { styliste: Styliste }) {
             <Image src={styliste.photo_url} alt={styliste.nom} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover' }} />
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: 'Sora, sans-serif', fontWeight: 800, fontSize: '2.75rem', color: 'rgba(255,255,255,0.9)' }}>{initiale}</span>
+              <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '2.75rem', color: 'rgba(255,255,255,0.9)' }}>{initiale}</span>
             </div>
           )}
           {styliste.verified && (
-            <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', background: 'rgba(255,255,255,0.95)', color: 'var(--vert)', padding: '0.3rem 0.65rem', borderRadius: '50px', fontSize: '0.65rem', fontWeight: 700, fontFamily: 'Sora, sans-serif', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+            <div style={{ position: 'absolute', top: '0.75rem', right: '0.75rem', background: 'rgba(255,255,255,0.95)', color: 'var(--vert)', padding: '0.3rem 0.65rem', borderRadius: '50px', fontSize: '0.65rem', fontWeight: 700, fontFamily: 'Orbitron, sans-serif', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
               <i className="bx bxs-badge-check" style={{ fontSize: '13px' }} />Vérifiée
             </div>
           )}
         </div>
         <div style={{ padding: '1rem 1.1rem 1.1rem' }}>
-          <h3 style={{ fontFamily: 'Sora, sans-serif', fontSize: '0.95rem', fontWeight: 700, color: 'var(--encre)', marginBottom: '0.3rem' }}>{styliste.nom}</h3>
+          <h3 style={{ fontFamily: 'Orbitron, sans-serif', fontSize: '0.95rem', fontWeight: 700, color: 'var(--encre)', marginBottom: '0.3rem' }}>{styliste.nom}</h3>
           <p style={{ color: 'var(--gris-texte)', fontSize: '0.75rem', fontFamily: 'Inter, sans-serif', display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: styliste.bio ? '0.5rem' : 0 }}>
             <i className="bx bxs-map" style={{ fontSize: '12px', color: 'var(--vert)' }} />{styliste.ville}
           </p>
