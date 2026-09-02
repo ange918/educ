@@ -1,9 +1,20 @@
 'use client'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { CATEGORIES } from '@/lib/mockData'
+import { createClient } from '@/lib/supabase/client'
+import type { Categorie } from '@/lib/supabase/types'
 
 export default function Footer() {
+  const [categories, setCategories] = useState<Categorie[]>([])
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.from('categories').select('*').order('ordre').limit(6).then(({ data }) => {
+      setCategories((data as Categorie[]) || [])
+    })
+  }, [])
+
   const s = {
     footer: {
       background: 'var(--encre)',
@@ -100,12 +111,12 @@ export default function Footer() {
           {/* Catégories */}
           <div>
             <div style={s.title}>Catégories</div>
-            {CATEGORIES.map(c => (
-              <Link key={c.id} href={`/catalogue?categorie=${c.id}`} style={s.link}
+            {categories.map(c => (
+              <Link key={c.id} href={`/catalogue?categorie=${c.slug}`} style={s.link}
                 onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
                 onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')}>
                 <i className="bx bx-chevron-right" style={{ fontSize: '14px', color: 'var(--vert-clair)' }} />
-                {c.label}
+                {c.nom}
               </Link>
             ))}
           </div>
