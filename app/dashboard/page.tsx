@@ -8,13 +8,15 @@ import { formatPrix } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import type { Styliste, Tenue } from '@/lib/supabase/types'
 import StylisteGraphs from '@/components/StylisteGraphs'
-import { Shirt, Eye, ShoppingBag, Star, Plus, Pencil, Trash2, MapPin, ExternalLink, MessageCircle, TrendingUp, CheckCircle, XCircle, LogOut } from 'lucide-react'
+import { Shirt, Eye, ShoppingBag, Star, Plus, Pencil, Trash2, MapPin, ExternalLink, MessageCircle, TrendingUp, CheckCircle, XCircle, LogOut, Share2, Link2 } from 'lucide-react'
 
 export default function DashboardPage() {
   const router = useRouter()
   const [styliste, setStyliste] = useState<Styliste | null>(null)
   const [tenues, setTenues] = useState<Tenue[]>([])
   const [loading, setLoading] = useState(true)
+  const [shareOpen, setShareOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const supabase = createClient()
@@ -56,6 +58,26 @@ export default function DashboardPage() {
     router.refresh()
   }
 
+  const profilUrl = styliste && typeof window !== 'undefined'
+    ? `${window.location.origin}/styliste/${styliste.slug || styliste.id}`
+    : ''
+
+  const handleShare = async () => {
+    if (!profilUrl) return
+    if (navigator.share) {
+      try { await navigator.share({ title: styliste?.nom, text: `Découvrez les créations de ${styliste?.nom} sur DAHOMEY-TECH`, url: profilUrl }) } catch {}
+      return
+    }
+    setShareOpen(o => !o)
+  }
+
+  const handleCopyLien = async () => {
+    if (!profilUrl) return
+    await navigator.clipboard.writeText(profilUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   if (loading) {
     return (
       <div style={{ background: '#F7F5EF', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -85,11 +107,11 @@ export default function DashboardPage() {
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '3rem', flexWrap: 'wrap', gap: '1.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-              <div style={{ position: 'relative', width: '64px', height: '64px', flexShrink: 0 }}>
+              <div style={{ position: 'relative', width: '64px', height: '64px', flexShrink: 0, borderRadius: '50%', background: '#F7F5EF', border: '3px solid #008751', overflow: 'hidden' }}>
                 {styliste?.photo_url ? (
-                  <Image src={styliste.photo_url} alt={styliste.nom} fill style={{ objectFit: 'cover', borderRadius: '50%', border: '3px solid #008751' }} />
+                  <Image src={styliste.photo_url} alt={styliste.nom} fill style={{ objectFit: 'contain' }} />
                 ) : (
-                  <div style={{ width: '64px', height: '64px', borderRadius: '50%', border: '3px solid #008751', background: 'rgba(0,135,81,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Orbitron, sans-serif', fontWeight: 900, fontSize: '1.4rem', color: '#008751' }}>
+                  <div style={{ width: '100%', height: '100%', background: 'rgba(0,135,81,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Orbitron, sans-serif', fontWeight: 900, fontSize: '1.4rem', color: '#008751' }}>
                     {styliste?.nom?.[0]?.toUpperCase() || '?'}
                   </div>
                 )}
@@ -108,6 +130,32 @@ export default function DashboardPage() {
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#E7E3D8'; (e.currentTarget as HTMLElement).style.color = '#6E7268' }}>
                 <LogOut size={16} /> Déconnexion
               </button>
+              <div style={{ position: 'relative' }}>
+                <button onClick={handleShare} style={{ background: 'transparent', border: '1px solid #008751', color: '#008751', padding: '0.875rem 1.25rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}>
+                  <Share2 size={16} /> Partager mon profil
+                </button>
+                {shareOpen && (
+                  <>
+                    <div onClick={() => setShareOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 10 }} />
+                    <div style={{ position: 'absolute', top: 'calc(100% + 0.5rem)', left: 0, background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '12px', boxShadow: '0 12px 30px rgba(20,32,26,0.15)', padding: '0.5rem', zIndex: 20, minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                      <a href={`https://wa.me/?text=${encodeURIComponent(`Découvrez les créations de ${styliste?.nom} sur DAHOMEY-TECH : ${profilUrl}`)}`} target="_blank" rel="noopener noreferrer" onClick={() => setShareOpen(false)}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.65rem 0.75rem', borderRadius: '8px', color: '#14201A', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', textDecoration: 'none' }}
+                        onMouseEnter={e => (e.currentTarget.style.background = '#F7F5EF')} onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                        <MessageCircle size={16} color="#25D366" /> WhatsApp
+                      </a>
+                      <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profilUrl)}`} target="_blank" rel="noopener noreferrer" onClick={() => setShareOpen(false)}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.65rem 0.75rem', borderRadius: '8px', color: '#14201A', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', textDecoration: 'none' }}
+                        onMouseEnter={e => (e.currentTarget.style.background = '#F7F5EF')} onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                        <i className="bx bxl-facebook-circle" style={{ fontSize: '16px', color: '#1877F2' }} /> Facebook
+                      </a>
+                      <button onClick={handleCopyLien} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.65rem 0.75rem', borderRadius: '8px', color: '#14201A', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+                        onMouseEnter={e => (e.currentTarget.style.background = '#F7F5EF')} onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+                        {copied ? <CheckCircle size={16} color="#008751" /> : <Link2 size={16} color="#6E7268" />} {copied ? 'Lien copié !' : 'Copier le lien'}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
               <Link href="/dashboard/tenues/nouvelle">
                 <button style={{ background: 'linear-gradient(135deg, #008751, #00a862)', color: '#fff', padding: '0.875rem 1.75rem', borderRadius: '12px', fontFamily: 'Orbitron, sans-serif', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.6rem', border: 'none', boxShadow: '0 4px 20px rgba(0,135,81,0.3)', transition: 'all 0.2s' }}
                   onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}

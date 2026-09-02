@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import { createClient } from '@/lib/supabase/client'
 import type { Categorie, Tenue } from '@/lib/supabase/types'
+import { formatPrixInput, parsePrixInput } from '@/lib/utils'
 import { ArrowLeft, Camera, X, Plus, CheckCircle, Tag, AlignLeft, DollarSign, Layers, Package, ToggleLeft, ToggleRight, Upload, Trash2 } from 'lucide-react'
 
 const TAILLES_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'Sur mesure']
@@ -47,7 +48,7 @@ export default function ModifierTenuePage() {
       setForm({
         nom: t.nom || '',
         description: t.description || '',
-        prix: String(t.prix ?? ''),
+        prix: formatPrixInput(String(t.prix ?? '')),
         categorie: t.categorie || '',
         disponible: t.disponible ?? true,
         stock: String(t.stock ?? '1'),
@@ -103,7 +104,7 @@ export default function ModifierTenuePage() {
     const { error: updateErr } = await supabase.from('tenues').update({
       nom: form.nom,
       description: form.description || null,
-      prix: Number(form.prix),
+      prix: parsePrixInput(form.prix),
       categorie: form.categorie,
       disponible: form.disponible,
       stock: Number(form.stock),
@@ -265,7 +266,7 @@ export default function ModifierTenuePage() {
                 <label style={labelStyle}>Prix (XOF) *</label>
                 <div style={{ position: 'relative' }}>
                   <DollarSign size={14} style={iconPos} />
-                  <input required type="number" min={0} style={inputStyle} value={form.prix} onChange={e => setForm({ ...form, prix: e.target.value })} placeholder="45000"
+                  <input required type="text" inputMode="numeric" style={inputStyle} value={form.prix} onChange={e => setForm({ ...form, prix: formatPrixInput(e.target.value) })} placeholder="45 000"
                     onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
                 </div>
               </div>

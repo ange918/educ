@@ -1,9 +1,9 @@
 'use client'
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Tenue, Styliste } from '@/lib/supabase/types'
 import { formatPrix, buildWhatsAppLink } from '@/lib/utils'
+import ProtectedImage from '@/components/ProtectedImage'
 
 type TenueWithStyliste = Tenue & { stylistes?: Styliste }
 
@@ -31,7 +31,7 @@ export default function TenueCard({ tenue }: { tenue: TenueWithStyliste }) {
       <Link href={`/tenue/${tenue.id}`}>
         <div style={{ position: 'relative', aspectRatio: '1/1', overflow: 'hidden', background: 'var(--creme)' }}>
           {photo ? (
-            <Image src={photo} alt={tenue.nom} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover', transition: 'transform 0.4s ease', transform: hovered ? 'scale(1.06)' : 'scale(1)' }} />
+            <ProtectedImage src={photo} alt={tenue.nom} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover', transition: 'transform 0.4s ease', transform: hovered ? 'scale(1.06)' : 'scale(1)' }} />
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--bordure)' }}>
               <i className="bx bx-tag" style={{ fontSize: '34px' }} />

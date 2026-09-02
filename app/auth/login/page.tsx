@@ -11,24 +11,39 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [noAccount, setNoAccount] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setNoAccount(false)
     setLoading(true)
     const supabase = createClient()
     const { error: authError } = await supabase.auth.signInWithPassword({
       email: form.email,
       password: form.password,
     })
-    setLoading(false)
+
     if (authError) {
-      setError(authError.message === 'Invalid login credentials'
-        ? 'Email ou mot de passe incorrect.'
+      if (authError.message === 'Invalid login credentials') {
+        const { data: existe } = await supabase.rpc('email_existe', { p_email: form.email })
+        setLoading(false)
+        if (existe === false) {
+          setNoAccount(true)
+          setError('Aucun compte n\'existe avec cet email.')
+        } else {
+          setError('Mot de passe incorrect.')
+        }
+        return
+      }
+      setLoading(false)
+      setError(authError.message === 'Email not confirmed'
+        ? 'Votre email n\'est pas encore confirmé. Vérifiez votre boîte mail.'
         : authError.message)
       return
     }
+    setLoading(false)
     router.push('/dashboard')
     router.refresh()
   }
@@ -71,14 +86,23 @@ export default function LoginPage() {
           <h2 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '1.8rem', marginBottom: '0.5rem', color: '#14201A' }}>Connexion</h2>
           <p style={{ color: '#9AA093', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', marginBottom: '2rem' }}>Accédez à votre espace styliste</p>
 
-          {error && <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>{error}</div>}
+          {error && (
+            <div style={{ background: 'rgba(232,17,45,0.1)', border: '1px solid rgba(232,17,45,0.3)', color: '#E8112D', padding: '0.875rem 1rem', borderRadius: '10px', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+              {error}
+              {noAccount && (
+                <>
+                  {' '}<Link href="/auth/register" style={{ color: '#E8112D', fontWeight: 700, textDecoration: 'underline' }}>Créer un compte</Link>
+                </>
+              )}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div>
               <label style={labelStyle}>Email</label>
               <div style={{ position: 'relative' }}>
                 <Mail size={15} style={iconPos} />
-                <input type="email" required style={inputStyle} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="votre@email.com"
+                <input type="email" name="email" id="email" autoComplete="email" required style={inputStyle} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="votre@email.com"
                   onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
               </div>
             </div>
@@ -86,7 +110,7 @@ export default function LoginPage() {
               <label style={labelStyle}>Mot de passe</label>
               <div style={{ position: 'relative' }}>
                 <Lock size={15} style={iconPos} />
-                <input type={showPassword ? 'text' : 'password'} required style={{ ...inputStyle, paddingRight: '3rem' }} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="••••••••"
+                <input type={showPassword ? 'text' : 'password'} name="password" id="password" autoComplete="current-password" required style={{ ...inputStyle, paddingRight: '3rem' }} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="••••••••"
                   onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '0.875rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#9AA093', cursor: 'pointer', display: 'flex' }}>
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}

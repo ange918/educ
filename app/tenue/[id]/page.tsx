@@ -1,11 +1,13 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import TenueCard from '@/components/TenueCard'
+import ProtectedImage from '@/components/ProtectedImage'
+import StylisteAvatar from '@/components/StylisteAvatar'
+import Lightbox from '@/components/Lightbox'
 import { createClient } from '@/lib/supabase/client'
 import type { Tenue, Styliste } from '@/lib/supabase/types'
 import { formatPrix, buildWhatsAppLink } from '@/lib/utils'
@@ -21,6 +23,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
   const [tailleChoisie, setTailleChoisie] = useState('')
   const [couleurChoisie, setCouleurChoisie] = useState('')
   const [photoActive, setPhotoActive] = useState(0)
+  const [lightboxOuvert, setLightboxOuvert] = useState(false)
 
   useEffect(() => {
     const supabase = createClient()
@@ -97,7 +100,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
             <div>
               <div style={{ position: 'relative', aspectRatio: '3/4', borderRadius: '20px', overflow: 'hidden', marginBottom: '1rem', border: '1px solid #E7E3D8', background: '#FFFFFF' }}>
                 {photos[photoActive] ? (
-                  <Image src={photos[photoActive]} alt={tenue.nom} fill style={{ objectFit: 'cover' }} />
+                  <ProtectedImage src={photos[photoActive]} alt={tenue.nom} fill style={{ objectFit: 'cover' }} onImageClick={() => setLightboxOuvert(true)} />
                 ) : (
                   <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Shirt size={60} color="#C4C0B3" />
@@ -123,7 +126,7 @@ export default function TenuePage({ params }: { params: { id: string } }) {
                 <div style={{ display: 'flex', gap: '0.75rem' }}>
                   {photos.slice(0, 4).map((p, i) => (
                     <button key={i} onClick={() => setPhotoActive(i)} style={{ position: 'relative', width: '80px', height: '80px', flexShrink: 0, borderRadius: '10px', overflow: 'hidden', border: `2px solid ${photoActive === i ? '#008751' : '#E7E3D8'}`, cursor: 'pointer', background: 'none', padding: 0 }}>
-                      <Image src={p} alt="" fill style={{ objectFit: 'cover' }} />
+                      <ProtectedImage src={p} alt="" fill style={{ objectFit: 'cover' }} />
                     </button>
                   ))}
                 </div>
@@ -141,9 +144,9 @@ export default function TenuePage({ params }: { params: { id: string } }) {
               {styliste && (
                 <Link href={`/styliste/${styliste.slug || styliste.id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', textDecoration: 'none' }}>
                   {styliste.photo_url && (
-                    <div style={{ position: 'relative', width: '36px', height: '36px', flexShrink: 0 }}>
-                      <Image src={styliste.photo_url} alt={styliste.nom} fill style={{ objectFit: 'cover', borderRadius: '50%' }} />
-                    </div>
+                    <span onClick={e => { e.preventDefault(); e.stopPropagation() }}>
+                      <StylisteAvatar src={styliste.photo_url} alt={styliste.nom} size={36} />
+                    </span>
                   )}
                   <span style={{ color: '#6E7268', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                     par <span style={{ color: '#008751', fontWeight: 600 }}>{styliste.nom}</span>
@@ -229,6 +232,9 @@ export default function TenuePage({ params }: { params: { id: string } }) {
         </div>
       </div>
       <Footer />
+      {lightboxOuvert && photos[photoActive] && (
+        <Lightbox src={photos[photoActive]} alt={tenue.nom} onClose={() => setLightboxOuvert(false)} />
+      )}
       <style>{`
         .tenue-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
         @media (max-width: 860px) {

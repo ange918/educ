@@ -1,8 +1,8 @@
 'use client'
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Styliste } from '@/lib/supabase/types'
+import ProtectedImage from '@/components/ProtectedImage'
 
 const GRADIENTS = [
   'linear-gradient(135deg, #008751, #00a862)',
@@ -36,7 +36,7 @@ export default function StylisteCard({ styliste }: { styliste: Styliste }) {
       >
         <div style={{ position: 'relative', height: '150px', background: gradientFor(styliste.nom) }}>
           {styliste.photo_url ? (
-            <Image src={styliste.photo_url} alt={styliste.nom} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover' }} />
+            <ProtectedImage src={styliste.photo_url} alt={styliste.nom} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'contain' }} />
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <span style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: '2.75rem', color: 'rgba(255,255,255,0.9)' }}>{initiale}</span>
