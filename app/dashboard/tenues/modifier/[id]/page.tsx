@@ -278,7 +278,7 @@ export default function ModifierTenuePage() {
                     onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')}>
                     <option value="">Choisir...</option>
                     {categories.map(c => (
-                      <option key={c.id} value={c.slug}>{c.icone ? `${c.icone} ` : ''}{c.nom}</option>
+                      <option key={c.id} value={c.slug}>{c.nom}</option>
                     ))}
                   </select>
                 </div>

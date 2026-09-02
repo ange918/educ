@@ -177,8 +177,8 @@ function CatalogueInner() {
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
                   <button onClick={() => setCategorie('')} style={pill(!categorie)}>Toutes</button>
                   {categories.map(c => (
-                    <button key={c.id} onClick={() => setCategorie(c.slug)} style={pill(categorie === c.slug)}>
-                      {c.icone ? `${c.icone} ` : ''}{c.nom}
+                    <button key={c.id} onClick={() => setCategorie(c.slug)} style={{ ...pill(categorie === c.slug), display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      {c.icone && <Bx name={c.icone} size={13} />} {c.nom}
                     </button>
                   ))}
                 </div>
