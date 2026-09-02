@@ -120,7 +120,7 @@ export default function ProfilPage() {
         <div style={{ background: '#FFFFFF', border: '1px solid #E7E3D8', borderRadius: '16px', padding: '2rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
           <div style={{ position: 'relative', width: '100px', height: '100px', flexShrink: 0, borderRadius: '50%', border: '3px solid #008751', overflow: 'hidden', background: '#E7E3D8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {photoPreview ? (
-              <Image src={photoPreview} alt="profil" fill style={{ objectFit: 'cover' }} />
+              <Image src={photoPreview} alt="profil" fill style={{ objectFit: 'contain' }} />
             ) : (
               <User size={36} color="#C4C0B3" />
             )}

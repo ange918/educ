@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import StylisteCard from '@/components/StylisteCard'
 import TenueCard from '@/components/TenueCard'
+import ProtectedImage from '@/components/ProtectedImage'
 import { createClient } from '@/lib/supabase/client'
 import { CATEGORIES } from '@/lib/mockData'
 import type { Tenue, Styliste } from '@/lib/supabase/types'
@@ -120,7 +121,7 @@ export default function LandingPage() {
 
           {/* Visuel vedette */}
           <div style={{ position: 'relative', borderRadius: '22px', overflow: 'hidden', aspectRatio: '4/5', background: 'var(--vert-soft)', border: '1px solid var(--bordure)' }}>
-            <Image
+            <ProtectedImage
               src={heroTenue?.photo_principale || heroTenue?.photos?.[0] || '/visual3.jpg'}
               alt={heroTenue?.nom || 'Création vedette'}
               fill sizes="(max-width: 900px) 100vw, 50vw"

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { slugify } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
-import { User, Mail, Phone, MapPin, Lock, AtSign, MessageCircle, CheckSquare, Square, ArrowLeft, ArrowRight, Rocket, CheckCircle } from 'lucide-react'
+import { User, Mail, Phone, MapPin, Lock, AtSign, MessageCircle, CheckSquare, Square, ArrowLeft, ArrowRight, Rocket, CheckCircle, Eye, EyeOff } from 'lucide-react'
 
 const VILLES = ['Cotonou', 'Porto-Novo', 'Parakou', 'Abomey-Calavi', 'Natitingou', 'Abidjan', 'Dakar', 'Lagos']
 
@@ -18,6 +18,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [emailSent, setEmailSent] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -153,7 +154,7 @@ export default function RegisterPage() {
               {form.nom && <p style={{ color: '#9AA093', fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', marginTop: '-0.75rem' }}>Page: /styliste/{slugify(form.nom)}</p>}
 
               {field('Email *', <Mail size={15} />,
-                <input required type="email" style={inputStyle} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="votre@email.com"
+                <input required type="email" name="email" id="email" autoComplete="email" style={inputStyle} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="votre@email.com"
                   onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
               )}
 
@@ -176,8 +177,13 @@ export default function RegisterPage() {
               </div>
 
               {field('Mot de passe *', <Lock size={15} />,
-                <input required type="password" minLength={8} style={inputStyle} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="Min. 8 caractères"
-                  onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
+                <>
+                  <input required type={showPassword ? 'text' : 'password'} name="password" id="password" autoComplete="new-password" minLength={8} style={{ ...inputStyle, paddingRight: '3rem' }} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="Min. 8 caractères"
+                    onFocus={e => (e.target.style.borderColor = '#008751')} onBlur={e => (e.target.style.borderColor = '#E7E3D8')} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '0.875rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#9AA093', cursor: 'pointer', display: 'flex' }}>
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </>
               )}
 
               <button type="button" onClick={() => {
@@ -232,7 +238,7 @@ export default function RegisterPage() {
               <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', cursor: 'pointer' }} onClick={() => setForm({ ...form, accepted: !form.accepted })}>
                 {form.accepted ? <CheckSquare size={20} color="#008751" style={{ flexShrink: 0, marginTop: '2px' }} /> : <Square size={20} color="#9AA093" style={{ flexShrink: 0, marginTop: '2px' }} />}
                 <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#6E7268', lineHeight: 1.6 }}>
-                  J'accepte les <span style={{ color: '#008751', cursor: 'pointer', fontWeight: 600 }}>conditions d'utilisation</span> et la <span style={{ color: '#008751', cursor: 'pointer', fontWeight: 600 }}>politique de confidentialité</span>.
+                  J'accepte les <Link href="/cgu" target="_blank" onClick={e => e.stopPropagation()} style={{ color: '#008751', fontWeight: 600 }}>conditions d'utilisation</Link> et la <Link href="/confidentialite" target="_blank" onClick={e => e.stopPropagation()} style={{ color: '#008751', fontWeight: 600 }}>politique de confidentialité</Link>.
                 </span>
               </label>
 

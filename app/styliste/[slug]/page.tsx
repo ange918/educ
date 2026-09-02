@@ -1,9 +1,10 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import TenueCard from '@/components/TenueCard'
+import ProtectedImage from '@/components/ProtectedImage'
+import StylisteAvatar from '@/components/StylisteAvatar'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import type { Tenue, Styliste } from '@/lib/supabase/types'
 import { MapPin, AtSign, Shirt, Eye, BadgeCheck, ArrowLeft } from 'lucide-react'
@@ -40,9 +41,9 @@ export default async function StylistePage({ params }: { params: { slug: string 
       <div style={{ position: 'relative' }}>
 
         {/* Bannière */}
-        <div style={{ position: 'relative', height: '380px', overflow: 'hidden', background: '#FFFFFF' }}>
+        <div style={{ position: 'relative', height: '380px', overflow: 'hidden', background: 'linear-gradient(135deg, #F7F5EF, #E7E3D8)' }}>
           {styliste.photo_url && (
-            <Image src={styliste.photo_url} alt={styliste.nom} fill style={{ objectFit: 'cover', filter: 'brightness(0.9)' }} />
+            <ProtectedImage src={styliste.photo_url} alt={styliste.nom} fill style={{ objectFit: 'contain' }} />
           )}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(247,245,239,0.1) 20%, #F7F5EF 100%)' }} />
         </div>
@@ -55,11 +56,11 @@ export default async function StylistePage({ params }: { params: { slug: string 
 
           {/* Profil hero */}
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-end', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-            <div style={{ position: 'relative', width: '130px', height: '130px', flexShrink: 0, background: '#E7E3D8', borderRadius: '50%', border: '4px solid #008751', overflow: 'hidden' }}>
-              {styliste.photo_url && (
-                <Image src={styliste.photo_url} alt={styliste.nom} fill style={{ objectFit: 'cover' }} />
-              )}
-            </div>
+            {styliste.photo_url ? (
+              <StylisteAvatar src={styliste.photo_url} alt={styliste.nom} size={130} border="4px solid #008751" />
+            ) : (
+              <div style={{ width: '130px', height: '130px', flexShrink: 0, background: '#E7E3D8', borderRadius: '50%', border: '4px solid #008751' }} />
+            )}
             <div style={{ flex: 1, paddingBottom: '0.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
                 <h1 style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: 800, fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', color: '#14201A' }}>{styliste.nom}</h1>
