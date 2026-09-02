@@ -34,12 +34,12 @@ export interface Tenue {
 }
 
 export const CATEGORIES = [
-  { id: 'boubou', label: 'Boubou', emoji: '👘' },
-  { id: 'pagne', label: 'Pagne', emoji: '🧵' },
-  { id: 'kaftan', label: 'Kaftan', emoji: '✨' },
-  { id: 'dashiki', label: 'Dashiki', emoji: '🦋' },
-  { id: 'robe-soiree', label: 'Robe de soirée', emoji: '💫' },
-  { id: 'costume', label: 'Costume africain', emoji: '🎩' },
+  { id: 'boubou', label: 'Boubou', icon: 'bxs-t-shirt' },
+  { id: 'pagne', label: 'Pagne', icon: 'bxs-layer' },
+  { id: 'kaftan', label: 'Kaftan', icon: 'bxs-crown' },
+  { id: 'dashiki', label: 'Dashiki', icon: 'bxs-palette' },
+  { id: 'robe-soiree', label: 'Robe de soirée', icon: 'bxs-diamond' },
+  { id: 'costume', label: 'Costume africain', icon: 'bxs-award' },
 ]
 
 export const VILLES = ['Cotonou', 'Porto-Novo', 'Parakou', 'Abomey-Calavi', 'Natitingou', 'Abidjan', 'Dakar', 'Lagos']

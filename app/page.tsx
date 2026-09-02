@@ -165,8 +165,8 @@ export default function LandingPage() {
           <div className="dt-cats">
             {CATEGORIES.map(cat => (
               <Link key={cat.id} href={`/catalogue?categorie=${cat.id}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.55rem' }}>
-                <div style={{ width: '100%', maxWidth: '78px', aspectRatio: '1/1', borderRadius: '50%', background: 'var(--vert-soft)', border: '1px solid var(--bordure)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.7rem' }}>
-                  {cat.emoji}
+                <div style={{ width: '100%', maxWidth: '78px', aspectRatio: '1/1', borderRadius: '50%', background: 'var(--vert-soft)', border: '1px solid var(--bordure)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Bx name={cat.icon} size={26} color="var(--vert)" />
                 </div>
                 <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.74rem', fontWeight: 600, color: 'var(--encre)', textAlign: 'center' }}>{cat.label}</span>
               </Link>

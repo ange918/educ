@@ -130,8 +130,8 @@ export default function Footer() {
         </div>
 
         <div style={s.bar}>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem', fontFamily: 'Inter, sans-serif' }}>
-            Fait avec fierté au Bénin 🇧🇯 — © {new Date().getFullYear()} DAHOMEY-TECH
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem', fontFamily: 'Inter, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+            Fait avec <i className="bx bxs-heart" style={{ color: 'var(--vert)', fontSize: '0.85rem' }} /> au Bénin — © {new Date().getFullYear()} DAHOMEY-TECH
           </p>
           <div style={{ display: 'flex', gap: '1.25rem' }}>
             {['Confidentialité', 'CGU', 'Cookies'].map(label => (
