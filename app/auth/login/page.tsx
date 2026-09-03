@@ -107,7 +107,12 @@ export default function LoginPage() {
               </div>
             </div>
             <div>
-              <label style={labelStyle}>Mot de passe</label>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <label style={labelStyle}>Mot de passe</label>
+                <Link href="/auth/mot-de-passe-oublie" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#008751', fontWeight: 600, marginBottom: '0.6rem' }}>
+                  Mot de passe oublié ?
+                </Link>
+              </div>
               <div style={{ position: 'relative' }}>
                 <Lock size={15} style={iconPos} />
                 <input type={showPassword ? 'text' : 'password'} name="password" id="password" autoComplete="current-password" required style={{ ...inputStyle, paddingRight: '3rem' }} value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="••••••••"
