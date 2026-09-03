@@ -5,6 +5,7 @@ import AppShell from '@/components/AppShell'
 import BottomNav from '@/components/BottomNav'
 import TrackVisite from '@/components/TrackVisite'
 import ServiceWorkerRegister from '@/components/ServiceWorkerRegister'
+import InstallPrompt from '@/components/InstallPrompt'
 
 export const metadata: Metadata = {
   title: 'DAHOMEY-TECH — Stylistes vérifiés, une seule adresse',
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <BottomNav />
         <TrackVisite />
         <ServiceWorkerRegister />
+        <InstallPrompt />
       </body>
     </html>
   )
