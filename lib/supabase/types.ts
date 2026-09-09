@@ -59,3 +59,22 @@ export type Categorie = {
   icone?: string
   ordre: number
 }
+
+export type Client = {
+  id: string
+  styliste_id: string
+  nom_complet: string
+  telephone: string
+  genre: 'homme' | 'femme' | 'enfant'
+  created_at: string
+}
+
+export type Measurement = {
+  id: string
+  client_id: string
+  styliste_id: string
+  date_livraison: string | null
+  notes: string | null
+  data: Record<string, number>
+  created_at: string
+}

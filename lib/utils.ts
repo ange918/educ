@@ -21,6 +21,10 @@ export function buildWhatsAppLink(numero: string, nomTenue: string, prix: number
   return `https://wa.me/${numero}?text=${message}`
 }
 
+export function buildWhatsAppMessageLink(numero: string, message: string): string {
+  return `https://wa.me/${numero}?text=${encodeURIComponent(message)}`
+}
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()
