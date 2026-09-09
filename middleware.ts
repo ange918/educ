@@ -34,5 +34,11 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: [
+    // Tourne sur (quasi) toutes les routes, pas seulement /dashboard/*, pour
+    // rafraîchir le cookie de session à chaque navigation (y compris sur les
+    // pages publiques) — sinon le token expire pendant que le styliste
+    // navigue ailleurs et il se retrouve "déconnecté" en revenant sur /dashboard.
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
+  ],
 }

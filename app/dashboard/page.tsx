@@ -8,7 +8,7 @@ import { formatPrix } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import type { Styliste, Tenue } from '@/lib/supabase/types'
 import StylisteGraphs from '@/components/StylisteGraphs'
-import { Shirt, Eye, ShoppingBag, Star, Plus, Pencil, Trash2, MapPin, ExternalLink, MessageCircle, TrendingUp, CheckCircle, XCircle, LogOut, Share2, Link2 } from 'lucide-react'
+import { Shirt, Eye, ShoppingBag, Star, Plus, Pencil, Trash2, MapPin, ExternalLink, MessageCircle, TrendingUp, CheckCircle, XCircle, LogOut, Share2, Link2, Users } from 'lucide-react'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -181,6 +181,7 @@ export default function DashboardPage() {
 
           <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
             {[
+              { label: 'Mes clients', href: '/dashboard/clients', icon: <Users size={15} />, color: '#2E86DE' },
               { label: 'Modifier mon profil', href: '/dashboard/profil', icon: <Pencil size={15} />, color: '#C8972A' },
               { label: 'Voir ma page publique', href: styliste?.slug ? `/styliste/${styliste.slug}` : '#', icon: <ExternalLink size={15} />, color: '#008751' },
               { label: 'Contact support', href: '#', icon: <MessageCircle size={15} />, color: '#E8112D' },
