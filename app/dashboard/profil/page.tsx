@@ -57,7 +57,11 @@ export default function ProfilPage() {
       const { error: uploadErr } = await supabase.storage.from('photos').upload(path, compressed, { upsert: true })
       if (!uploadErr) {
         const { data: urlData } = supabase.storage.from('photos').getPublicUrl(path)
-        photo_url = urlData.publicUrl
+        // Le chemin (profil.ext) est toujours le même pour un styliste donné
+        // (upsert) : sans ce paramètre de version, le navigateur/CDN/l'optimiseur
+        // d'images continue de servir l'ancienne photo en cache après un
+        // changement, car l'URL n'a pas changé.
+        photo_url = `${urlData.publicUrl}?v=${Date.now()}`
       }
     }
 
