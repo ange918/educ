@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import { createClient } from '@/lib/supabase/client'
 import type { Categorie, Tenue } from '@/lib/supabase/types'
-import { formatPrixInput, parsePrixInput } from '@/lib/utils'
+import { formatPrixInput, parsePrixInput, compressImage } from '@/lib/utils'
 import { ArrowLeft, Camera, X, Plus, CheckCircle, Tag, AlignLeft, DollarSign, Layers, Package, ToggleLeft, ToggleRight, Upload, Trash2 } from 'lucide-react'
 
 const TAILLES_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'Sur mesure']
@@ -85,7 +85,8 @@ export default function ModifierTenuePage() {
 
     // Upload des nouvelles photos
     const uploadedUrls: string[] = []
-    for (const file of nouvellesPhotos) {
+    for (const rawFile of nouvellesPhotos) {
+      const file = await compressImage(rawFile)
       const ext = file.name.split('.').pop()
       const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
       const { error: uploadErr } = await supabase.storage.from('photos').upload(path, file)

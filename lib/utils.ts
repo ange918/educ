@@ -25,6 +25,46 @@ export function buildWhatsAppMessageLink(numero: string, message: string): strin
   return `https://wa.me/${numero}?text=${encodeURIComponent(message)}`
 }
 
+// Redimensionne/compresse une photo côté client avant l'envoi vers Supabase
+// Storage. Les photos prises directement avec l'appareil photo d'un téléphone
+// pèsent souvent 8 à 15 Mo : ce poids fait régulièrement échouer l'optimisation
+// d'image de Next.js/Vercel à l'affichage (l'upload réussit, mais la photo ne
+// s'affiche jamais). On les ramène à une taille raisonnable avant l'envoi.
+export function compressImage(file: File, maxDimension = 1600, quality = 0.82): Promise<File> {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined' || !file.type.startsWith('image/') || file.type === 'image/gif') {
+      resolve(file)
+      return
+    }
+    const img = new window.Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const { width, height } = img
+      if (width <= maxDimension && height <= maxDimension && file.size <= 2 * 1024 * 1024) {
+        resolve(file)
+        return
+      }
+      const scale = Math.min(1, maxDimension / Math.max(width, height))
+      const targetWidth = Math.round(width * scale)
+      const targetHeight = Math.round(height * scale)
+      const canvas = document.createElement('canvas')
+      canvas.width = targetWidth
+      canvas.height = targetHeight
+      const ctx = canvas.getContext('2d')
+      if (!ctx) { resolve(file); return }
+      ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
+      canvas.toBlob((blob) => {
+        if (!blob) { resolve(file); return }
+        const name = file.name.replace(/\.\w+$/, '') + '.jpg'
+        resolve(new File([blob], name, { type: 'image/jpeg' }))
+      }, 'image/jpeg', quality)
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file) }
+    img.src = url
+  })
+}
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()

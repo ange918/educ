@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar'
 import { createClient } from '@/lib/supabase/client'
 import type { Styliste } from '@/lib/supabase/types'
 import { ArrowLeft, Camera, User, AlignLeft, MapPin, Phone, MessageCircle, AtSign, Save, CheckCircle } from 'lucide-react'
+import { compressImage } from '@/lib/utils'
 
 export default function ProfilPage() {
   const router = useRouter()
@@ -50,9 +51,10 @@ export default function ProfilPage() {
     let photo_url = styliste.photo_url
 
     if (photoFile) {
-      const ext = photoFile.name.split('.').pop()
+      const compressed = await compressImage(photoFile)
+      const ext = compressed.name.split('.').pop()
       const path = `${styliste.id}/profil.${ext}`
-      const { error: uploadErr } = await supabase.storage.from('photos').upload(path, photoFile, { upsert: true })
+      const { error: uploadErr } = await supabase.storage.from('photos').upload(path, compressed, { upsert: true })
       if (!uploadErr) {
         const { data: urlData } = supabase.storage.from('photos').getPublicUrl(path)
         photo_url = urlData.publicUrl
